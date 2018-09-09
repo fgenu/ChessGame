@@ -8,6 +8,7 @@ public class Casa{
     public Casa()
     {
         cor = 'i';
+        pecaAtual = null;
     }
 	// Use this for initialization
 	void Start () {

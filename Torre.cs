@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Torre : Peca {
     
-    public Torre(char c): base(c)
+    public Torre(char c,bool cima, Jogador j): base(c,cima,j)
     {
         
     }

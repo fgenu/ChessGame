@@ -44,12 +44,23 @@ public class Tabuleiro : MonoBehaviour {
         {
             //coloca as pecas especiais do primeiro jogador
             tabuleiro[tamTabuleiro - 1, i].pecaAtual = j1.conjuntoPecas[i];
+            j1.conjuntoPecas[i].posX = tamTabuleiro - 1;
+            j1.conjuntoPecas[i].posY = i;
+
             //coloca os peoes do primeiro jogador
             tabuleiro[tamTabuleiro - 2, i].pecaAtual = j1.conjuntoPecas[i+8];
+            j1.conjuntoPecas[i+8].posX = tamTabuleiro - 2;
+            j1.conjuntoPecas[i+8].posY = i;
+
             //coloca as pecas especiais do segundo jogador
             tabuleiro[0, i].pecaAtual = j2.conjuntoPecas[i];
+            j2.conjuntoPecas[i].posX = 0;
+            j2.conjuntoPecas[i].posY = i;
+
             //coloca os peoes do segundo jogador
             tabuleiro[1, i].pecaAtual = j2.conjuntoPecas[i + 8];
+            j2.conjuntoPecas[i+8].posX = 1;
+            j2.conjuntoPecas[i+8].posY = i;
         }
         
     }
@@ -105,11 +116,14 @@ public class Tabuleiro : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-        Jogador j1 = new Jogador('b');
-        Jogador j2 = new Jogador('p');
+        Jogador j1 = new Jogador('b',true);
+        Jogador j2 = new Jogador('p',false);
         inicializaCasas();
         pintaCasas();
         inserePecas(j1, j2);
+        printaTabuleiro();
+        j2.conjuntoPecas[8].realizaMovimento(j2.conjuntoPecas[8].listaMovimentos(tabuleiro, j2.conjuntoPecas[8].posX, j2.conjuntoPecas[8].posY)[0]);
+        Debug.Log(j2.conjuntoPecas[8].JogadorBaixo);
         printaTabuleiro();
     }
 	
