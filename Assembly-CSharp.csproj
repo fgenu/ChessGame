@@ -53,8 +53,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Chess\Demo\Scripts\Main.cs" />
      <Compile Include="Assets\Chess\Scripts\ChessUiEngine.cs" />
+     <Compile Include="Assets\Piece.cs" />
+     <Compile Include="Assets\Tabuleiro.cs" />
      <None Include="Assets\Tiny Chess Stone Chess Piece\Readme Eng.txt" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Gustavo/Documents/ChessGame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
