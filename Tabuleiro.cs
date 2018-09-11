@@ -110,7 +110,7 @@ public class Tabuleiro : MonoBehaviour {
         {
             for (int j = 0; j < tamTabuleiro; j++)
             {
-                tabuleiro[i, j] = new Casa();
+                tabuleiro[i, j] = new Casa(i,j);
             }
         }
     }
@@ -122,13 +122,35 @@ public class Tabuleiro : MonoBehaviour {
         pintaCasas();
         inserePecas(j1, j2);
         printaTabuleiro();
+        //verifica peao
         j2.conjuntoPecas[8].realizaMovimento(j2.conjuntoPecas[8].listaMovimentos(tabuleiro, j2.conjuntoPecas[8].posX, j2.conjuntoPecas[8].posY)[0]);
-        Debug.Log(j2.conjuntoPecas[8].JogadorBaixo);
+        
+        //verifica rei
+        j2.conjuntoPecas[4].posX = 4;
+        j2.conjuntoPecas[4].posY = 4;
+        tabuleiro[4, 4].pecaAtual = tabuleiro[0, 4].pecaAtual;
+        tabuleiro[0, 4].pecaAtual = null;
         printaTabuleiro();
+        j2.conjuntoPecas[4].realizaMovimento(j2.conjuntoPecas[4].listaMovimentos(tabuleiro, j2.conjuntoPecas[4].posX, j2.conjuntoPecas[4].posY)[2]);
+        printaTabuleiro();
+        j2.conjuntoPecas[4].realizaMovimento(j2.conjuntoPecas[4].listaMovimentos(tabuleiro, j2.conjuntoPecas[4].posX, j2.conjuntoPecas[4].posY)[3]);
+        printaTabuleiro();
+
+        //verifica cavalo
+        j2.conjuntoPecas[1].posX = 5;
+        j2.conjuntoPecas[1].posY = 5;
+        tabuleiro[5, 5].pecaAtual = tabuleiro[0, 1].pecaAtual;
+        tabuleiro[0, 1].pecaAtual = null;
+        printaTabuleiro();
+        j2.conjuntoPecas[1].realizaMovimento(j2.conjuntoPecas[1].listaMovimentos(tabuleiro, j2.conjuntoPecas[1].posX, j2.conjuntoPecas[1].posY)[2]);
+        printaTabuleiro();
+        j2.conjuntoPecas[1].realizaMovimento(j2.conjuntoPecas[1].listaMovimentos(tabuleiro, j2.conjuntoPecas[1].posX, j2.conjuntoPecas[1].posY)[3]);
+        printaTabuleiro();
+
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }

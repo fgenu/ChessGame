@@ -18,7 +18,6 @@ public class Peao : Peca {
         //caso ele seja o jogador de cima, tem que se movimentar para baixo
         if (!JogadorBaixo)
         {
-            Debug.Log("aqui");
             //verifica se o peao pode comer casa e cria o movimento para esquerdo inferior
             if (x + 1 < tamTabuleiro && y - 1 >=0 )
             {
@@ -43,9 +42,6 @@ public class Peao : Peca {
             //movimento normal,um abaixo
             if (x + 1 < tamTabuleiro)
             {
-                Debug.Log(x+1);
-
-                Debug.Log(x);
 
                 movimentos.Add(new Movimento(x+1, y, tab[x+1, y ],tab[x,y]));
                 

@@ -29,10 +29,11 @@ public class Peca {
         {
 
         }
-        Debug.Log(m.casaCapturada.pecaAtual);
-        Debug.Log(m.casaAtual.pecaAtual);
         //realiza o movimento
+
         m.casaCapturada.pecaAtual = m.casaAtual.pecaAtual;
+        m.casaCapturada.pecaAtual.posX = m.casaCapturada.posX;
+        m.casaCapturada.pecaAtual.posY = m.casaCapturada.posY;
         m.casaAtual.pecaAtual = null;
     }
 
