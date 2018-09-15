@@ -10,17 +10,17 @@ public class Movimento
 
 	public Casa origem, destino;
 
-	public Movimento(int x, int y, Casa destino, Casa origem) // Genú: não faz sentido passar x e y, já tem referência à casa final em 'destino'...
+	/*public Movimento(int x, int y, Casa destino, Casa origem) // Genú: não faz sentido passar x e y, já tem referência à casa final em 'destino'...
 	{
 		posX = x;
 		posY = y;
 		valor = 0;
 		this.destino = destino;
 		this.origem = origem;
-	}
+	}*/
 
 	// Genú: Podemos manter só esse construtor?
-	public Movimento(Casa origem, Casa destino)
+	public Movimento( Casa destino, Casa origem)
 	{
 		posX = destino.posX;
 		posY = destino.posY;
@@ -30,7 +30,7 @@ public class Movimento
 	}
 
 	// Propaga um movimento na direção dada. 
-	public List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = MAX_INT, boolean bloqueavel = true)
+	/*public List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = MAX_INT, boolean bloqueavel = true)
 	{
 		var possibilidades = new List<Movimento>();
 
@@ -58,5 +58,5 @@ public class Movimento
 		}
 
 		return possibilidades;
-	}
+	}*/
 }

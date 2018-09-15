@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Torre : Peca {
-
-    bool primeiraJogada = true;
     
-    public Torre(char c,bool cima, Jogador j): base(c,cima,j)
+    
+    public Torre(bool jogadorCima, Jogador j): base(jogadorCima,j)
     {
     }
 
     // temp:
-    var tabuleiro = FindObjectsOfType<Tabuleiro>();
+    /*var tabuleiro = FindObjectsOfType<Tabuleiro>();
     public override List<Movimento> listaMovimentos(Casa[,] tab, int x, int y)
     {
     
@@ -27,6 +26,6 @@ public class Torre : Peca {
         movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, -1));
 
         return movimentos;
-    }
+    }*/
     
 }

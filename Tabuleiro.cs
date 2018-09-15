@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Tabuleiro : MonoBehaviour
 {
-	int Tamanho { get; private set; } = 8;
-	private Casa[,] tabuleiro = new Casa[Tamanho, Tamanho];
+	public int Tamanho = 8;
+	private Casa[,] tabuleiro = new Casa[8,8];
 
 	public Casa GetCasa(int x, int y)
 	{
@@ -66,7 +66,7 @@ public class Tabuleiro : MonoBehaviour
 			tabuleiro[Tamanho - 2, i].pecaAtual = j1.conjuntoPecas[i + 8];
 			j1.conjuntoPecas[i + 8].posX = Tamanho - 2;
 			j1.conjuntoPecas[i + 8].posY = i;
-
+            
 			//coloca as pecas especiais do segundo jogador
 			tabuleiro[0, i].pecaAtual = j2.conjuntoPecas[i];
 			j2.conjuntoPecas[i].posX = 0;
@@ -135,22 +135,30 @@ public class Tabuleiro : MonoBehaviour
 	{
 		Jogador j1 = new Jogador('b', true);
 		Jogador j2 = new Jogador('p', false);
-		InicializaCasas();
+        j2.conjuntoPecas[4].defineInimigo(j1);
+        j1.conjuntoPecas[4].defineInimigo(j2);
+        InicializaCasas();
 		PintaCasas();
 		InserePecas(j1, j2);
 		PrintaTabuleiro();
-		//verifica peao
-		j2.conjuntoPecas[8].RealizaMovimento(j2.conjuntoPecas[8].ListaMovimentos(tabuleiro, j2.conjuntoPecas[8].posX, j2.conjuntoPecas[8].posY)[0]);
 
-		//verifica rei
-		j2.conjuntoPecas[4].SetPosition(4, 4);
-		tabuleiro[4, 4].pecaAtual = tabuleiro[0, 4].pecaAtual;
+        //verifica peao
+        /*j2.conjuntoPecas[8].SetPosition(6, 6);
+        tabuleiro[6, 6].pecaAtual = tabuleiro[1, 1].pecaAtual;
+        tabuleiro[1,1].pecaAtual = null;
+        j2.conjuntoPecas[8].RealizaMovimento(j2.conjuntoPecas[8].ListaMovimentos(tabuleiro, j2.conjuntoPecas[8].posX, j2.conjuntoPecas[8].posY)[0]);
+        PrintaTabuleiro();
+        */
+
+        //verifica rei
+        /*j2.conjuntoPecas[4].SetPosition(5, 5);
+		tabuleiro[5, 5].pecaAtual = tabuleiro[0, 4].pecaAtual;
 		tabuleiro[0, 4].pecaAtual = null;
 		PrintaTabuleiro();
 		j2.conjuntoPecas[4].RealizaMovimento(j2.conjuntoPecas[4].ListaMovimentos(tabuleiro, j2.conjuntoPecas[4].posX, j2.conjuntoPecas[4].posY)[2]);
 		PrintaTabuleiro();
 		j2.conjuntoPecas[4].RealizaMovimento(j2.conjuntoPecas[4].ListaMovimentos(tabuleiro, j2.conjuntoPecas[4].posX, j2.conjuntoPecas[4].posY)[3]);
-		PrintaTabuleiro();
+		PrintaTabuleiro();*/
 
 		//verifica cavalo
 		j2.conjuntoPecas[1].SetPosition(5, 5);
@@ -162,5 +170,5 @@ public class Tabuleiro : MonoBehaviour
 		j2.conjuntoPecas[1].RealizaMovimento(j2.conjuntoPecas[1].ListaMovimentos(tabuleiro, j2.conjuntoPecas[1].posX, j2.conjuntoPecas[1].posY)[3]);
 		PrintaTabuleiro();
 
-	}
+    }
 }

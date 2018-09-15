@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Rainha : Peca
 {
-	public Rainha(char c, bool cima, Jogador j) : base(c, cima, j)
+	public Rainha(bool jogadorCima, Jogador j) : base(jogadorCima, j)
 	{
 
 	}
 
-	public override List<Movimento> GenuListaMovimentos(Tabuleiro tabuleiro, Casa origem)
+	/*public override List<Movimento> GenuListaMovimentos(Tabuleiro tabuleiro, Casa origem)
 	{
 		var movimentos = new List<Movimento>();
 
@@ -26,5 +26,5 @@ public class Rainha : Peca
 		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, -1));
 
 		return movimentos;
-	}
+	}*/
 }

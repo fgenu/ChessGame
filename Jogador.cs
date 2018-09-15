@@ -5,29 +5,31 @@ using UnityEngine;
 public class Jogador
 {
 	public Peca[] conjuntoPecas = new Peca[16];
-	char Cor { get; private set; }
+    public bool jogadorCima;
+	public char Cor { get; private set; }
 	public Jogador(char cor, bool cima)
 	{
 		Cor = cor;
-		InicializaPecas(cima);
+        jogadorCima = cima;
+		InicializaPecas();
 	}
 	//inicializa as pecas do jogador
-	void InicializaPecas(bool cima)
+	void InicializaPecas()
 	{
 		//inicializa as peças especiais da linha mais a borda
-		conjuntoPecas[0] = new Torre(Cor, cima, this); // Genú: (TODO) É desnecessário passar Cor e this, porque o this já tem cor.
-		conjuntoPecas[1] = new Cavalo(Cor, cima, this);
-		conjuntoPecas[2] = new Bispo(Cor, cima, this);
-		conjuntoPecas[3] = new Rainha(Cor, cima, this);
-		conjuntoPecas[4] = new Rei(Cor, cima, this);
-		conjuntoPecas[5] = new Bispo(Cor, cima, this);
-		conjuntoPecas[6] = new Cavalo(Cor, cima, this);
-		conjuntoPecas[7] = new Torre(Cor, cima, this);
+		conjuntoPecas[0] = new Torre(jogadorCima, this); 
+		conjuntoPecas[1] = new Cavalo(jogadorCima, this);
+		conjuntoPecas[2] = new Bispo(jogadorCima, this);
+		conjuntoPecas[3] = new Rainha(jogadorCima, this);
+		conjuntoPecas[4] = new Rei(jogadorCima, this);
+		conjuntoPecas[5] = new Bispo(jogadorCima, this);
+		conjuntoPecas[6] = new Cavalo(jogadorCima, this);
+		conjuntoPecas[7] = new Torre(jogadorCima, this);
 
 		//inicializa os peoes
 		for (int i = 8; i < 16; i++)
 		{
-			conjuntoPecas[i] = new Peao(Cor, cima, this);
+			conjuntoPecas[i] = new Peao(jogadorCima, this);
 		}
 	}
 }
