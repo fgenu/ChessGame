@@ -39,6 +39,7 @@ public class Peao : Peca
                 if (x + 2 < tamTabuleiro)
                 {
                     movimentos.Add(new Movimento( tab[x + 2, y], tab[x, y]));
+					primeiraJogada=false;
                 }
 
             }
