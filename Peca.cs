@@ -7,7 +7,7 @@ public class Peca
 	public int posX = -1, posY = -1,tamTabuleiro=8;
 	public bool jogadorCima; 
 	public char cor;
-	Jogador jDono;
+	public Jogador jDono;
 
 	public Peca(bool cima, Jogador j)
 	{
@@ -41,8 +41,21 @@ public class Peca
 	public void RealizaMovimento(Movimento m) // Genú: Acho que "Mover" é um nome melhor e mais conciso. Também é sinônimo de "realizar movimento"
 	{
 		//verifica se tem captura de peça
-		if (m.destino != null)
+		if (m.destino.pecaAtual != null)
 		{
+            Jogador jCapturado = m.destino.pecaAtual.jDono;
+            int posPeca=0;
+
+            //verifico todas as peças até achar a que eu quero
+            foreach(Peca p in jCapturado.conjuntoPecas)
+            {
+                if (p == m.destino.pecaAtual)
+                {
+                    break;
+                }
+                posPeca++;
+            }
+            jCapturado.conjuntoPecas.RemoveAt(posPeca);
 
 		}
 		//realiza o movimento

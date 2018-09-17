@@ -16,45 +16,46 @@ public class Cavalo : Peca
         //int quantMovimentos;
 
         //verifica cada lugar que o cavalo pode ir
+        //antes verifica por cada casa se tem casa aliada
         //verifica se pode mover para jogadorCima 2x e esquerda 1x
         if (x - 2 >= 0 && y - 1 >= 0)
         {
-            movimentos.Add(new Movimento(tab[x - 2, y - 1], tab[x, y]));
+            if (tab[x - 2, y - 1].pecaAtual == null || tab[x -2, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 2, y - 1], tab[x, y]));
         }
         //verifica se pode mover para jogadorCima 2x e direita 1x
         if (x - 2 >= 0 && y + 1 < tamTabuleiro)
         {
-            movimentos.Add(new Movimento(tab[x - 2, y + 1], tab[x, y]));
+            if (tab[x - 2, y + 1].pecaAtual == null || tab[x - 2, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 2, y + 1], tab[x, y]));
         }
         //verifica se pode mover para jogadorCima 1x e esquerda 2x
         if (x - 1 >= 0 && y - 2 >= 0)
         {
-            movimentos.Add(new Movimento(tab[x - 1, y - 2], tab[x, y]));
+            if (tab[x - 1, y - 2].pecaAtual == null || tab[x - 1, y - 2].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 1, y - 2], tab[x, y]));
         }
         //verifica se pode mover para jogadorCima 1x e direita 2x
         if (x - 1 >= 0 && y + 2 < tamTabuleiro)
         {
-            movimentos.Add(new Movimento(tab[x - 1, y + 2], tab[x, y]));
+            if (tab[x - 1, y + 2].pecaAtual == null || tab[x - 1, y + 2].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 1, y + 2], tab[x, y]));
         }
         //verifica se pode mover para baixo 2x e esquerda 1x
         if (x + 2 < tamTabuleiro && y - 1 >= 0)
         {
-            movimentos.Add(new Movimento(tab[x + 2, y - 1], tab[x, y]));
+            if (tab[x + 2, y - 1].pecaAtual == null || tab[x + 2, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 2, y - 1], tab[x, y]));
         }
         //verifica se pode mover para baixo 2x e direita 1x
         if (x + 2 < tamTabuleiro && y + 1 < tamTabuleiro)
         {
-            movimentos.Add(new Movimento(tab[x + 2, y + 1], tab[x, y]));
+            if (tab[x + 2, y + 1].pecaAtual == null || tab[x + 2, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 2, y + 1], tab[x, y]));
         }
         //verifica se pode mover para baixo 1x e esquerda 2x
         if (x + 1 < tamTabuleiro && y - 2 >= 0)
         {
-            movimentos.Add(new Movimento(tab[x + 1, y - 2], tab[x, y]));
+            if (tab[x + 1, y - 2].pecaAtual == null || tab[x + 1, y - 2].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 1, y - 2], tab[x, y]));
         }
         //verifica se pode mover para baixo 1x e direita 2x
         if (x + 1 < tamTabuleiro && y + 2 < tamTabuleiro)
         {
-            movimentos.Add(new Movimento(tab[x + 1, y - 2], tab[x, y]));
+            if (tab[x + 1, y + 2].pecaAtual == null || tab[x + 1, y +2].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 1, y - 2], tab[x, y]));
         }
 
         return movimentos;

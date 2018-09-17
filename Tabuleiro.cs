@@ -143,10 +143,10 @@ public class Tabuleiro : MonoBehaviour
 		PrintaTabuleiro();
 
         //verifica peao
-        /*j2.conjuntoPecas[8].SetPosition(6, 6);
-        tabuleiro[6, 6].pecaAtual = tabuleiro[1, 1].pecaAtual;
-        tabuleiro[1,1].pecaAtual = null;
-        j2.conjuntoPecas[8].RealizaMovimento(j2.conjuntoPecas[8].ListaMovimentos(tabuleiro, j2.conjuntoPecas[8].posX, j2.conjuntoPecas[8].posY)[0]);
+        j1.conjuntoPecas[8].SetPosition(4 ,3);
+        tabuleiro[4, 3].pecaAtual = tabuleiro[6, 1].pecaAtual;
+        tabuleiro[6,1].pecaAtual = null;
+        /*j2.conjuntoPecas[8].RealizaMovimento(j2.conjuntoPecas[8].ListaMovimentos(tabuleiro, j2.conjuntoPecas[8].posX, j2.conjuntoPecas[8].posY)[0]);
         PrintaTabuleiro();
         */
 

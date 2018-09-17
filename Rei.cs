@@ -40,45 +40,74 @@ public class Rei : Peca
 	public override List<Movimento> ListaMovimentos(Casa[,] tab, int x, int y)
 	{
 		List<Movimento> movimentos = new List<Movimento>();
-		//int quantMovimentos;
+        //int quantMovimentos;
 
-		//rei pode ir tanto para frente ou atras então movimento unico
-		//verifica se pode mover para jogadorCima do tabuleiro
+        //rei pode ir tanto para frente ou atras então movimento unico
+        //verifica se pode mover para jogadorCima do tabuleiro
+
+        //funciona por verificando linha, depois coluna, mas para cada casa 
+        //verifica se pode mover por xeque, depois verifica se tem casa aliada na posição
 		if (x - 1 >= 0)
 		{
-            if(podeMoverXeque(tab,x-1,y)) movimentos.Add(new Movimento(tab[x - 1, y], tab[x, y]));
+            if(podeMoverXeque(tab,x-1,y))
+            {
+                if (tab[x - 1, y ].pecaAtual == null || tab[x - 1, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 1, y], tab[x, y]));
+            }
+
             if (y - 1 >= 0)
 			{
-                if (podeMoverXeque(tab, x - 1, y-1)) movimentos.Add(new Movimento( tab[x - 1, y - 1], tab[x, y]));
-			}
+                if (podeMoverXeque(tab, x - 1, y-1)) if (tab[x - 1, y - 1].pecaAtual == null || tab[x - 1, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                    {
+                        movimentos.Add(new Movimento( tab[x - 1, y - 1], tab[x, y]));
+                    }
+            }
 			if (y + 1 < tamTabuleiro)
 			{
-                if (podeMoverXeque(tab, x - 1, y+1)) movimentos.Add(new Movimento(tab[x - 1, y + 1], tab[x, y]));
-			}
+                if (podeMoverXeque(tab, x - 1, y+1)) if (tab[x - 1, y + 1].pecaAtual == null || tab[x - 1, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                    {
+                        movimentos.Add(new Movimento(tab[x - 1, y + 1], tab[x, y]));
+                    }
+            }
 		}
 		//verifica embaixo do tabuleiro
 		if (x + 1 < tamTabuleiro)
 		{
-            if (podeMoverXeque(tab, x + 1, y)) movimentos.Add(new Movimento(tab[x + 1, y], tab[x, y]));
-			if (y - 1 >= 0)
+            if (podeMoverXeque(tab, x + 1, y)) if (tab[x + 1, y].pecaAtual == null || tab[x + 1, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                {
+                    movimentos.Add(new Movimento(tab[x + 1, y], tab[x, y]));
+                }
+
+            if (y - 1 >= 0)
 			{
-                if (podeMoverXeque(tab, x + 1, y-1)) movimentos.Add(new Movimento(tab[x + 1, y - 1], tab[x, y]));
-			}
+                if (podeMoverXeque(tab, x + 1, y-1))
+                {
+                    if (tab[x + 1, y - 1].pecaAtual == null || tab[x + 1, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 1, y - 1], tab[x, y]));
+                }
+            }
 			if (y + 1 < tamTabuleiro)
 			{
-                if (podeMoverXeque(tab, x + 1, y+1)) movimentos.Add(new Movimento(tab[x + 1, y + 1], tab[x, y]));
-			}
+                if (podeMoverXeque(tab, x + 1, y+1)) if (tab[x + 1, y + 1].pecaAtual == null || tab[x + 1, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                    {
+                        movimentos.Add(new Movimento(tab[x + 1, y + 1], tab[x, y]));
+                    }
+            }
 
 		}
 		//verifica os lados
 		if (y - 1 >= 0)
 		{
-            if (podeMoverXeque(tab, x, y-1)) movimentos.Add(new Movimento( tab[x, y -1], tab[x, y]));
-		}
+            if (podeMoverXeque(tab, x, y-1))
+            {
+                if (tab[x, y - 1].pecaAtual == null || tab[x, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento( tab[x, y -1], tab[x, y]));
+            }
+        }
 		if (y + 1 < tamTabuleiro)
 		{
-            if (podeMoverXeque(tab, x , y+1)) movimentos.Add(new Movimento(tab[x, y + 1], tab[x, y]));
-		}
+            if (podeMoverXeque(tab, x , y+1)) if (tab[x, y + 1].pecaAtual == null || tab[x, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                {
+                    movimentos.Add(new Movimento(tab[x, y + 1], tab[x, y]));
+                }
+        }
 
 		return movimentos;
 	}
