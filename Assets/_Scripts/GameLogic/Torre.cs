@@ -5,7 +5,7 @@ using UnityEngine;
 public class Torre : Peca {
     
     
-    public Torre(bool jogadorCima, Jogador j): base(jogadorCima,j)
+    public Torre(Jogador j): base(j)
     {
     }
 
@@ -14,9 +14,9 @@ public class Torre : Peca {
     public override List<Movimento> listaMovimentos(Casa[,] tab, int x, int y)
     {
     
-    }
+    }*/
 
-    public override List<Movimento> GenuListaMovimentos (Tabuleiro tabuleiro, Casa origem)
+    public override List<Movimento> ListaMovimentos (Tabuleiro tabuleiro, Casa origem)
     {
         var movimentos = new List<Movimento>();
 
@@ -26,6 +26,6 @@ public class Torre : Peca {
         movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, -1));
 
         return movimentos;
-    }*/
+    }
     
 }

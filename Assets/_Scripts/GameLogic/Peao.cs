@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using TiposDeMovimento;
+
 public class Peao : Peca
 {
-	bool primeiraJogada = true;
-	public Peao(bool jogadorCima, Jogador j) : base(jogadorCima, j)
+	public Peao(Jogador j) : base(j)
 	{
 
 	}
@@ -16,22 +17,24 @@ public class Peao : Peca
 
         //antes verifica por cada casa se tem casa aliada
         //caso ele seja o jogador de jogadorCima, tem que se movimentar para baixo
-        if (!jogadorCima)
+        if (!jDono.jogadorCima)
 		{
 			//verifica se o peao pode comer casa e cria o movimento para esquerdo inferior
 			if (x + 1 < tamTabuleiro && y - 1 >= 0)
 			{
-				if (tab[x + 1, y - 1].pecaAtual != null)
+				if (tab[x + 1, y - 1].PecaAtual != null)
                 {
-                    if(tab[x + 1, y - 1].pecaAtual.jDono != tab[x,y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 1, y-1], tab[x, y]));
+                    if(tab[x + 1, y - 1].PecaAtual.jDono != tab[x,y].PecaAtual.jDono) 
+						movimentos.Add(new Movimento(tab[x + 1, y-1], tab[x, y]));
                 }
 			}
 			//verifica se o peao pode comer casa e cria o movimento para direito inferior
 			if (x + 1 < tamTabuleiro && y + 1 < tamTabuleiro)
 			{
-				if (tab[x + 1, y + 1].pecaAtual != null)
+				if (tab[x + 1, y + 1].PecaAtual != null)
                 {
-                    if (tab[x + 1, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 1, y+1], tab[x, y]));
+                    if (tab[x + 1, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+						movimentos.Add(new Movimento(tab[x + 1, y+1], tab[x, y]));
                 }
 			}
 			//verifica se é a primeira jogada da peça e permite mover mais
@@ -39,7 +42,10 @@ public class Peao : Peca
             {
                 if (x + 2 < tamTabuleiro)
                 {
-                    if (tab[x + 2, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento( tab[x + 2, y], tab[x, y]));
+                    if (tab[x + 2, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+						movimentos.Add(new Movimento( tab[x + 2, y], tab[x, y]));
+					// Genú: Percebi que isso abaixo é problemático porque simplesmente verificar 
+					// quais movimentos o peão pode tomar já faz ele perder o bônus de primeira jogada.
 					primeiraJogada=false;
                 }
 
@@ -48,7 +54,8 @@ public class Peao : Peca
 			if (x + 1 < tamTabuleiro)
 			{
 
-                if (tab[x + 1, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 1, y], tab[x, y]));
+                if (tab[x + 1, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+					movimentos.Add(new Movimento(tab[x + 1, y], tab[x, y]));
 
 			}
 		}
@@ -59,17 +66,19 @@ public class Peao : Peca
 			//verifica se o peao pode comer casa e cria o movimento para esquerdo inferior
 			if (x - 1 >= 0 && y - 1 >= 0)
 			{
-				if (tab[x - 1, y - 1].pecaAtual != null)
+				if (tab[x - 1, y - 1].PecaAtual != null)
                 {
-                    if (tab[x - 1, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 1, y-1], tab[x, y]));
+                    if (tab[x - 1, y - 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+						movimentos.Add(new Movimento(tab[x - 1, y-1], tab[x, y]));
                 }
 			}
 			//verifica se o peao pode comer casa e cria o movimento para direito inferior
 			if (x - 1 >= 0 && y + 1 < tamTabuleiro)
 			{
-				if (tab[x - 1, y + 1].pecaAtual != null)
+				if (tab[x - 1, y + 1].PecaAtual != null)
                 {
-                    if (tab[x - 1, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 1, y+1], tab[x, y]));
+                    if (tab[x - 1, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+						movimentos.Add(new Movimento(tab[x - 1, y+1], tab[x, y]));
                 }
 			}
 			//verifica se é a primeira jogada da peça e permite mover mais
@@ -77,18 +86,49 @@ public class Peao : Peca
 			{
                 if (x - 2 >= 0)
                 {
-                    if (tab[x - 2, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 2, y], tab[x, y]));
+                    if (tab[x - 2, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+						movimentos.Add(new Movimento(tab[x - 2, y], tab[x, y]));
                 }
 			}
 			//movimento normal,um abaixo
 			if (x - 1 >= 0)
 			{
 
-                if (tab[x - 1, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 1, y], tab[x, y]));
+                if (tab[x - 1, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+					movimentos.Add(new Movimento(tab[x - 1, y], tab[x, y]));
 
 			}
 		}
 
 		return movimentos;
+	}
+
+	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
+	{
+		List<Movimento> movimentos = new List<Movimento>();
+
+		int mod;
+
+		// caso ele seja do jogador de cima, tem que se movimentar para baixo
+		if (jDono.jogadorCima)
+			mod = -1;
+		// senão ele considera a peça subindo no tabuleiro
+		else
+			mod = +1;
+
+		// Movimentos sem captura
+		if (primeiraJogada)
+			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos:2, tipo:Tipo.SemCaptura));
+		else
+			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos:1, tipo:Tipo.SemCaptura));
+
+		// Movimentos com captura
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 1, 1 * mod, passos:1, tipo:Tipo.SomenteCaptura));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, 1 * mod, passos:1, tipo:Tipo.SomenteCaptura));
+		
+		// TODO: en passant. Ideia: poder verificar o tabuleiro do turno anterior.
+
+
+		return movimentos;	
 	}
 }

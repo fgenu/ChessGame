@@ -5,7 +5,7 @@ using UnityEngine;
 public class Rei : Peca
 {
     public Jogador inimigo;
-	public Rei(bool jogadorCima, Jogador j) : base(jogadorCima, j)
+	public Rei(Jogador j) : base(j)
 	{
 
 	}
@@ -51,19 +51,22 @@ public class Rei : Peca
 		{
             if(podeMoverXeque(tab,x-1,y))
             {
-                if (tab[x - 1, y ].pecaAtual == null || tab[x - 1, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x - 1, y], tab[x, y]));
+                if (tab[x - 1, y ].PecaAtual == null || tab[x - 1, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+                    movimentos.Add(new Movimento(tab[x - 1, y], tab[x, y]));
             }
 
             if (y - 1 >= 0)
 			{
-                if (podeMoverXeque(tab, x - 1, y-1)) if (tab[x - 1, y - 1].pecaAtual == null || tab[x - 1, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                if (podeMoverXeque(tab, x - 1, y-1)) 
+                    if (tab[x - 1, y - 1].PecaAtual == null || tab[x - 1, y - 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
                     {
                         movimentos.Add(new Movimento( tab[x - 1, y - 1], tab[x, y]));
                     }
             }
 			if (y + 1 < tamTabuleiro)
 			{
-                if (podeMoverXeque(tab, x - 1, y+1)) if (tab[x - 1, y + 1].pecaAtual == null || tab[x - 1, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                if (podeMoverXeque(tab, x - 1, y+1)) 
+                    if (tab[x - 1, y + 1].PecaAtual == null || tab[x - 1, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
                     {
                         movimentos.Add(new Movimento(tab[x - 1, y + 1], tab[x, y]));
                     }
@@ -72,7 +75,8 @@ public class Rei : Peca
 		//verifica embaixo do tabuleiro
 		if (x + 1 < tamTabuleiro)
 		{
-            if (podeMoverXeque(tab, x + 1, y)) if (tab[x + 1, y].pecaAtual == null || tab[x + 1, y].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+            if (podeMoverXeque(tab, x + 1, y))
+                if (tab[x + 1, y].PecaAtual == null || tab[x + 1, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
                 {
                     movimentos.Add(new Movimento(tab[x + 1, y], tab[x, y]));
                 }
@@ -81,12 +85,14 @@ public class Rei : Peca
 			{
                 if (podeMoverXeque(tab, x + 1, y-1))
                 {
-                    if (tab[x + 1, y - 1].pecaAtual == null || tab[x + 1, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento(tab[x + 1, y - 1], tab[x, y]));
+                    if (tab[x + 1, y - 1].PecaAtual == null || tab[x + 1, y - 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
+                        movimentos.Add(new Movimento(tab[x + 1, y - 1], tab[x, y]));
                 }
             }
 			if (y + 1 < tamTabuleiro)
 			{
-                if (podeMoverXeque(tab, x + 1, y+1)) if (tab[x + 1, y + 1].pecaAtual == null || tab[x + 1, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+                if (podeMoverXeque(tab, x + 1, y+1)) 
+                    if (tab[x + 1, y + 1].PecaAtual == null || tab[x + 1, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
                     {
                         movimentos.Add(new Movimento(tab[x + 1, y + 1], tab[x, y]));
                     }
@@ -98,12 +104,12 @@ public class Rei : Peca
 		{
             if (podeMoverXeque(tab, x, y-1))
             {
-                if (tab[x, y - 1].pecaAtual == null || tab[x, y - 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono) movimentos.Add(new Movimento( tab[x, y -1], tab[x, y]));
+                if (tab[x, y - 1].PecaAtual == null || tab[x, y - 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) movimentos.Add(new Movimento( tab[x, y -1], tab[x, y]));
             }
         }
 		if (y + 1 < tamTabuleiro)
 		{
-            if (podeMoverXeque(tab, x , y+1)) if (tab[x, y + 1].pecaAtual == null || tab[x, y + 1].pecaAtual.jDono != tab[x, y].pecaAtual.jDono)
+            if (podeMoverXeque(tab, x , y+1)) if (tab[x, y + 1].PecaAtual == null || tab[x, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
                 {
                     movimentos.Add(new Movimento(tab[x, y + 1], tab[x, y]));
                 }
@@ -111,4 +117,10 @@ public class Rei : Peca
 
 		return movimentos;
 	}
+
+    public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
+    {
+        return ListaMovimentos(tabuleiro.tabuleiro, origem.PosX, origem.PosY);
+    }
+
 }

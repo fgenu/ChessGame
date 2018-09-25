@@ -5,7 +5,9 @@ using UnityEngine;
 public class Tabuleiro : MonoBehaviour
 {
 	public int Tamanho = 8;
-	private Casa[,] tabuleiro = new Casa[8,8];
+	
+	// TODO: Fazer isto voltar a ser privado ao finalizar os ListaMovimentos
+	public /*private*/ Casa[,] tabuleiro = new Casa[8,8];
 
 	public Casa GetCasa(int x, int y)
 	{
@@ -15,7 +17,22 @@ public class Tabuleiro : MonoBehaviour
 			|| y >= Tamanho)
 			return null;
 		else
+		{
 			return tabuleiro[x, y];
+		}
+	}
+	public Casa GetCasa(string coordenadas) // usa o padrão do xadrez, como A1 ou D7
+	{
+		if (coordenadas.Length != 2)
+		{
+			print("Coordenadas " + coordenadas + " inválidas.");
+			return null;
+		}
+		
+		char letra = coordenadas[0];
+		int numero = int.Parse(coordenadas[1].ToString());
+
+		return GetCasa((int)(letra - 'A'), numero - 1);
 	}
 
 	//função serve para pintar a casa de branco ou preto
@@ -52,30 +69,22 @@ public class Tabuleiro : MonoBehaviour
 			}
 		}
 	}
-	void InserePecas(Jogador j1, Jogador j2)
+	void InserePecas(Partida partida)
 	{
 		//coloca as peças dos jogadores no tabuleiro
 		for (int i = 0; i < Tamanho; i++)
 		{
-			//coloca as pecas especiais do primeiro jogador
-			tabuleiro[Tamanho - 1, i].pecaAtual = j1.conjuntoPecas[i];
-			j1.conjuntoPecas[i].posX = Tamanho - 1;
-			j1.conjuntoPecas[i].posY = i;
+			//coloca as pecas especiais do jogador de cima
+			tabuleiro[i, Tamanho - 1].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
 
-			//coloca os peoes do primeiro jogador
-			tabuleiro[Tamanho - 2, i].pecaAtual = j1.conjuntoPecas[i + 8];
-			j1.conjuntoPecas[i + 8].posX = Tamanho - 2;
-			j1.conjuntoPecas[i + 8].posY = i;
+			//coloca os peoes do jogador de cima
+			tabuleiro[i, Tamanho - 2].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i + 8]);
             
-			//coloca as pecas especiais do segundo jogador
-			tabuleiro[0, i].pecaAtual = j2.conjuntoPecas[i];
-			j2.conjuntoPecas[i].posX = 0;
-			j2.conjuntoPecas[i].posY = i;
+			//coloca as pecas especiais jogador de baixo
+			tabuleiro[i, 0].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i]);
 
-			//coloca os peoes do segundo jogador
-			tabuleiro[1, i].pecaAtual = j2.conjuntoPecas[i + 8];
-			j2.conjuntoPecas[i + 8].posX = 1;
-			j2.conjuntoPecas[i + 8].posY = i;
+			//coloca os peoes do jogador de baixo
+			tabuleiro[i, 1].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i + 8]);
 		}
 
 	}
@@ -87,27 +96,27 @@ public class Tabuleiro : MonoBehaviour
 		{
 			for (int j = 0; j < Tamanho; j++)
 			{
-				if (tabuleiro[i, j].pecaAtual is Torre)
+				if (tabuleiro[i, j].PecaAtual is Torre)
 				{
 					linha += " T";
 				}
-				else if (tabuleiro[i, j].pecaAtual is Cavalo)
+				else if (tabuleiro[i, j].PecaAtual is Cavalo)
 				{
 					linha += " C";
 				}
-				else if (tabuleiro[i, j].pecaAtual is Bispo)
+				else if (tabuleiro[i, j].PecaAtual is Bispo)
 				{
 					linha += " B";
 				}
-				else if (tabuleiro[i, j].pecaAtual is Rei)
+				else if (tabuleiro[i, j].PecaAtual is Rei)
 				{
 					linha += " E";
 				}
-				else if (tabuleiro[i, j].pecaAtual is Rainha)
+				else if (tabuleiro[i, j].PecaAtual is Rainha)
 				{
 					linha += " A";
 				}
-				else if (tabuleiro[i, j].pecaAtual is Peao)
+				else if (tabuleiro[i, j].PecaAtual is Peao)
 				{
 					linha += " P";
 				}
@@ -130,22 +139,31 @@ public class Tabuleiro : MonoBehaviour
 			}
 		}
 	}
-	// Use this for initialization
+
+	void Awake()
+	{
+        InicializaCasas();
+		PintaCasas();
+		PrintaTabuleiro();
+	}
 	void Start()
 	{
+		Partida partida = FindObjectOfType<Partida>();
+		InserePecas(partida);
+		PrintaTabuleiro();
+		/*
 		Jogador j1 = new Jogador('b', true);
 		Jogador j2 = new Jogador('p', false);
         j2.conjuntoPecas[4].defineInimigo(j1);
         j1.conjuntoPecas[4].defineInimigo(j2);
-        InicializaCasas();
-		PintaCasas();
 		InserePecas(j1, j2);
 		PrintaTabuleiro();
+		*/
 
         //verifica peao
-        j1.conjuntoPecas[8].SetPosition(4 ,3);
-        tabuleiro[4, 3].pecaAtual = tabuleiro[6, 1].pecaAtual;
-        tabuleiro[6,1].pecaAtual = null;
+        // j1.conjuntoPecas[8].SetPosition(4 ,3);
+        // tabuleiro[4, 3].pecaAtual = tabuleiro[6, 1].pecaAtual;
+        // tabuleiro[6,1].pecaAtual = null;
         /*j2.conjuntoPecas[8].RealizaMovimento(j2.conjuntoPecas[8].ListaMovimentos(tabuleiro, j2.conjuntoPecas[8].posX, j2.conjuntoPecas[8].posY)[0]);
         PrintaTabuleiro();
         */
@@ -161,14 +179,14 @@ public class Tabuleiro : MonoBehaviour
 		PrintaTabuleiro();*/
 
 		//verifica cavalo
-		j2.conjuntoPecas[1].SetPosition(5, 5);
-		tabuleiro[5, 5].pecaAtual = tabuleiro[0, 1].pecaAtual;
-		tabuleiro[0, 1].pecaAtual = null;
-		PrintaTabuleiro();
-		j2.conjuntoPecas[1].RealizaMovimento(j2.conjuntoPecas[1].ListaMovimentos(tabuleiro, j2.conjuntoPecas[1].posX, j2.conjuntoPecas[1].posY)[2]);
-		PrintaTabuleiro();
-		j2.conjuntoPecas[1].RealizaMovimento(j2.conjuntoPecas[1].ListaMovimentos(tabuleiro, j2.conjuntoPecas[1].posX, j2.conjuntoPecas[1].posY)[3]);
-		PrintaTabuleiro();
+		// j2.conjuntoPecas[1].SetPosition(5, 5);
+		// tabuleiro[5, 5].pecaAtual = tabuleiro[0, 1].pecaAtual;
+		// tabuleiro[0, 1].pecaAtual = null;
+		// PrintaTabuleiro();
+		// j2.conjuntoPecas[1].RealizaMovimento(j2.conjuntoPecas[1].ListaMovimentos(tabuleiro, j2.conjuntoPecas[1].posX, j2.conjuntoPecas[1].posY)[2]);
+		// PrintaTabuleiro();
+		// j2.conjuntoPecas[1].RealizaMovimento(j2.conjuntoPecas[1].ListaMovimentos(tabuleiro, j2.conjuntoPecas[1].posX, j2.conjuntoPecas[1].posY)[3]);
+		// PrintaTabuleiro();
 
     }
 }
