@@ -9,7 +9,7 @@ public class Cavalo : Peca
 
 	}
 
-
+	/*
     public override List<Movimento> ListaMovimentos(Casa[,] tab, int x, int y)
     {
         List<Movimento> movimentos = new List<Movimento>();
@@ -60,19 +60,20 @@ public class Cavalo : Peca
 
         return movimentos;
     }
+    */
 
-    public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
+	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
 	{
 		var movimentos = new List<Movimento>();
 
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -2, -1, passos:1));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -2, +1, passos:1));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, -2, passos:1));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, +2, passos:1));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +2, -1, passos:1));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +2, +1, passos:1));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +1, -2, passos:1));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +1, +2, passos:1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -2, -1, passos: 1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -2, +1, passos: 1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, -2, passos: 1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, +2, passos: 1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +2, -1, passos: 1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +2, +1, passos: 1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +1, -2, passos: 1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +1, +2, passos: 1));
 
 		return movimentos;
 	}

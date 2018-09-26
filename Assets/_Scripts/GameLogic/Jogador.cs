@@ -5,19 +5,20 @@ using UnityEngine;
 public class Jogador
 {
 	public List<Peca> conjuntoPecas = new List<Peca>();
-    public bool jogadorCima;
+	public bool jogadorCima;
 	public char Cor { get; private set; }
-	public  Jogador(char cor, bool cima)
+	public Jogador inimigo;
+	public Jogador(char cor, bool cima)
 	{
 		Cor = cor;
-        jogadorCima = cima;
+		jogadorCima = cima;
 		InicializaPecas();
 	}
 	//inicializa as pecas do jogador
 	void InicializaPecas()
 	{
 		//inicializa as peças especiais da linha mais a borda
-		conjuntoPecas.Add(new Torre(this)); 
+		conjuntoPecas.Add(new Torre(this));
 		conjuntoPecas.Add(new Cavalo(this));
 		conjuntoPecas.Add(new Bispo(this));
 		conjuntoPecas.Add(new Rainha(this));

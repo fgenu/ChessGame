@@ -2,17 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Partida : MonoBehaviour
+public class Partida
 {
 
-	Tabuleiro tabuleiro;
+	public Tabuleiro Tabuleiro { get; private set; }
 	public Jogador Jogador1 { get; private set; }
 	public Jogador Jogador2 { get; private set; }
 
-	void Awake()
+	public Partida()
 	{
+		Tabuleiro = new Tabuleiro();
 		Jogador1 = new Jogador('b', false);
 		Jogador2 = new Jogador('p', true);
+
+		IniciarPartida(Jogador1, Jogador2);
+	}
+
+	void IniciarPartida(Jogador j1, Jogador j2)
+	{
+		j1.inimigo = j2;
+		j2.inimigo = j1;
+
+		Tabuleiro.InserePecasNaPosicaoInicial(this);
+		Tabuleiro.PrintaTabuleiro();
 	}
 
 	public Jogador JogadorDeCima()

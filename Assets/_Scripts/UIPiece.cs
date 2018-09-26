@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIPiece : MonoBehaviour {
+// TODO: fazer funcionar a promoção do peão
+
+public class UIPiece : MonoBehaviour
+{
 
 	public Peca Piece { get; set; }
 
-	public void TryMovePiece (UICasa origem, UICasa destino, Tabuleiro tabuleiro)
+	public void TryMovePiece(UICasa origem, UICasa destino, Tabuleiro tabuleiro)
 	{
-		var movimento = new Movimento(origem:origem.casa, destino:destino.casa);
+		var movimento = new Movimento(origem: origem.casa, destino: destino.casa);
 
 		if (Piece.PodePercorrer(movimento, tabuleiro))
 			MovePiece(origem, destino);
 	}
-	
-	private void MovePiece (UICasa origem, UICasa destino)
+
+	private void MovePiece(UICasa origem, UICasa destino)
 	{
-		Piece.RealizaMovimento(new Movimento(origem:origem.casa, destino:destino.casa));
+		Piece.RealizaMovimento(new Movimento(origem: origem.casa, destino: destino.casa));
 		VisuallyMove(origem, destino);
 	}
 
-	private void VisuallyMove (UICasa origem, UICasa destino)
+	private void VisuallyMove(UICasa origem, UICasa destino)
 	{
 		// TODO: Fazer movimento mais smooth baseado na posição de origem
 
@@ -29,8 +32,11 @@ public class UIPiece : MonoBehaviour {
 
 	public void UpdatePositionOnBoard(UITabuleiro uiTabuleiro)
 	{
-		UICasa casa = uiTabuleiro.GetUICasa(Piece.posX, Piece.posY);
-		print("My new position is: " + Piece.posX + ", " + Piece.posY);
+
+		UICasa casa = uiTabuleiro.GetUICasa(Piece.CasaAtual);
+
+		if (casa == null)
+			return;
 
 		float x, y, z;
 

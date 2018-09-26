@@ -12,21 +12,20 @@ public class UICasa : MonoBehaviour
 
 	void Start()
 	{
-		Tabuleiro tabuleiro = FindObjectOfType<Tabuleiro>();
+		Tabuleiro tabuleiro = GetComponentInParent<UITabuleiro>().Tabuleiro;
 
 		// Assume que o nome é no formato "Casa XY", em que X é qualquer letra e Y qualquer número.
-		string coordenadas = this.name.Substring(startIndex:5);
+		string coordenadas = this.name.Substring(startIndex: 5);
 
 		casa = tabuleiro.GetCasa(coordenadas);
 	}
 
-	public UIPiece CurrentUIPiece ()
+	public UIPiece CurrentUIPiece()
 	{
-		UITabuleiro uiTabuleiro = FindObjectOfType<UITabuleiro>();
-		
+		UITabuleiro uiTabuleiro = GetComponentInParent<UITabuleiro>();
+
 		foreach (var uiPiece in uiTabuleiro.pieces)
 		{
-			print("looloop");
 			if (uiPiece != null && ReferenceEquals(uiPiece.Piece, this.casa.PecaAtual))
 				return uiPiece;
 		}

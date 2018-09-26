@@ -4,30 +4,23 @@ using UnityEngine;
 
 public class Peca
 {
-	public int posX = -1, posY = -1, tamTabuleiro = 8;
+	public Casa CasaAtual { get; private set; }
+
+	public int PosX { get { return CasaAtual.PosX; } }
+	public int PosY { get { return CasaAtual.PosY; } }
 	public char Cor { get; private set; }
 	public Jogador jDono;
 	public bool primeiraJogada;
 
 	public Peca(Jogador j)
 	{
+		CasaAtual = null;
 		Cor = j.Cor;
 		primeiraJogada = true;
 		jDono = j;
 	}
 
-	public virtual List<Movimento> ListaMovimentos(Casa[,] tab, int x, int y)
-	{
-		return null;
-	}
 
-	public virtual void defineInimigo(Jogador i)
-	{
-
-	}
-
-	// Genú: O nome da função abaixo é placeholder, acho melhor trocar o "listaMovimentos" por ela. Receber uma instância
-	// de tabuleiro dá muito mais flexibilidade, como usar métodos sobre ele.
 
 	public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
 	{
@@ -35,7 +28,7 @@ public class Peca
 	}
 
 	//recebe o tabuleiro e realiza a movimentação baseado em um único movimento
-	public void RealizaMovimento(Movimento m) // Genú: Acho que "Mover" é um nome melhor e mais conciso. Também é sinônimo de "realizar movimento"
+	public void RealizaMovimento(Movimento m)
 	{
 		//verifica se tem captura de peça
 		if (m.destino.PecaAtual != null)
@@ -61,10 +54,9 @@ public class Peca
 		primeiraJogada = false;
 
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
-		if ((this is Peao) && (m.destino.PosX == tamTabuleiro - 1))
+		if ((this is Peao) && (this as Peao).PodePromover())// (m.destino.PosX == tamTabuleiro - 1))
 		{
-			// TODO: consertar a promoção, que considera os lados esquerdo e direito como se fossem cima e baixo.
-			// PromoverPeao(m);
+			PromoverPeao(m);
 		}
 	}
 
@@ -112,12 +104,26 @@ public class Peca
 		m.destino.ColocarPeca(novaPeca);
 	}
 
-	public void SetPosition(int x, int y)
+	// Quando uma casa colocar esta peça como atual,
+	// esta precisa colocar tal casa como atual.
+	public void ValidarNovaCasa(Casa casa)
 	{
-		posX = x;
-		posY = y;
+		if (casa.PecaAtual == this)
+			CasaAtual = casa;
 	}
 
+	public void TirarDaCasaAtual()
+	{
+		if (CasaAtual == null)
+			return;
+
+		if (CasaAtual.PecaAtual == this)
+			CasaAtual.PopPeca();
+
+		CasaAtual = null;
+	}
+
+	/* 
 	public Casa GetCasaAtual(Tabuleiro tabuleiro)
 	{
 		if (tabuleiro == null)
@@ -126,7 +132,7 @@ public class Peca
 			return null;
 		}
 
-		Casa casaAtual = tabuleiro.GetCasa(this.posX, this.posY);
+		Casa casaAtual = tabuleiro.GetCasa(this.PosX, this.PosY);
 
 		if (casaAtual == null) return null;
 
@@ -138,6 +144,7 @@ public class Peca
 		
 		return casaAtual;
 	}
+	*/
 
 	// Genú: Por enquanto, a função abaixo está bem basicona, 
 	// mas regras especiais que impedem uma peça de capturar outra se encaixariam aqui. 
@@ -155,17 +162,15 @@ public class Peca
 
 	public bool PodePercorrer(Movimento movimento, Tabuleiro tabuleiro)
 	{
-		Casa casaAtual = GetCasaAtual(tabuleiro);
-
-		if (casaAtual != movimento.origem)
+		if (CasaAtual != movimento.origem)
 			return false;
 
-		List<Movimento> possibilidades = ListaMovimentos(tabuleiro, casaAtual);
-		Debug.Log(possibilidades.Count);
+		List<Movimento> possibilidades = ListaMovimentos(tabuleiro, CasaAtual);
+
 		foreach (var possibilidade in possibilidades)
 			if (possibilidade.destino == movimento.destino)
 				return true;
-		
+
 		return false;
 	}
 }

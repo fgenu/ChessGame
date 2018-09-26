@@ -7,30 +7,24 @@ public class UITabuleiro : MonoBehaviour
 {
 
 	public List<UIPiece> pieces = new List<UIPiece>();
-	public GameObject whiteStonePawnPrefab;
-	public GameObject blackStonePawnPrefab;
+
 	public GameObject menuPrefab;
 
 	private int color = 0; //0 = preto e 1 = branco // TODO: tentar reescrever para trabalhar com Jogador.Cor
-	private bool clicked = false; //determina se já houve o clique no menu
 
-	private Vector3 boardOffset = new Vector3(0.0f, 0.0f, 0.0f);
-	private Vector3 pieceOffset = new Vector3(3.0f, 0, 3.0f);
+	private bool clicked = false; //determina se já houve o clique no menu
 
 	private UIPiece selectedUIPiece;
 
 	private UICasa startDrag;
 
-	[SerializeField]
 	private Partida partida;
 
-	[SerializeField]
-	private Tabuleiro tabuleiro;
+	public Tabuleiro Tabuleiro { get { return partida.Tabuleiro; } }
 
-	void Start()
+	void Awake()
 	{
-		partida = FindObjectOfType<Partida>();
-		tabuleiro = FindObjectOfType<Tabuleiro>();
+		partida = new Partida();
 	}
 
 	private void Update()
@@ -52,8 +46,6 @@ public class UITabuleiro : MonoBehaviour
 			if (Input.GetMouseButtonUp(0) && startDrag)
 			{
 				UICasa endDrag = GetSpaceUnderMouse();
-				//Debug.Log("Mouse Over: " + mouseOver);
-				//TryMove(startDrag.casa.posX, startDrag.casa.posY, endDrag.casa.posX, endDrag.casa.posY);
 				TryMove(startDrag, endDrag);
 
 				startDrag = null;
@@ -73,7 +65,7 @@ public class UITabuleiro : MonoBehaviour
 		UIPiece uiPiece = origem.CurrentUIPiece();
 		if (uiPiece == null) return;
 
-		uiPiece.TryMovePiece(origem, destino, tabuleiro);
+		uiPiece.TryMovePiece(origem, destino, Tabuleiro);
 	}
 
 	private void SelectColor()
@@ -98,8 +90,6 @@ public class UITabuleiro : MonoBehaviour
 			}
 		}
 	}
-
-	private void NewSelectColor() { } // TODO
 
 	private void NewGenerateBoard(Tabuleiro tabuleiro) { } // TODO
 
@@ -139,8 +129,6 @@ public class UITabuleiro : MonoBehaviour
 		pieces.Add(uiPiece);
 		uiPiece.Piece = peca;
 		uiPiece.UpdatePositionOnBoard(this);
-
-
 	}
 
 	public void DestroyMenu()
@@ -155,11 +143,6 @@ public class UITabuleiro : MonoBehaviour
 		float aux_x = 0.3f + 2.0f * Convert.ToSingle(x);
 		float aux_z = -8.8f - 2.0f * Convert.ToSingle(y);
 		p.transform.position = new Vector3(aux_x, 1.95f, aux_z);
-	}
-
-	private void NewMovePiece(Casa origem, Casa destino)
-	{
-
 	}
 
 	public UICasa GetUICasa(Casa casa) { return GetUICasa(casa.PosX, casa.PosY); }

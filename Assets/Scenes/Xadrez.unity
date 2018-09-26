@@ -2003,13 +2003,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieces: []
-  whiteStonePawnPrefab: {fileID: 1109215888586288, guid: cab5f13ae783c0e47bebde00fd0357a5,
-    type: 2}
-  blackStonePawnPrefab: {fileID: 1335334207052556, guid: e0c5356476a49ba449f2789ccdbf2c24,
-    type: 2}
   menuPrefab: {fileID: 0}
-  partida: {fileID: 0}
-  tabuleiro: {fileID: 0}
+  camera: {fileID: 1898824255}
 --- !u!65 &913490260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2022,18 +2017,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 15, y: 0.08, z: 16}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &913490261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 913490258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0b83b7c4ad64a1459f091cbcaf8d476, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tamanho: 8
 --- !u!1001 &948729656
 Prefab:
   m_ObjectHideFlags: 0
@@ -4560,7 +4543,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1796457187}
-  - component: {fileID: 1796457186}
   - component: {fileID: 1796457188}
   m_Layer: 0
   m_Name: _GameManager
@@ -4569,17 +4551,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1796457186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1796457185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd653037ca570749b63973dbee56a06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1796457187
 Transform:
   m_ObjectHideFlags: 0

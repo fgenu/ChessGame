@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public static class Utilities
 {
-	public static string CoordinatesNumericToAlpha (int x, int y)
+	public static string CoordinatesNumericToAlpha(int x, int y)
 	{
-		char letter = (char) (x + 'A');
+		char letter = (char)(x + 'A');
 		int number = y + 1;
 
 		return string.Concat(letter.ToString(), number.ToString());
 	}
 
-	public static T GetComponentFromMouseOver<T> (string layer)
+	public static T GetComponentFromMouseOver<T>(string layer)
 	{
 		if (!Camera.main)
 		{

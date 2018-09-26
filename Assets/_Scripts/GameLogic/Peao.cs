@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using TiposDeMovimento;
-
 public class Peao : Peca
 {
 	public Peao(Jogador j) : base(j)
 	{
 
 	}
+
+	/*
 	public override List<Movimento> ListaMovimentos(Casa[,] tab, int x, int y)
 	{
 		List<Movimento> movimentos = new List<Movimento>();
@@ -44,9 +44,6 @@ public class Peao : Peca
                 {
                     if (tab[x + 2, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono) 
 						movimentos.Add(new Movimento( tab[x + 2, y], tab[x, y]));
-					// Genú: Percebi que isso abaixo é problemático porque simplesmente verificar 
-					// quais movimentos o peão pode tomar já faz ele perder o bônus de primeira jogada.
-					primeiraJogada=false;
                 }
 
             }
@@ -102,6 +99,7 @@ public class Peao : Peca
 
 		return movimentos;
 	}
+	*/
 
 	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
 	{
@@ -118,17 +116,30 @@ public class Peao : Peca
 
 		// Movimentos sem captura
 		if (primeiraJogada)
-			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos:2, tipo:Tipo.SemCaptura));
+			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos: 2, tipo: Movimento.Tipo.SemCaptura));
 		else
-			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos:1, tipo:Tipo.SemCaptura));
+			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos: 1, tipo: Movimento.Tipo.SemCaptura));
 
 		// Movimentos com captura
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 1, 1 * mod, passos:1, tipo:Tipo.SomenteCaptura));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, 1 * mod, passos:1, tipo:Tipo.SomenteCaptura));
-		
-		// TODO: en passant. Ideia: poder verificar o tabuleiro do turno anterior.
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura));
+
+		// TODO: en passant. Ideia: poder verificar o tabuleiro do turno anterior, ou usar um "peão fantasma" como peça.
 
 
-		return movimentos;	
+		return movimentos;
+	}
+
+	public bool PodePromover()
+	{
+		if (PosY == 0)
+			if (jDono.jogadorCima)
+				return true;
+
+		if (PosY == CasaAtual.Tabuleiro.Tamanho - 1)
+			if (!jDono.jogadorCima)
+				return true;
+
+		return false;
 	}
 }
