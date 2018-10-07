@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Casa
 {
-	public Peca PecaAtual { get; private set; }
+    public Peca PecaAtual;
 	public char cor = 'i';
 	public int PosX { get; private set; }
 	public int PosY { get; private set; }

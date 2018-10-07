@@ -19,7 +19,7 @@ public class Movimento
 	}
 
 	// Propaga um movimento na direção dada.
-	public static List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true)
+	public static List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true, bool verificaXeque=true)
 	{
 		var possibilidades = new List<Movimento>();
 
@@ -29,9 +29,21 @@ public class Movimento
 		{
 			if (seguinte.EstaOcupada())
 			{
-				if (tipo != Tipo.SemCaptura)
-					if (origem.PecaAtual.PodeCapturar(seguinte.PecaAtual))
-						possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                if (tipo != Tipo.SemCaptura)
+                    if (origem.PecaAtual.PodeCapturar(seguinte.PecaAtual))
+                    {
+                        if (verificaXeque)
+                        {
+                            if (origem.PecaAtual.podeMoverXeque(tabuleiro, origem, seguinte))
+                            {
+                                possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                            }
+                        }
+                        else
+                        {
+                            possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                        }
+                    }
 
 				// Se for "bloqueável", o movimento não permite atravessar outras peças. (O cavalo "pula", não "atravessa", depois explico melhor)
 				if (bloqueavel) return possibilidades;
@@ -39,7 +51,20 @@ public class Movimento
 			else
 			{
 				if (tipo != Tipo.SomenteCaptura)
-					possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                {
+
+                    if (verificaXeque)
+                    {
+                        if (origem.PecaAtual.podeMoverXeque(tabuleiro, origem, seguinte))
+                        {
+                            possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                        }
+                    }
+                    else
+                    {
+                        possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                    }
+                }
 			}
 
 			seguinte = tabuleiro.GetCasa(seguinte.PosX + x, seguinte.PosY + y);

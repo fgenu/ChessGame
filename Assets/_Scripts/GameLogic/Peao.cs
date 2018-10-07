@@ -101,7 +101,7 @@ public class Peao : Peca
 	}
 	*/
 
-	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
+	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque=true)
 	{
 		List<Movimento> movimentos = new List<Movimento>();
 
@@ -116,13 +116,13 @@ public class Peao : Peca
 
 		// Movimentos sem captura
 		if (primeiraJogada)
-			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos: 2, tipo: Movimento.Tipo.SemCaptura));
+			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos: 2, tipo: Movimento.Tipo.SemCaptura, verificaXeque: verificaXeque));
 		else
-			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos: 1, tipo: Movimento.Tipo.SemCaptura));
+			movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, 1 * mod, passos: 1, tipo: Movimento.Tipo.SemCaptura, verificaXeque: verificaXeque));
 
 		// Movimentos com captura
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura));
-		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura, verificaXeque: verificaXeque));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura, verificaXeque: verificaXeque));
 
 		// TODO: en passant. Ideia: poder verificar o tabuleiro do turno anterior, ou usar um "peão fantasma" como peça.
 

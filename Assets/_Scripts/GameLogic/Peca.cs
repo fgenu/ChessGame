@@ -20,9 +20,62 @@ public class Peca
 		jDono = j;
 	}
 
+    //função que verifica todos os movimentos das peças inimigas para verificar se o rei pode mover para a casa sem ter xeque
+    // TODO: generalizar essa verificação para funcionar com movimentos de outra peça 
+    // (por exemplo, uma peça não pode sair de um lugar que protegia diretamente o seu rei)
+    public bool podeMoverXeque(Tabuleiro tabuleiro,Casa origem, Casa destino)
+    {
+        if (destino == null)
+            return false;
 
+        List<Movimento> movimentos;
+        foreach (Peca p in jDono.conjuntoPecas)
+        {
+            if (p is Rei)
+            {
 
-	public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
+                Peca tempDest = destino.PecaAtual;
+                destino.PecaAtual = null;
+                Peca tempOrig = origem.PecaAtual;
+                origem.PecaAtual = null;
+                foreach (Peca i in jDono.inimigo.conjuntoPecas) {
+                    if (i.CasaAtual != destino)
+                    {
+                        movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false);
+                        if (movimentos.Count>0)
+                        {
+                            foreach (Movimento mov in movimentos)
+                            {
+                                if (this is Rei)
+                                {
+                                    if (mov.destino == destino)
+                                    {
+                                        destino.PecaAtual = tempDest;
+                                        origem.PecaAtual = tempOrig;
+                                        return false;
+                                    }
+                                }
+                                else
+                                {
+                                    if (mov.destino == p.CasaAtual)
+                                    {
+                                        destino.PecaAtual = tempDest;
+                                        origem.PecaAtual = tempOrig;
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                destino.PecaAtual = tempDest;
+                origem.PecaAtual = tempOrig;
+            }
+        }
+        return true;
+    }
+
+    public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque = true)
 	{
 		return null;
 	}

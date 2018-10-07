@@ -12,6 +12,7 @@ public class Rei : Peca
 	//função que verifica todos os movimentos das peças inimigas para verificar se o rei pode mover para a casa sem ter xeque
 	// TODO: generalizar essa verificação para funcionar com movimentos de outra peça 
 	// (por exemplo, uma peça não pode sair de um lugar que protegia diretamente o seu rei)
+    /*
 	public bool podeMoverXeque(Tabuleiro tabuleiro, Casa destino)
 	{
 		if (destino == null)
@@ -36,9 +37,9 @@ public class Rei : Peca
 			}
 		}
 		return true;
-	}
+	}*/
 
-	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem)
+	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque=true)
 	{
 		List<Movimento> movimentos = new List<Movimento>();
 
@@ -55,7 +56,7 @@ public class Rei : Peca
 		//verifica se pode mover por xeque, depois verifica se tem casa aliada na posição
 		if (x - 1 >= 0)
 		{
-			if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x - 1, y))
+			if (verificaXeque && podeMoverXeque(tabuleiro,CasaAtual, tabuleiro.GetCasa(x - 1, y))
 	)
 			{
 				if (tab[x - 1, y].PecaAtual == null || tab[x - 1, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
@@ -64,7 +65,7 @@ public class Rei : Peca
 
 			if (y - 1 >= 0)
 			{
-				if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x - 1, y - 1)))
+				if (verificaXeque && podeMoverXeque(tabuleiro, CasaAtual, tabuleiro.GetCasa(x - 1, y - 1)))
 					if (tab[x - 1, y - 1].PecaAtual == null || tab[x - 1, y - 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
 					{
 						movimentos.Add(new Movimento(tab[x - 1, y - 1], tab[x, y]));
@@ -72,7 +73,7 @@ public class Rei : Peca
 			}
 			if (y + 1 < CasaAtual.Tabuleiro.Tamanho)
 			{
-				if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x - 1, y + 1)))
+				if (verificaXeque && podeMoverXeque(tabuleiro, CasaAtual, tabuleiro.GetCasa(x - 1, y + 1)))
 					if (tab[x - 1, y + 1].PecaAtual == null || tab[x - 1, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
 					{
 						movimentos.Add(new Movimento(tab[x - 1, y + 1], tab[x, y]));
@@ -82,7 +83,7 @@ public class Rei : Peca
 		//verifica embaixo do tabuleiro
 		if (x + 1 < CasaAtual.Tabuleiro.Tamanho)
 		{
-			if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x + 1, y))
+			if (verificaXeque && podeMoverXeque(tabuleiro, CasaAtual, tabuleiro.GetCasa(x + 1, y))
 	) if (tab[x + 1, y].PecaAtual == null || tab[x + 1, y].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
 				{
 					movimentos.Add(new Movimento(tab[x + 1, y], tab[x, y]));
@@ -90,7 +91,7 @@ public class Rei : Peca
 
 			if (y - 1 >= 0)
 			{
-				if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x + 1, y - 1)))
+				if (verificaXeque && podeMoverXeque(tabuleiro, CasaAtual, tabuleiro.GetCasa(x + 1, y - 1)))
 				{
 					if (tab[x + 1, y - 1].PecaAtual == null || tab[x + 1, y - 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
 						movimentos.Add(new Movimento(tab[x + 1, y - 1], tab[x, y]));
@@ -98,7 +99,7 @@ public class Rei : Peca
 			}
 			if (y + 1 < CasaAtual.Tabuleiro.Tamanho)
 			{
-				if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x + 1, y + 1)))
+				if (verificaXeque && podeMoverXeque(tabuleiro, CasaAtual, tabuleiro.GetCasa(x + 1, y + 1)))
 					if (tab[x + 1, y + 1].PecaAtual == null || tab[x + 1, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
 					{
 						movimentos.Add(new Movimento(tab[x + 1, y + 1], tab[x, y]));
@@ -109,7 +110,7 @@ public class Rei : Peca
 		//verifica os lados
 		if (y - 1 >= 0)
 		{
-			if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x, y - 1)))
+			if (verificaXeque && podeMoverXeque(tabuleiro, CasaAtual, tabuleiro.GetCasa(x, y - 1)))
 				if (tab[x, y - 1].PecaAtual == null || tab[x, y - 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
 				{
 					movimentos.Add(new Movimento(tab[x, y - 1], tab[x, y]));
@@ -117,7 +118,7 @@ public class Rei : Peca
 		}
 		if (y + 1 < CasaAtual.Tabuleiro.Tamanho)
 		{
-			if (podeMoverXeque(tabuleiro, tabuleiro.GetCasa(x, y + 1)))
+			if (verificaXeque && podeMoverXeque(tabuleiro, CasaAtual, tabuleiro.GetCasa(x, y + 1)))
 				if (tab[x, y + 1].PecaAtual == null || tab[x, y + 1].PecaAtual.jDono != tab[x, y].PecaAtual.jDono)
 				{
 					movimentos.Add(new Movimento(tab[x, y + 1], tab[x, y]));
