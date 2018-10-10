@@ -1,31 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+//using UnityEngine;
 
-public class Torre : Peca {
-    
-    
-    public Torre(bool jogadorCima, Jogador j): base(jogadorCima,j)
-    {
-    }
+public class Torre : Peca
+{
 
-    // temp:
-    /*var tabuleiro = FindObjectsOfType<Tabuleiro>();
-    public override List<Movimento> listaMovimentos(Casa[,] tab, int x, int y)
-    {
-    
-    }
+	public Torre(Jogador j) : base(j)
+	{
+	}
 
-    public override List<Movimento> GenuListaMovimentos (Tabuleiro tabuleiro, Casa origem)
-    {
-        var movimentos = new List<Movimento>();
+	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque=true)
+	{
+		var movimentos = new List<Movimento>();
 
-        movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +1, 0));
-        movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, 0));
-        movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, +1));
-        movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, -1));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, +1, 0, verificaXeque: verificaXeque));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, -1, 0, verificaXeque: verificaXeque));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, +1, verificaXeque: verificaXeque));
+		movimentos.AddRange(Movimento.SeguindoDirecao(tabuleiro, origem, 0, -1, verificaXeque: verificaXeque));
 
-        return movimentos;
-    }*/
-    
+		return movimentos;
+	}
+
 }
