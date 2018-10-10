@@ -9,7 +9,7 @@ public class Cavalo : Peca
 
 	}
 
-	/*
+    /*
     public override List<Movimento> ListaMovimentos(Casa[,] tab, int x, int y)
     {
         List<Movimento> movimentos = new List<Movimento>();
@@ -62,7 +62,7 @@ public class Cavalo : Peca
     }
     */
 
-	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque=true)
+    public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem, bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		var movimentos = new List<Movimento>();
 

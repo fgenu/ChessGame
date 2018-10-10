@@ -39,7 +39,7 @@ public class Rei : Peca
 		return true;
 	}*/
 
-	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque=true)
+	    public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem, bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		List<Movimento> movimentos = new List<Movimento>();
 

@@ -12,17 +12,9 @@ public class Partida
 	public Partida()
 	{
 		Tabuleiro = new Tabuleiro();
-	}
+		Jogador1 = new Jogador('b', false);
+		Jogador2 = new Jogador('p', true);
 
-	public void definirJogador(int cor){
-		if(cor == 1){
-			Jogador1 = new Jogador('b', false);
-			Jogador2 = new Jogador('p', true);
-		}
-		else{
-			Jogador1 = new Jogador('p', false);
-			Jogador2 = new Jogador('b', true);
-		}
 		IniciarPartida(Jogador1, Jogador2);
 	}
 

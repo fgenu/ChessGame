@@ -9,7 +9,7 @@ public class Torre : Peca
 	{
 	}
 
-	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque=true)
+	    public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem, bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		var movimentos = new List<Movimento>();
 

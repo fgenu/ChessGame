@@ -23,7 +23,7 @@ public class Peca
     //função que verifica todos os movimentos das peças inimigas para verificar se o rei pode mover para a casa sem ter xeque
     // TODO: generalizar essa verificação para funcionar com movimentos de outra peça 
     // (por exemplo, uma peça não pode sair de um lugar que protegia diretamente o seu rei)
-    public bool podeMoverXeque(Tabuleiro tabuleiro,Casa origem, Casa destino)
+    public bool podeMoverXeque(Tabuleiro tabuleiro, Casa origem, Casa destino)
     {
         if (destino == null)
             return false;
@@ -41,8 +41,15 @@ public class Peca
                 foreach (Peca i in jDono.inimigo.conjuntoPecas) {
                     if (i.CasaAtual != destino)
                     {
-                        movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false);
-                        if (movimentos.Count>0)
+                        if (i is Peao)
+                        {
+                            movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false, true);
+                        }
+                        else
+                        {
+                            movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false);
+                        }
+                        if (movimentos.Count > 0)
                         {
                             foreach (Movimento mov in movimentos)
                             {
@@ -75,7 +82,10 @@ public class Peca
         return true;
     }
 
-    public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque = true)
+    //só para o peao para verificar captura com rei
+    
+
+    public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		return null;
 	}
