@@ -13,16 +13,18 @@ public class UIPiece : MonoBehaviour
 	{
 		var movimento = new Movimento(origem: origem.casa, destino: destino.casa);
 
-		if (Piece.PodePercorrer(movimento, tabuleiro))
-			MovePiece(origem, destino);
+        if (Piece.PodePercorrer(movimento, tabuleiro))
+        {
+            if ((tabuleiro.turno == 1 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador1) || (tabuleiro.turno == 2 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador2))
+            { 
+                MovePiece(origem, destino);
+                tabuleiro.trocaTurno();
+            }
+        }
 	}
 
 	private void MovePiece(UICasa origem, UICasa destino)
 	{
-		UIPiece alvo = destino.CurrentUIPiece();
-		if (alvo)
-			alvo.Remove();
-
 		Piece.RealizaMovimento(new Movimento(origem: origem.casa, destino: destino.casa));
 		VisuallyMove(origem, destino);
 	}
@@ -52,9 +54,4 @@ public class UIPiece : MonoBehaviour
 		this.transform.position = new Vector3(x, y, z);
 	}
 
-	public void Remove()
-	{
-		// TODO: Animação de destruição
-		Destroy(this.gameObject);
-	}
 }

@@ -8,7 +8,8 @@ public class Tabuleiro
 
 	// TODO: Fazer isto voltar a ser privado ao finalizar os ListaMovimentos
 	public /*private*/ Casa[,] tabuleiro = new Casa[8, 8];
-
+    public int turno;
+    public Partida partida;
 	public Tabuleiro()
 	{
 		InicializaCasas();
@@ -28,6 +29,17 @@ public class Tabuleiro
 			return tabuleiro[x, y];
 		}
 	}
+    public void trocaTurno()
+    {
+        if (turno == 1)
+        {
+            turno = 2;
+        }
+        else
+        {
+            turno = 1;
+        }
+    }
 	public Casa GetCasa(string coordenadas) // usa o padrão do xadrez, como A1 ou D7
 	{
 		if (coordenadas.Length != 2)
