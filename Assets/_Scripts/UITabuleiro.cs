@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UITabuleiro : MonoBehaviour
 {
+	RectTransform rT;
 
 	public List<UIPiece> pieces = new List<UIPiece>();
 
@@ -128,6 +129,8 @@ public class UITabuleiro : MonoBehaviour
 		GameObject go = Instantiate(prefab) as GameObject;
 		go.transform.SetParent(transform);
 		UIPiece uiPiece = go.GetComponent<UIPiece>();
+		Vector3 temp = new Vector3(0,1.5f,0);
+		uiPiece.transform.position += temp;
 		pieces.Add(uiPiece);
 		uiPiece.Piece = peca;
 		uiPiece.UpdatePositionOnBoard(this);

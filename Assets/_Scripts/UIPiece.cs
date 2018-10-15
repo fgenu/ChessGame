@@ -3,11 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: fazer funcionar a promoção do peão
-
+[RequireComponent(typeof(MeshRenderer))]
 public class UIPiece : MonoBehaviour
 {
+	public float animationTime = 1f;
+  	public float threshold = 1.5f;
+	
+	private HighlightController controller;
+  	private Material material;
+  	private Color normalColor;
+  	private Color selectedColor;
+
+
+	private void Awake() {
+		material = GetComponent<MeshRenderer>().material;
+		controller = FindObjectOfType<HighlightController>();
+
+		normalColor = material.color;
+		selectedColor = new Color(255,0,0);
+  	}
 
 	public Peca Piece { get; set; }
+
+	public void StartHighlight() {
+		iTween.ColorTo(gameObject, iTween.Hash(
+		"color", selectedColor,
+		"time", animationTime,
+		"easetype", iTween.EaseType.linear,
+		"looptype", iTween.LoopType.pingPong
+		));
+	}
+
+	public void StopHighlight() {
+		iTween.Stop(gameObject);
+		material.color = normalColor;
+	}
+
+	private void OnMouseDown() {
+		controller.SelectObject(this);
+	}
+
+	private void OnMouseUp() {
+		controller.NoSelectObject(this);
+	}
 
 	public void TryMovePiece(UICasa origem, UICasa destino, Tabuleiro tabuleiro)
 	{

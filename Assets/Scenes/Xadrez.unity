@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3077606, g: 0.2953117, b: 0.24541613, a: 1}
+  m_IndirectSpecularColor: {r: 0.30776092, g: 0.2953121, b: 0.24541652, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2004,7 +2004,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieces: []
   menuPrefab: {fileID: 0}
-  camera: {fileID: 1898824255}
 --- !u!65 &913490260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2215,6 +2214,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68b613db6b647941b9fd0c8c00d8f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1033278691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1033278693}
+  - component: {fileID: 1033278692}
+  m_Layer: 0
+  m_Name: Highlight Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1033278692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1033278691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b11db25667d756428c2065de4de1aae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1033278693
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1033278691}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.688771, y: 1.246587, z: -2.762936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1037274332 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1261165077974122, guid: c364da1e00b6a954c9da291cba0e718f,
@@ -4575,22 +4614,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef042b6dbe86dd489c1967282cc5c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlackPawn: {fileID: 1335334207052556, guid: e0c5356476a49ba449f2789ccdbf2c24, type: 2}
-  BlackKnight: {fileID: 1564033256009494, guid: af794cb2c36582447a607a9c24defc18,
+  BlackPawn: {fileID: 1031636751254628, guid: 7302be28962c243678252e7c6255fdbc, type: 2}
+  BlackKnight: {fileID: 1291360291826688, guid: f4daf56a2ac5e44b889a2ead6ccc262a,
     type: 2}
-  BlackBishop: {fileID: 1239270685352430, guid: a9436ac83cd0a544b939a3fbd1c910bf,
+  BlackBishop: {fileID: 1479989141987308, guid: 6f3013651623b446c91ae9d7270ba7b5,
     type: 2}
-  BlackRook: {fileID: 1562622190837322, guid: 47735e1460685c347a50811d3e986fce, type: 2}
-  BlackQueen: {fileID: 1430682043930404, guid: 02d09d8b086f005468dec2c9ff7dcfd8, type: 2}
-  BlackKing: {fileID: 1538407554156714, guid: 2e00a862acf6bdf4dad3936ce8c33990, type: 2}
-  WhitePawn: {fileID: 1109215888586288, guid: cab5f13ae783c0e47bebde00fd0357a5, type: 2}
-  WhiteKnight: {fileID: 1140620360365506, guid: 78664cd24ca35184a9ae6a7bb2109bb5,
+  BlackRook: {fileID: 1709358859266834, guid: bcf19558551614c79a55a9e750ad43b1, type: 2}
+  BlackQueen: {fileID: 1275902455577708, guid: e9b85e3c5806d4152b0b5cb3158d2120, type: 2}
+  BlackKing: {fileID: 1381633088875808, guid: 8efc31579d9ab4990a3b6b97897f0183, type: 2}
+  WhitePawn: {fileID: 1352649277301394, guid: 6653ddcbd4a2e453ba6e07f8931ce86c, type: 2}
+  WhiteKnight: {fileID: 1163459173247232, guid: 522692d40a26d42aeb798b874778b35c,
     type: 2}
-  WhiteBishop: {fileID: 1353652469814562, guid: f63bb391d51b1f8468097380ea086e11,
+  WhiteBishop: {fileID: 1892809951321136, guid: 8bc6354dcbfe34a3fba0b40d5887dd47,
     type: 2}
-  WhiteRook: {fileID: 1716085140368864, guid: cce0089fb993b5840bd8f72d3274c09a, type: 2}
-  WhiteQueen: {fileID: 1633224609000294, guid: cd3d63350c815e441add5a21430bbd5a, type: 2}
-  WhiteKing: {fileID: 1233361812545480, guid: cfc73699b1da62d46a087780d4691b3c, type: 2}
+  WhiteRook: {fileID: 1536104987182252, guid: 55350a888e04c4e80aaa2960bea7e3c0, type: 2}
+  WhiteQueen: {fileID: 1639620864090624, guid: ff7e7084bc927405da871cf1faa802ab, type: 2}
+  WhiteKing: {fileID: 1273725991896454, guid: 973983e22257f4007b9b0bb5ccae1184, type: 2}
 --- !u!1 &1796509735
 GameObject:
   m_ObjectHideFlags: 0
