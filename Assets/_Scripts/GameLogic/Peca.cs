@@ -23,7 +23,7 @@ public class Peca
     //função que verifica todos os movimentos das peças inimigas para verificar se o rei pode mover para a casa sem ter xeque
     // TODO: generalizar essa verificação para funcionar com movimentos de outra peça 
     // (por exemplo, uma peça não pode sair de um lugar que protegia diretamente o seu rei)
-    public bool podeMoverXeque(Tabuleiro tabuleiro,Casa origem, Casa destino)
+    public bool podeMoverXeque(Tabuleiro tabuleiro, Casa origem, Casa destino)
     {
         if (destino == null)
             return false;
@@ -41,8 +41,15 @@ public class Peca
                 foreach (Peca i in jDono.inimigo.conjuntoPecas) {
                     if (i.CasaAtual != destino)
                     {
-                        movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false);
-                        if (movimentos.Count>0)
+                        if (i is Peao)
+                        {
+                            movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false, true);
+                        }
+                        else
+                        {
+                            movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false);
+                        }
+                        if (movimentos.Count > 0)
                         {
                             foreach (Movimento mov in movimentos)
                             {
@@ -75,7 +82,10 @@ public class Peca
         return true;
     }
 
-    public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque = true)
+    //só para o peao para verificar captura com rei
+    
+
+    public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		return null;
 	}
@@ -225,5 +235,77 @@ public class Peca
 				return true;
 
 		return false;
+	}
+
+	protected bool PodeRoque(Torre torre, Rei rei,Tabuleiro tabuleiro,Movimento movrei)
+	{
+		// lembrando que as condições de roque são:
+		
+		
+		// rei não pode ter se movimentado nenhuma vez
+		// torre não pode ter se movimentado nenhuma vez
+		if(!torre.primeiraJogada || !rei.primeiraJogada)
+		{
+			return false;
+
+		}
+
+
+		// nao pode haver peças entre o rei e a torre
+		int linha = rei.CasaAtual.PosX;
+		int torrepos = torre.PosY;
+		int reipos = rei.PosY;
+		int i,f;
+		if(torrepos < reipos)
+		{
+			i = torrepos;
+			f = reipos;
+			
+		}
+		else
+		{
+			i = reipos;
+			f = torrepos;
+		}
+		for(int p=i+1; p < f ;p++)
+		{
+			if(tabuleiro.tabuleiro[linha,p].EstaOcupada())
+			{
+				
+				return false;
+			}
+		}
+		
+		// rei não pode passar nem terminar em uma casa que está sendo atacada por peça adversaria(rei entraria em xeque)
+		if(!this.podeMoverXeque(tabuleiro,movrei.origem,movrei.destino))
+		{
+			
+			return false;
+		}
+
+
+		// rei nao pode estar em xeque
+		bool xeque = false;
+		//TODO FUNÇÃO
+		if(xeque)
+		{
+			return false;
+		}
+		
+
+
+
+
+
+		return true;
+
+
+	}
+
+
+	
+	public virtual void Roque(Tabuleiro tabuleiro, Torre torre = null)
+	{
+		
 	}
 }

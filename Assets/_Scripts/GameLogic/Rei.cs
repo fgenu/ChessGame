@@ -39,7 +39,7 @@ public class Rei : Peca
 		return true;
 	}*/
 
-	public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque=true)
+	    public override List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem, bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		List<Movimento> movimentos = new List<Movimento>();
 
@@ -126,6 +126,12 @@ public class Rei : Peca
 		}
 
 		return movimentos;
+	}
+
+	public override void Roque(Tabuleiro tabuleiro, Torre escolhida)
+	{
+		
+		escolhida.Roque(tabuleiro); // obs: eu fiz isso para evitar redundancia nas funções, a diferença é que esse aqui considera uma torre especifica que chama a função
 	}
 
 }

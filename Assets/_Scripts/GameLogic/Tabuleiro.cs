@@ -8,7 +8,8 @@ public class Tabuleiro
 
 	// TODO: Fazer isto voltar a ser privado ao finalizar os ListaMovimentos
 	public /*private*/ Casa[,] tabuleiro = new Casa[8, 8];
-
+    public int turno;
+    public Partida partida;
 	public Tabuleiro()
 	{
 		InicializaCasas();
@@ -28,6 +29,17 @@ public class Tabuleiro
 			return tabuleiro[x, y];
 		}
 	}
+    public void trocaTurno()
+    {
+        if (turno == 1)
+        {
+            turno = 2;
+        }
+        else
+        {
+            turno = 1;
+        }
+    }
 	public Casa GetCasa(string coordenadas) // usa o padrão do xadrez, como A1 ou D7
 	{
 		if (coordenadas.Length != 2)
@@ -77,22 +89,26 @@ public class Tabuleiro
 		}
 	}
 
-	public void InserePecasNaPosicaoInicial(Partida partida)
+	public void InserePecasNaPosicaoInicial(Partida partida) // CONVENÇÃO INVERTIDA: I,J , coluna, linha
 	{
 		//coloca as peças dos jogadores no tabuleiro
 		for (int i = 0; i < Tamanho; i++)
 		{
 			//coloca as pecas especiais do jogador de cima
-			tabuleiro[i, Tamanho - 1].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
-
+			//tabuleiro[i, Tamanho - 1].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
+			tabuleiro[Tamanho-1,i].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
+			
 			//coloca os peoes do jogador de cima
-			tabuleiro[i, Tamanho - 2].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i + 8]);
-
+			//tabuleiro[i, Tamanho - 2].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i + 8]);
+			tabuleiro[Tamanho - 2,i].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i+8]);
+			
 			//coloca as pecas especiais jogador de baixo
-			tabuleiro[i, 0].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i]);
-
+			//tabuleiro[i, 0].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i]);
+			tabuleiro[0,i].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i]);
+			
 			//coloca os peoes do jogador de baixo
-			tabuleiro[i, 1].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i + 8]);
+			//tabuleiro[i, 1].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i + 8]);
+			tabuleiro[1,i].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i + 8]);
 		}
 
 	}

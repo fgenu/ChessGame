@@ -25,6 +25,7 @@ public class UITabuleiro : MonoBehaviour
 	void Awake()
 	{
 		partida = new Partida();
+        Tabuleiro.turno = partida.retornaTurno();
 	}
 
 	private void Update()
@@ -76,7 +77,6 @@ public class UITabuleiro : MonoBehaviour
 		{
 			if (hit.transform.name == "White")//se o GameObject que recebeu o clique tem o nome White
 			{
-				partida.definirJogador(1);
 				GenerateBoard();
 				color = 1; //cor bege
 				clicked = true; //indica que já escolheu a cor
@@ -84,7 +84,6 @@ public class UITabuleiro : MonoBehaviour
 			}
 			else if (hit.transform.name == "Black")
 			{//se o GameObject que recebeu o clique tem o nome Black
-				partida.definirJogador(0);
 				GenerateBoard();
 				color = 0; //cor preta
 				clicked = true;

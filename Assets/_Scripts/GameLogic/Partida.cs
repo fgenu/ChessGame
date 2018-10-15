@@ -9,28 +9,32 @@ public class Partida
 	public Jogador Jogador1 { get; private set; }
 	public Jogador Jogador2 { get; private set; }
 
+    public int turno { get; private set; }
+
 	public Partida()
 	{
 		Tabuleiro = new Tabuleiro();
-	}
-
-	public void definirJogador(int cor){
-		if(cor == 1){
-			Jogador1 = new Jogador('b', false);
-			Jogador2 = new Jogador('p', true);
-		}
-		else{
-			Jogador1 = new Jogador('p', false);
-			Jogador2 = new Jogador('b', true);
-		}
+		Jogador1 = new Jogador('b', false);
+		Jogador2 = new Jogador('p', true);
+        Tabuleiro.partida = this;
 		IniciarPartida(Jogador1, Jogador2);
 	}
-
+    public int retornaTurno()
+    {
+        return turno;
+    }
 	void IniciarPartida(Jogador j1, Jogador j2)
 	{
 		j1.inimigo = j2;
 		j2.inimigo = j1;
-
+        if (j1.Cor == 'b')
+        {
+            turno = 1;
+        }
+        else
+        {
+            turno = 2;
+        }
 		Tabuleiro.InserePecasNaPosicaoInicial(this);
 		Tabuleiro.PrintaTabuleiro();
 	}

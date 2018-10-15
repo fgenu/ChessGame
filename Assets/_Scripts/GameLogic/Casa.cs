@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,15 +17,6 @@ public class Casa
 		PosX = x;
 		PosY = y;
 		Tabuleiro = tabuleiro;
-		if(x < 0 || x > 7)
-		{
-			throw new ArgumentOutOfRangeException("x", "Posição X invalida");
-
-		}
-		if( y < 0 || y > 7)
-		{
-			throw new ArgumentOutOfRangeException("y","Posição Y invalida");
-		}
 	}
 
 	public void ColocarPeca(Peca peca)
