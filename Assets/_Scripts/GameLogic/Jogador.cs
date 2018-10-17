@@ -33,4 +33,30 @@ public class Jogador
 			conjuntoPecas.Add(new Peao(this));
 		}
 	}
+
+	public bool EmXeque()
+	{
+		List<Movimento> movimentos;
+		foreach (Peca i in inimigo.conjuntoPecas)
+		{
+			if (i.CasaAtual != null)
+			{		
+				movimentos = i.ListaMovimentos(i.CasaAtual.Tabuleiro, i.CasaAtual, false);
+			
+				if (movimentos.Count > 0)
+				{
+					foreach (Movimento mov in movimentos)
+					{
+						if (mov.destino.PecaAtual is Rei && mov.tipo != Movimento.Tipo.SemCaptura)
+						{							
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
 }

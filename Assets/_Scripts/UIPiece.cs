@@ -53,10 +53,10 @@ public class UIPiece : MonoBehaviour
 
         if (Piece.PodePercorrer(movimento, tabuleiro))
         {
-            if ((tabuleiro.turno == 1 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador1) || (tabuleiro.turno == 2 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador2))
+            if ((tabuleiro.Turno == 1 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador1) || (tabuleiro.Turno == 2 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador2))
             { 
                 MovePiece(origem, destino);
-                tabuleiro.trocaTurno();
+                tabuleiro.partida.PassarAVez();
             }
         }
 	}

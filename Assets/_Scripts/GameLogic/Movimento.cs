@@ -16,6 +16,7 @@ public class Movimento
 		valor = 0;
 		this.destino = destino;
 		this.origem = origem;
+		this.tipo = tipo;
 	}
 
 	// Propaga um movimento na direção dada.
@@ -27,6 +28,8 @@ public class Movimento
 
 		while (seguinte != null && passos > 0)
 		{
+			Movimento novo = new Movimento(origem: origem, destino: seguinte, tipo: tipo);
+			
 			if (seguinte.EstaOcupada())
 			{
                 if (tipo != Tipo.SemCaptura)
@@ -34,14 +37,14 @@ public class Movimento
                     {
                         if (verificaXeque)
                         {
-                            if (origem.PecaAtual.podeMoverXeque(tabuleiro, origem, seguinte))
+                            if (novo.CausaAutoXeque() == false)
                             {
-                                possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                                possibilidades.Add(novo);
                             }
                         }
                         else
                         {
-                            possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                            possibilidades.Add(novo);
                         }
                     }
 
@@ -55,14 +58,14 @@ public class Movimento
 
                     if (verificaXeque)
                     {
-                        if (origem.PecaAtual.podeMoverXeque(tabuleiro, origem, seguinte))
+                        if (novo.CausaAutoXeque() == false)
                         {
-                            possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                            possibilidades.Add(novo);
                         }
                     }
                     else
                     {
-                        possibilidades.Add(new Movimento(origem: origem, destino: seguinte, tipo: tipo));
+                        possibilidades.Add(novo);
                     }
                 }
 			}
@@ -72,6 +75,39 @@ public class Movimento
 		}
 
 		return possibilidades;
+	}
+
+	// verifica todos os movimentos das peças inimigas para verificar se pode mover sem ter xeque
+	private bool CausaAutoXeque ()
+	{
+		if (origem == null || destino == null)
+			return false;
+		
+		// Faz um ensaio do tabuleiro como se o movimento acontecesse
+		Peca movida;
+		if (origem.PecaAtual != null)
+			movida = origem.PopPeca();
+		else
+			return false;
+		
+		Peca capturada = null;
+		if (destino.PecaAtual != null)
+			capturada = destino.PopPeca();
+		
+		destino.ColocarPeca(movida);
+
+		// Verifica se seria xeque
+		bool resultado = false;
+		if (movida.jDono.EmXeque())		
+			resultado = true;
+
+		// Devolvendo as peças para seus lugares
+		destino.PopPeca();
+		origem.ColocarPeca(movida);
+		if (capturada != null)
+			destino.ColocarPeca(capturada);
+
+		return resultado;
 	}
 
 }

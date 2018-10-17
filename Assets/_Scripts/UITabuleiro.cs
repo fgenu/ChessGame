@@ -26,7 +26,6 @@ public class UITabuleiro : MonoBehaviour
 	void Awake()
 	{
 		partida = new Partida();
-        Tabuleiro.turno = partida.retornaTurno();
 	}
 
 	private void Update()

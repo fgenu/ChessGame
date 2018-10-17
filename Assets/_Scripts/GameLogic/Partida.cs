@@ -9,7 +9,7 @@ public class Partida
 	public Jogador Jogador1 { get; private set; }
 	public Jogador Jogador2 { get; private set; }
 
-    public int turno { get; private set; }
+    public int Turno { get; private set; }
 
 	public Partida()
 	{
@@ -19,21 +19,66 @@ public class Partida
         Tabuleiro.partida = this;
 		IniciarPartida(Jogador1, Jogador2);
 	}
+
+	// TODO: avaliar necessidade desta função
     public int retornaTurno()
     {
-        return turno;
+        return Turno;
     }
+
+	public void PassarAVez()
+    {
+        VerificaVitoria();
+		
+		if (Turno == 1)
+        {
+            Turno = 2;
+        }
+        else
+        {
+            Turno = 1;
+        }
+
+    }
+
+	private Jogador JogadorDaVez()
+	{
+		if (Turno == 1) return Jogador1;
+		else return Jogador2;
+	}
+
+	private void VerificaVitoria()
+	{
+		// Há movimentos possíveis?
+		foreach (Peca peca in JogadorDaVez().inimigo.conjuntoPecas)
+		{
+			if (peca.ListaMovimentos(Tabuleiro, peca.CasaAtual).Count > 0)
+			{
+				// Sim
+				return;
+			}
+		}
+
+		// O rei está em xeque?
+		if (JogadorDaVez().inimigo.EmXeque())
+		{
+			Debug.Log("Xeque-mate!");
+		}
+
+		Debug.Log("Fim");
+	}
+
 	void IniciarPartida(Jogador j1, Jogador j2)
 	{
 		j1.inimigo = j2;
 		j2.inimigo = j1;
         if (j1.Cor == 'b')
         {
-            turno = 1;
+            Turno = 1;
         }
         else
         {
-            turno = 2;
+            Turno = 2;
         }
 		Tabuleiro.InserePecasNaPosicaoInicial(this);
 		Tabuleiro.PrintaTabuleiro();

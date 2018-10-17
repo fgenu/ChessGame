@@ -20,77 +20,16 @@ public class Peca
 		jDono = j;
 	}
 
-    //função que verifica todos os movimentos das peças inimigas para verificar se o rei pode mover para a casa sem ter xeque
-    // TODO: generalizar essa verificação para funcionar com movimentos de outra peça 
-    // (por exemplo, uma peça não pode sair de um lugar que protegia diretamente o seu rei)
-    public bool podeMoverXeque(Tabuleiro tabuleiro, Casa origem, Casa destino)
-    {
-        if (destino == null)
-            return false;
-
-        List<Movimento> movimentos;
-        foreach (Peca p in jDono.conjuntoPecas)
-        {
-            if (p is Rei)
-            {
-
-                Peca tempDest = destino.PecaAtual;
-                destino.PecaAtual = null;
-                Peca tempOrig = origem.PecaAtual;
-                origem.PecaAtual = null;
-                foreach (Peca i in jDono.inimigo.conjuntoPecas) {
-                    if (i.CasaAtual != destino)
-                    {
-                        if (i is Peao)
-                        {
-                            movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false, true);
-                        }
-                        else
-                        {
-                            movimentos = i.ListaMovimentos(tabuleiro, i.CasaAtual, false);
-                        }
-                        if (movimentos.Count > 0)
-                        {
-                            foreach (Movimento mov in movimentos)
-                            {
-                                if (this is Rei)
-                                {
-                                    if (mov.destino == destino)
-                                    {
-                                        destino.PecaAtual = tempDest;
-                                        origem.PecaAtual = tempOrig;
-                                        return false;
-                                    }
-                                }
-                                else
-                                {
-                                    if (mov.destino == p.CasaAtual)
-                                    {
-                                        destino.PecaAtual = tempDest;
-                                        origem.PecaAtual = tempOrig;
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                destino.PecaAtual = tempDest;
-                origem.PecaAtual = tempOrig;
-            }
-        }
-        return true;
-    }
-
     //só para o peao para verificar captura com rei
     
 
+	// TODO: retirar "tabuleiro" do parâmetro, já que a casa tem uma referência a ele
     public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		return null;
 	}
 
-	//recebe o tabuleiro e realiza a movimentação baseado em um único movimento
+	// realiza a movimentação baseado em um único movimento
 	public void RealizaMovimento(Movimento m)
 	{
 		//verifica se tem captura de peça
@@ -209,10 +148,9 @@ public class Peca
 	}
 	*/
 
-	// Genú: Por enquanto, a função abaixo está bem basicona, 
-	// mas regras especiais que impedem uma peça de capturar outra se encaixariam aqui. 
-	// Por exemplo, uma peça não pode capturar outra se o seu movimento deixaria o 
-	// próprio rei em cheque. (TODO)
+	// Genú: Por enquanto, a função abaixo está bem basicona. Será que,
+	// além das regras do xeque, que já foram programadas, 
+	// há alguma outra verificação?
 	public bool PodeCapturar(Peca alvo)
 	{
 		if (this.Cor == alvo.Cor)
