@@ -21,6 +21,8 @@ public class UITabuleiro : MonoBehaviour
 
 	private Partida partida;
 
+	private HighlightController controller;
+
 	public Tabuleiro Tabuleiro { get { return partida.Tabuleiro; } }
 
 	void Awake()
@@ -165,5 +167,4 @@ public class UITabuleiro : MonoBehaviour
 
 		return null;
 	}
-
 }

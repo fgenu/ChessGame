@@ -14,7 +14,6 @@ public class UIPiece : MonoBehaviour
   	private Color normalColor;
   	private Color selectedColor;
 
-
 	private void Awake() {
 		material = GetComponent<MeshRenderer>().material;
 		controller = FindObjectOfType<HighlightController>();
@@ -40,10 +39,24 @@ public class UIPiece : MonoBehaviour
 	}
 
 	private void OnMouseDown() {
+		UITabuleiro uiTabuleiro = FindObjectOfType<UITabuleiro>();
+		UICasa casa;
+		List<Movimento> possibilidades = Piece.ListaMovimentos(uiTabuleiro.Tabuleiro, Piece.CasaAtual);
+		foreach (var possibilidade in possibilidades){
+				casa = uiTabuleiro.GetUICasa(possibilidade.destino);
+				casa.StartHighlight();
+		}
 		controller.SelectObject(this);
 	}
 
 	private void OnMouseUp() {
+		UITabuleiro uiTabuleiro = FindObjectOfType<UITabuleiro>();
+		UICasa casa;
+		List<Movimento> possibilidades = Piece.ListaMovimentos(uiTabuleiro.Tabuleiro, Piece.CasaAtual);
+		foreach (var possibilidade in possibilidades){
+				casa = uiTabuleiro.GetUICasa(possibilidade.destino);
+				casa.StopHighlight();
+		}
 		controller.NoSelectObject(this);
 	}
 
