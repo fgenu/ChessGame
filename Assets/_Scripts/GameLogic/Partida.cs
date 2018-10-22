@@ -8,7 +8,7 @@ public class Partida
 	public Tabuleiro Tabuleiro { get; private set; }
 	public Jogador Jogador1 { get; private set; }
 	public Jogador Jogador2 { get; private set; }
-
+    public UITabuleiro UItab;
     public int Turno { get; private set; }
 
 	public Partida()
@@ -29,7 +29,6 @@ public class Partida
 	public void PassarAVez()
     {
         VerificaVitoria();
-		
 		if (Turno == 1)
         {
             Turno = 2;
@@ -38,6 +37,7 @@ public class Partida
         {
             Turno = 1;
         }
+        Debug.Log(Turno);
 
     }
 

@@ -10,6 +10,7 @@ public class Peca
 	public int PosY { get { return CasaAtual.PosY; } }
 	public char Cor { get; private set; }
 	public Jogador jDono;
+    public UIPiece uiP;
 	public bool primeiraJogada;
 
 	public Peca(Jogador j)
@@ -58,13 +59,14 @@ public class Peca
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
 		if ((this is Peao) && (this as Peao).PodePromover())// (m.destino.PosX == tamTabuleiro - 1))
 		{
-			PromoverPeao(m);
+            CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
+			//PromoverPeao(m);
 		}
 	}
 
-	private static void PromoverPeao(Movimento m)
+	public Peca PromoverPeao(Movimento m,int tipoNovaPeca)
 	{
-		int tipoNovaPeca = 0, indicePeao = 0;
+		int indicePeao = 0;
 		Peca peaoAtual = m.destino.PecaAtual;
 
 		//tipoNovaPeca = FUNÇÂOQUEUSAINTERFACEPARADEFINIR (TODO)
@@ -80,19 +82,19 @@ public class Peca
 		}
 
 		Peca novaPeca;
-		//se 0, então vira rainha
-		//se 1, então vira torre
-		//se 2, então vira cavalo
+		//se 1, então vira rainha
+		//se 2, então vira torre
+		//se 3, então vira cavalo
 		//senao, então vira Bispo       
-		if (tipoNovaPeca == 0)
+		if (tipoNovaPeca == 1)
 		{
 			novaPeca = new Rainha(peaoAtual.jDono);
 		}
-		else if (tipoNovaPeca == 1)
+		else if (tipoNovaPeca == 2)
 		{
 			novaPeca = new Torre(peaoAtual.jDono);
 		}
-		else if (tipoNovaPeca == 2)
+		else if (tipoNovaPeca == 3)
 		{
 			novaPeca = new Cavalo(peaoAtual.jDono);
 		}
@@ -104,6 +106,9 @@ public class Peca
 		//define a posição e salva a peça na casa e no jogador
 		novaPeca.jDono.conjuntoPecas[indicePeao] = novaPeca;
 		m.destino.ColocarPeca(novaPeca);
+        novaPeca.CasaAtual = m.destino;
+
+        return novaPeca;
 	}
 
 	// Quando uma casa colocar esta peça como atual,

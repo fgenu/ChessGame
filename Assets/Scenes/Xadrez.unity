@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.30776092, g: 0.2953121, b: 0.24541652, a: 1}
+  m_IndirectSpecularColor: {r: 0.30776042, g: 0.29531142, b: 0.24541605, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2044,6 +2044,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieces: []
   menuPrefab: {fileID: 0}
+  menuPromoPrefab: {fileID: 1992684451820222, guid: b89fff068ad9d2b4e8efa2400f7fbf0a,
+    type: 2}
+  promovendoPeao: 0
 --- !u!65 &913490260
 BoxCollider:
   m_ObjectHideFlags: 0
