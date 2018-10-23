@@ -1,6 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public class Jogada{
+    public Double valor;
+    public Movimento movimento;
+    public Jogada(Double val, Movimento mov) {
+        valor = val;
+        movimento = mov;
+    }
+}
 
 public class IA
 {
@@ -161,12 +171,13 @@ public class IA
         }
     }
 
-    public Casa melhorJogada(Tabuleiro tab){
+    public Jogada melhorJogada(Tabuleiro tab){
         Casa atual;
         double melhor = Double.MinValue;
         int melhorX;
         int melhorY;
         double jogadaAtual;
+        Movimento melhorMov=null;
         for(int i=0; i<8; i++){
             for(int j=0; j<8; j++){
                 atual = tab.GetCasa(i,j);
@@ -177,6 +188,7 @@ public class IA
                            jogadaAtual = getPieceValue(atual.PecaAtual, possibilidade.destino);
                            if (jogadaAtual > melhor){
                                melhor = jogadaAtual;
+                               melhorMov = possibilidade;
                                melhorX = i;
                                melhorY = j;
                            }
@@ -185,6 +197,59 @@ public class IA
                 }
             }
         }
-        return tab.GetCasa(i,j);
+        return new Jogada(melhor, melhorMov);
+        //return tab.GetCasa(i,j);
+    }
+
+    public Jogada minmax(int profundidade, bool max, Tabuleiro tab)
+    {
+
+        if (profundidade == 1)
+        {
+            return melhorJogada(tab);
+        }
+        if (max)
+        {
+            Jogada pontuacaoAt = new Jogada(-100000000, null);
+            Jogada pontuacaoTemp;
+            List<Movimento> movimentosPossiveis = listaMovimentosTotal(j2);
+            foreach (Movimento m in movimentosPossiveis)
+            {
+
+                Tabuleiro tabTemp = novoTabuleiro(tab, m);
+                pontuacaoTemp = minmax(profundidade - 1, !max, tabTemp);
+                if (pontuacaoTemp.valor > pontuacaoAt.valor)
+                {
+                    pontuacaoAt = pontuacaoTemp;
+                }
+            }
+            return pontuacaoAt;
+        }
+        else
+        {
+            Jogada pontuacaoAt = new Jogada(100000000, null);
+            Jogada pontuacaoTemp;
+            List<Movimento> movimentosPossiveis = listaMovimentosTotal(j2);
+            foreach (Movimento m in movimentosPossiveis)
+            {
+
+                Tabuleiro tabTemp = novoTabuleiro(tab, m);
+                pontuacaoTemp = minmax(profundidade - 1, !max, tabTemp);
+                if (pontuacaoTemp.valor < pontuacaoAt.valor)
+                {
+                    pontuacaoAt = pontuacaoTemp;
+                }
+            }
+            return pontuacaoAt;
+        }
+    }
+
+    //lista todos os movimentos possíveis de um jogador
+    private List<Movimento> listaMovimentosTotal(Jogador j,Tabuleiro tab) {
+        List<Movimento> listaMovs = new List<Movimento>();
+        foreach (Peca p in j.conjuntoPecas){
+            listaMovs.AddRange(p.ListaMovimentos(tab,p.CasaAtual));
+        }
+
     }
 }
