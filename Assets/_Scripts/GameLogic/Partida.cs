@@ -60,8 +60,8 @@ public class Partida
 		// o rei não pode se movimentar para nenhuma casa sem que sofra um ataque(não há movimentos validos)
 		// a peça(s) que esta(m) atacando não podem ser capturadas pelo rei
 		//nenhuma peça pode proteger o rei (entrar na frente do atacante)
-		int numameacas;
-		int numprote;
+		int numameacas=0;
+		int numprote=0;
 		// O rei está em xeque?	
 		if (JogadorDaVez().inimigo.EmXeque())
 		{
@@ -82,7 +82,7 @@ public class Partida
 					{
 						if (pa.CasaAtual != null)  
 						{		
-							movimentos = pa.ListaMovimentos(pa.CasaAtual.Tabuleiro, pa.CasaAtual, false); 
+							List<Movimento> movimentos = pa.ListaMovimentos(pa.CasaAtual.Tabuleiro, pa.CasaAtual, false); 
 							if (movimentos.Count > 0)
 							{
 								foreach (Movimento mov in movimentos)  
@@ -109,8 +109,8 @@ public class Partida
 						{
 							if (prot.CasaAtual != null)  
 							{
-								movimentos = prot.ListaMovimentos(prot.CasaAtual.Tabuleiro, prot.CasaAtual, false);
-								foreach (Movimento mov in movimentos)
+								List<Movimento> movimentosprot = prot.ListaMovimentos(prot.CasaAtual.Tabuleiro, prot.CasaAtual, false);
+								foreach (Movimento mov in movimentosprot )
 								{
 									if( (peca.PosY == mov.destino.PosY && Math.Abs(peca.PosX - mov.destino.PosX) == 1 )|| (peca.PosX == mov.destino.PosX && Math.Abs(peca.PosY - mov.destino.PosY) == 1 ) || ( (Math.Abs(peca.PosX - mov.destino.PosX) == 1) && ( Math.Abs(peca.PosY - mov.destino.PosY) == 1 ) )  )
 									{
