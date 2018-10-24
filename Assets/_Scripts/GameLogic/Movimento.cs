@@ -19,7 +19,7 @@ public class Movimento
 		this.tipo = tipo;
 	}
 
-	// Propaga um movimento na direção dada.
+	// Propaga um movimento na direção dada. 
 	public static List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true, bool verificaXeque=true)
 	{
 		var possibilidades = new List<Movimento>();
