@@ -11,11 +11,17 @@ public class UITabuleiro : MonoBehaviour
 
 	public GameObject menuPrefab;
 
-	private int color = 0; //0 = preto e 1 = branco // TODO: tentar reescrever para trabalhar com Jogador.Cor
+    public GameObject menuPromoPrefab;
+
+    private int color = 0; //0 = preto e 1 = branco // TODO: tentar reescrever para trabalhar com Jogador.Cor
 
 	private bool clicked = false; //determina se já houve o clique no menu
 
-	private UIPiece selectedUIPiece;
+    public bool promovendoPeao = false; //determina se está promovendo peao
+
+    private UIPiece selectedUIPiece;
+
+    public Movimento movimentoPromocao;
 
 	private UICasa startDrag;
 
@@ -23,11 +29,17 @@ public class UITabuleiro : MonoBehaviour
 
 	private HighlightController controller;
 
-	public Tabuleiro Tabuleiro { get { return partida.Tabuleiro; } }
+    private int valorPeca;
+
+    private Peca pAtual;
+    private UIPiece pUIAtual;
+
+    public Tabuleiro Tabuleiro { get { return partida.Tabuleiro; } }
 
 	void Awake()
 	{
 		partida = new Partida();
+        partida.UItab = this;
 	}
 
 	private void Update()
@@ -42,7 +54,24 @@ public class UITabuleiro : MonoBehaviour
 				}
 				else
 				{
-					startDrag = GetSpaceUnderMouse();
+                    if (promovendoPeao)
+                    {
+                        pAtual = movimentoPromocao.destino.PecaAtual;
+                        valorPeca = SelectPeca();
+                        if (valorPeca != 0)
+                        {
+                            pUIAtual = pAtual.uiP;
+                            pAtual = pAtual.PromoverPeao(movimentoPromocao,valorPeca);
+                            pAtual.uiP = pUIAtual;
+                            mudaPeca(pAtual);
+                            DestroyMenuPromo();
+                            promovendoPeao = false;
+                        }
+                    }
+                    else
+                    {
+                        startDrag = GetSpaceUnderMouse();
+                    }
 				}
 			}
 
@@ -61,7 +90,7 @@ public class UITabuleiro : MonoBehaviour
 		return Utilities.GetComponentFromMouseOver<UICasa>(layer: "Spaces");
 	}
 
-	private void TryMove(UICasa origem, UICasa destino)
+	public void TryMove(UICasa origem, UICasa destino)
 	{
 		if (origem == destino) return;
 
@@ -71,7 +100,34 @@ public class UITabuleiro : MonoBehaviour
 		uiPiece.TryMovePiece(origem, destino, Tabuleiro);
 	}
 
-	private void SelectColor()
+
+    private int SelectPeca()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.transform.name == "rainha")
+            {
+                return 1;
+            }
+            else if (hit.transform.name == "torre")
+            {
+                return 2;
+            }
+            else if (hit.transform.name == "cavalo")
+            {
+                return 3;
+            }
+            else 
+            {
+                return 4;
+            }
+        }
+        return 0;
+    }
+
+    private void SelectColor()
 	{//função responsável por arrumar o tabuleiro de acordo com a cor
 		RaycastHit hit;
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -122,7 +178,19 @@ public class UITabuleiro : MonoBehaviour
 			}
 		}
 	}
-
+    public void ativaPromocao(Movimento m)
+    {
+        promovendoPeao = true;
+        movimentoPromocao = m;
+        Instantiate(menuPromoPrefab);
+    }
+    private void mudaPeca(Peca p)
+    {
+        UIPiece pAtual = p.uiP;
+        Destroy(pAtual.gameObject);
+        pieces.Remove(p.uiP);
+        GenerateUIPiece(p);
+    }
 	private void GenerateUIPiece(Peca peca)
 	{
 		GameObject prefab = FindObjectOfType<PrefabLib>().GetBestPrefab(peca);
@@ -133,10 +201,18 @@ public class UITabuleiro : MonoBehaviour
 		uiPiece.transform.position += temp;
 		pieces.Add(uiPiece);
 		uiPiece.Piece = peca;
+        peca.uiP = uiPiece;
 		uiPiece.UpdatePositionOnBoard(this);
 	}
 
-	public void DestroyMenu()
+    public void DestroyMenuPromo()
+    { //função responsável por deletar todos os GameObjects com a tag MenuPromo
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("MenuPromo");
+        foreach (GameObject enemy in enemies)
+            GameObject.Destroy(enemy);
+    }
+
+    public void DestroyMenu()
 	{ //função responsável por deletar todos os GameObjects com a tag Menu
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Menu");
 		foreach (GameObject enemy in enemies)

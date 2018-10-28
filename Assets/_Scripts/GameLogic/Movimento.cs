@@ -23,7 +23,7 @@ public class Movimento
 	public static List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true, bool verificaXeque=true)
 	{
 		var possibilidades = new List<Movimento>();
-
+        //Debug.Log(origem.PosX + x);
 		Casa seguinte = tabuleiro.GetCasa(origem.PosX + x, origem.PosY + y);
 
 		while (seguinte != null && passos > 0)

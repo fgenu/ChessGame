@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Casa
 {
-    public Peca PecaAtual { get; private set; }
+    public Peca PecaAtual;
 	public char cor = 'i';
 	public int PosX { get; private set; }
 	public int PosY { get; private set; }
 	public Tabuleiro Tabuleiro { get; private set; }
+    public UICasa uiC;
 
 	public Casa(int x, int y, Tabuleiro tabuleiro)
 	{
@@ -19,7 +20,14 @@ public class Casa
 		Tabuleiro = tabuleiro;
 	}
 
-	public void ColocarPeca(Peca peca)
+    public void ColocarPecaIA(Peca peca)
+    {
+        PecaAtual = peca;
+
+        peca.ValidarNovaCasa(this);
+    }
+
+    public void ColocarPeca(Peca peca)
 	{
 		if (PecaAtual != null)
 			PopPeca(); // TODO: destruir a peça removida OU NÃO, dependendo de como armazenarmos o histórico
@@ -29,7 +37,15 @@ public class Casa
 		peca.ValidarNovaCasa(this);
 	}
 
-	public Peca PopPeca()
+    public Peca PopPecaIA()
+    {
+        Peca removida = PecaAtual;
+
+        PecaAtual = null;
+        
+        return removida;
+    }
+    public Peca PopPeca()
 	{
 		Peca removida = PecaAtual;
 
