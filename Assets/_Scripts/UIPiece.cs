@@ -67,9 +67,21 @@ public class UIPiece : MonoBehaviour
         if (Piece.PodePercorrer(movimento, tabuleiro))
         {
             if ((tabuleiro.Turno == 1 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador1) || (tabuleiro.Turno == 2 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador2))
-            { 
-                MovePiece(origem, destino);
-                tabuleiro.partida.PassarAVez();
+            {
+                if (destino.casa.PecaAtual != null)
+                {
+                    UIPiece pecaDestroi = destino.CurrentUIPiece();
+                    MovePiece(origem, destino);
+                    tabuleiro.partida.PassarAVez();
+                    Destroy(pecaDestroi.gameObject);
+                }
+                else
+                {
+                    MovePiece(origem, destino);
+                    tabuleiro.partida.PassarAVez();
+
+                }
+                
             }
         }
 	}
