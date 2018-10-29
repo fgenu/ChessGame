@@ -24,20 +24,22 @@ public class Torre : Peca
 	public override void Roque(Tabuleiro tabuleiro,Torre torre = null)
 	{
 		
-		Rei rei = (Rei)this.jDono.conjuntoPecas[4];
+		//Rei rei = (Rei)this.jDono.conjuntoPecas[4];
 		
 		// USADO PARA TESTES
-		/* 
-		Rei rei;
+		 
+		Rei rei = null;
 		foreach(Peca p in this.jDono.conjuntoPecas)
 		{
 			if(p is Rei)
 			{
-				rei =(Rei)p;
+				rei = (Rei)p;
+				//Debug.Log("amem");
 				break;
 			}
+			
 		}
-		*/
+		
 		// criar "movimento" rei deve ser aproximar da torre andando 2 casas (tanto no roque pequeno quanto no grande)
 		// a torre anda 3 casas em casos de roque grande (torre do lado esquerdo)
 		// a torre anda 2 casas em casos de roque pequeno(torre do lado direito)
