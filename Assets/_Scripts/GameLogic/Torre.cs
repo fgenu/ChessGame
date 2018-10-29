@@ -26,7 +26,7 @@ public class Torre : Peca
 		
 		//Rei rei = (Rei)this.jDono.conjuntoPecas[4];
 		
-		// USADO PARA TESTES
+		//OQUE ESTA COMENTADO FOI USADO PARA TESTES
 		 
 		Rei rei = null;
 		foreach(Peca p in this.jDono.conjuntoPecas)
@@ -48,12 +48,16 @@ public class Torre : Peca
 		// como a torre que varia eu implementei que a chamada do metodo do rei direciona para o metodo da torre especifica
 		
 		Casa destinorei,destinotorre;
-		int linha = rei.CasaAtual.PosX;
-		int colunaTgrande = this.PosY+3, colunaTpequeno = this.PosY-2;
-		int colunaRgrande = rei.PosY-2, colunaRpequeno = rei.PosY+2;
+		//MUDANÇA POR CAUSA DO TABULEIRO
+		//int linha = rei.CasaAtual.PosX;
+		//int colunaTgrande = this.PosY+3, colunaTpequeno = this.PosY-2;
+		//int colunaRgrande = rei.PosY-2, colunaRpequeno = rei.PosY+2;
+		int linha = rei.CasaAtual.PosY;
+		int colunaTgrande = this.PosX+3, colunaTpequeno = this.PosX-2;
+		int colunaRgrande = rei.PosX-2, colunaRpequeno = rei.PosX+2;
 	//	Console.WriteLine("select your roque");
 		
-		if(this.CasaAtual.PosY < rei.CasaAtual.PosY) // roque grande 
+		if(this.CasaAtual.PosX < rei.CasaAtual.PosX) // roque grande 
 		{
 	//			Console.WriteLine("coluna Roque grande torre: ");
 		//		Console.WriteLine(colunaTgrande);
