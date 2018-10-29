@@ -179,4 +179,77 @@ public class Peca
 
 		return false;
 	}
+
+
+
+	protected bool PodeRoque(Torre torre, Rei rei,Tabuleiro tabuleiro,Movimento movrei)
+	{
+		// lembrando que as condições de roque são:
+		
+		
+		// rei não pode ter se movimentado nenhuma vez
+		// torre não pode ter se movimentado nenhuma vez
+		if(!torre.primeiraJogada || !rei.primeiraJogada)
+		{
+			return false;
+
+		}
+
+
+		// nao pode haver peças entre o rei e a torre
+		int linha = rei.CasaAtual.PosX;
+		int torrepos = torre.PosY;
+		int reipos = rei.PosY;
+		int i,f;
+		if(torrepos < reipos)
+		{
+			i = torrepos;
+			f = reipos;
+			
+		}
+		else
+		{
+			i = reipos;
+			f = torrepos;
+		}
+		for(int p=i+1; p < f ;p++)
+		{
+			if(tabuleiro.tabuleiro[linha,p].EstaOcupada())
+			{
+				
+				return false;
+			}
+		}
+		
+		// rei não pode passar nem terminar em uma casa que está sendo atacada por peça adversaria(rei entraria em xeque)
+		//if(!this.podeMoverXeque(tabuleiro,movrei.origem,movrei.destino))
+		if(movrei.CausaAutoXeque())
+		{
+			
+			return false;
+		}
+
+
+		// rei nao pode estar em xeque
+		if(rei.jDono.EmXeque())
+		{
+			return false;
+		}
+		
+
+
+
+
+
+		return true;
+
+
+	}
+
+
+	
+	public virtual void Roque(Tabuleiro tabuleiro, Torre torre = null)
+	{
+		
+	}
 }

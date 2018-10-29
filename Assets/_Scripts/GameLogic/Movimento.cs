@@ -78,7 +78,8 @@ public class Movimento
 	}
 
 	// verifica todos os movimentos das peças inimigas para verificar se pode mover sem ter xeque
-	private bool CausaAutoXeque ()
+	// tive que mudar para public porque essa função precisa ser utilizada em outro local alem da propria classe.
+	public bool CausaAutoXeque ()
 	{
 		if (origem == null || destino == null)
 			return false;

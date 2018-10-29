@@ -85,7 +85,7 @@ public class Tabuleiro
 		for (int i = 0; i < Tamanho; i++)
 		{
 			// CORREÇÃO : OS PARAMETROS DA MATRIZ ESTAVAM INVERTIDOS
-			// APENAS COMENTEI o codigo antigo por enquanto para caso essa mudança efete outro metodo
+			// APENAS COMENTEI o codigo antigo por enquanto para caso essa mudança afete outro metodo
 			//coloca as pecas especiais do jogador de cima
 			//tabuleiro[i, Tamanho - 1].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
 			tabuleiro[Tamanho-1,i].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);

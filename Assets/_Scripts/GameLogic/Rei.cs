@@ -117,4 +117,11 @@ public class Rei : Peca
 	// 	return movimentos;
 	// }
 
+
+	public override void Roque(Tabuleiro tabuleiro, Torre escolhida)
+	{
+		
+		escolhida.Roque(tabuleiro); // obs: eu fiz isso para evitar redundancia nas funções, a diferença é que esse aqui considera uma torre especifica que chama a função
+	}								// ou seja o jogador escolhe qual das torres ele pode usar para o roque
+
 }
