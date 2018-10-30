@@ -9,6 +9,7 @@ public class Partida
 	public Tabuleiro Tabuleiro { get; private set; }
 	public Jogador Jogador1 { get; private set; }
 	public Jogador Jogador2 { get; private set; }
+    public IA jIA;
     public UITabuleiro UItab;
     public int Turno { get; private set; }
     public int turnospassados=0; // acredito que isso vai ser importante mais tarde para implementar empate.
@@ -21,6 +22,7 @@ public class Partida
 		Jogador1 = new Jogador('b', false);
 		Jogador2 = new Jogador('p', true);
         Tabuleiro.partida = this;
+        jIA = new IA(Jogador2);
 		IniciarPartida(Jogador1, Jogador2);
 	}
 
@@ -29,13 +31,30 @@ public class Partida
     {
         return Turno;
     }
+    public void refazReferencias() {
+        foreach (Peca p in Jogador1.conjuntoPecas)
+        {
+            p.CasaAtual.PecaAtual = p;
+        }
 
+
+        foreach (Peca p in Jogador2.conjuntoPecas)
+        {
+            p.CasaAtual.PecaAtual = p;
+        }
+    }
 	public void PassarAVez()
     {
         VerificaVitoria();
 		if (Turno == 1)
         {
             Turno = 2;
+            Tabuleiro.PrintaTabuleiro();
+            Movimento m = jIA.minmax(3, -222222222,2222222222,true,Tabuleiro).movimento;
+            Debug.Log(m.origem.PosX+"   "+m.origem.PosY);
+            UItab.TryMove(m.origem.uiC, m.destino.uiC);
+            refazReferencias();
+            Tabuleiro.PrintaTabuleiro();
         }
         else
         {

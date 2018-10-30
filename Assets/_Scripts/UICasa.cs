@@ -32,6 +32,7 @@ public class UICasa : MonoBehaviour
 		string coordenadas = this.name.Substring(startIndex: 5);
 
 		casa = tabuleiro.GetCasa(coordenadas);
+        casa.uiC = this;
 	}
 
 	public UIPiece CurrentUIPiece()

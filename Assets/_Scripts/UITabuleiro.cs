@@ -90,7 +90,7 @@ public class UITabuleiro : MonoBehaviour
 		return Utilities.GetComponentFromMouseOver<UICasa>(layer: "Spaces");
 	}
 
-	private void TryMove(UICasa origem, UICasa destino)
+	public void TryMove(UICasa origem, UICasa destino)
 	{
 		if (origem == destino) return;
 
