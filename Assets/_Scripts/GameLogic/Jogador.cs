@@ -44,7 +44,7 @@ public class Jogador
 		{
 			if (i.CasaAtual != null)   // se o inimigo tiver alguma peça em alguma casa (se ele tem alguma peça que não foi capturada)
 			{		
-				movimentos = i.ListaMovimentos(i.CasaAtual.Tabuleiro, i.CasaAtual, false); 
+				movimentos = i.ListaMovimentos(false); 
 			
 				if (movimentos.Count > 0)
 				{

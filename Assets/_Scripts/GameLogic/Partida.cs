@@ -13,8 +13,8 @@ public class Partida
 	public IA jIA;
 	public UITabuleiro UItab;
 	public int Turno { get; private set; }
-	public int turnospassados = 0; // acredito que isso vai ser importante mais tarde para implementar empate.
-								   // depois deve criar uma função que incrementa essa variavel ou incrementar ela na função que troca os turnos (TODO)
+	public int TurnoDaUltimaCaptura { get; /*private*/ set; }
+	public List<String> HistoricoDoTabuleiro { get; private set; }
 
 
 	public Partida()
@@ -24,15 +24,11 @@ public class Partida
 		Jogador2 = new Jogador('p', true);
 		Tabuleiro.partida = this;
 		jIA = new IA(Jogador2);
+		HistoricoDoTabuleiro = new List<String>();
 		IniciarPartida(Jogador1, Jogador2);
 	}
 
-	// TODO: avaliar necessidade desta função
-	public int retornaTurno()
-	{
-		return Turno;
-	}
-	public void refazReferencias()
+	public void RefazReferencias()
 	{
 		foreach (Peca p in Jogador1.conjuntoPecas)
 		{
@@ -47,34 +43,71 @@ public class Partida
 	}
 	public void PassarAVez()
 	{
-		VerificaEmpate();
-		VerificaVitoria();
-		if (Turno == 1)
+		if (VerificaEmpateObrigatorio())
+			Debug.Log("Empate!");
+
+		if (VerificaVitoria())
+			Debug.Log("Vitória!");
+
+		if (VerificaEmpateOpcional())
+			Debug.Log("Um empate pode ser pedido!");
+
+		Turno++;
+
+		if (JogadorDaVez() == Jogador2) // TODO: if (jogador da vez é IA)
 		{
-			Turno = 2;
-			Tabuleiro.PrintaTabuleiro();
+			//Tabuleiro.PrintaTabuleiro();
 			Movimento m = jIA.minmax(3, -222222222, 2222222222, true, Tabuleiro).movimento;
-			Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
+			//Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
 			UItab.TryMove(m.origem.uiC, m.destino.uiC);
-			refazReferencias();
-			Tabuleiro.PrintaTabuleiro();
+			RefazReferencias();
+			//Tabuleiro.PrintaTabuleiro();
 		}
-		else
+
+		// Debug.Log(Turno);
+
+		RegistrarEstadoDoTabuleiro();
+	}
+
+	public Jogador JogadorDaVez()
+	{
+		if (Turno % 2 == 1) // turno ímpar
+		{
+			if (Jogador1.Cor == 'b')
+				return Jogador1;
+			else
+				return Jogador2;
+		}
+		else // turno par
+		{
+			if (Jogador1.Cor == 'p')
+				return Jogador1;
+			else
+				return Jogador2;
+		}
+	}
+
+	void IniciarPartida(Jogador j1, Jogador j2)
+	{
+		j1.inimigo = j2;
+		j2.inimigo = j1;
+		Turno = 1;
+		if (j1.Cor == 'b')
 		{
 			Turno = 1;
 		}
-		Debug.Log(Turno);
+		else
+		{
+			Turno = 2;
+		}
+		Tabuleiro.InserePecasNaPosicaoInicial(this);
+		Tabuleiro.PrintaTabuleiro();
 
+		HistoricoDoTabuleiro.Clear();
+		RegistrarEstadoDoTabuleiro();
 	}
-
-	private Jogador JogadorDaVez()
-	{
-		if (Turno == 1) return Jogador1;
-		else return Jogador2;
-	}
-
-	// definem o final do jogo 
-	public bool VerificaVitoria()
+	
+	private bool VerificaVitoria()
 	{
 		// para ocorrer a vitoria é preciso que o rei adversario esteja em uma posição em que seja impossivel escapar 
 		// ou seja xeque mate:
@@ -94,7 +127,7 @@ public class Partida
 				if (peca is Rei)
 				{
 					// agora deve-se verificar se o rei inimigo possui algum movimento valido (ou seja nenhum movimento o deixa em xeque ainda)
-					if (peca.ListaMovimentos(Tabuleiro, peca.CasaAtual).Count > 0)
+					if (peca.ListaMovimentos().Count > 0)
 					{
 
 						return false;
@@ -104,7 +137,7 @@ public class Partida
 					{
 						if (pa.CasaAtual != null)
 						{
-							List<Movimento> movimentos = pa.ListaMovimentos(pa.CasaAtual.Tabuleiro, pa.CasaAtual, false);
+							List<Movimento> movimentos = pa.ListaMovimentos(false);
 							if (movimentos.Count > 0)
 							{
 								foreach (Movimento mov in movimentos)
@@ -131,7 +164,7 @@ public class Partida
 						{
 							if (prot.CasaAtual != null)
 							{
-								List<Movimento> movimentosprot = prot.ListaMovimentos(prot.CasaAtual.Tabuleiro, prot.CasaAtual, false);
+								List<Movimento> movimentosprot = prot.ListaMovimentos(false);
 								foreach (Movimento mov in movimentosprot)
 								{
 									if ((peca.PosY == mov.destino.PosY && Math.Abs(peca.PosX - mov.destino.PosX) == 1) || (peca.PosX == mov.destino.PosX && Math.Abs(peca.PosY - mov.destino.PosY) == 1) || ((Math.Abs(peca.PosX - mov.destino.PosX) == 1) && (Math.Abs(peca.PosY - mov.destino.PosY) == 1)))
@@ -159,26 +192,26 @@ public class Partida
 
 
 
+			return true;
 
 		}
 
-		return true;
 
-
+		return false;
 	}
 
-	// definem o final do jogo (TODO: verificar mais impossibilidade de xeque, regra dos 50 movimentos)
-	public bool VerificaEmpate()
+	// definem o final do jogo (TODO nos sonhos: verificar mais impossibilidade de xeque (é muito complicado de calcular, acho que podemos ignorar))
+	private bool VerificaEmpateObrigatorio()
 	{
 		var pecasAliadas = JogadorDaVez().conjuntoPecas;
 		var pecasInimigas = JogadorDaVez().inimigo.conjuntoPecas;
-		
+
 		// Afogamento
 		bool semMovimentos = true;
 
 		foreach (Peca peca in pecasInimigas)
 		{
-			if (peca.ListaMovimentos(Tabuleiro, peca.CasaAtual).Count > 0)
+			if (peca.ListaMovimentos().Count > 0)
 			{
 				semMovimentos = false;
 				break;
@@ -223,7 +256,7 @@ public class Partida
 					{
 						Debug.Log("Empate! Xeque impossível.");
 						return true;
-					}	
+					}
 				}
 			}
 		}
@@ -232,21 +265,36 @@ public class Partida
 		return false;
 	}
 
-	void IniciarPartida(Jogador j1, Jogador j2)
+	private bool VerificaEmpateOpcional()
 	{
-		j1.inimigo = j2;
-		j2.inimigo = j1;
-		if (j1.Cor == 'b')
+		// 50 ou mais turnos desde a última captura ou movimento de peão
+
+		if (Turno >= 50)
 		{
-			Turno = 1;
+			if (TurnoDaUltimaCaptura + 50 <= Turno)
+				return true;
+			
+			foreach (Peao peao in Jogador1.conjuntoPecas.Union(Jogador2.conjuntoPecas))
+			{
+				if (peao.UltimoTurnoMovido + 50 <= Turno)
+					return true;
+			}
 		}
-		else
-		{
-			Turno = 2;
-		}
-		Tabuleiro.InserePecasNaPosicaoInicial(this);
-		Tabuleiro.PrintaTabuleiro();
+
+
+		// Repetição do mesmo estado do tabuleiro três vezes. Empate pode ser pedido apenas logo que a repetição acontece.
+
+		String estado = EstadoAtual();
+
+		int contagem = HistoricoDoTabuleiro.Where(x => x.Equals(estado)).Count();
+
+		if (contagem >= 2) // TODO: dependendo da ordem de chamada desta função, a contagem deve ser >= 2 ou 3.
+			return true;
+
+
+		return false;
 	}
+
 
 	public Jogador JogadorDeCima()
 	{
@@ -270,6 +318,71 @@ public class Partida
 			return Jogador1;
 		else
 			return null;
+	}
+
+	public String EstadoAtual()
+	{
+		String str = "A jogar: " + JogadorDaVez().Cor + "\n";
+
+		for (int i = 0; i < Tabuleiro.Tamanho; i++)
+		{
+			for (int j = 0; j < Tabuleiro.Tamanho; j++)
+			{
+				str += "Casa (" + i + "," + j + ") ";
+				Peca peca = Tabuleiro.GetCasa(i, j).PecaAtual;
+
+				if (peca == null)
+				{
+					str += "__";
+				}
+				else
+				{
+					if (peca is Torre)
+					{
+						str += "T";
+					}
+					else if (peca is Cavalo)
+					{
+						str += "C";
+					}
+					else if (peca is Bispo)
+					{
+						str += "B";
+					}
+					else if (peca is Rei)
+					{
+						str += "E";
+					}
+					else if (peca is Rainha)
+					{
+						str += "A";
+					}
+					else if (peca is Peao)
+					{
+						str += "P";
+					}
+					else
+					{
+						str += "?";
+						Debug.LogWarning("Tipo de peça desconhecido ao registrar no histórico.");
+					}
+
+					str += peca.Cor;
+					str += peca.ListaMovimentosToString();
+				}
+				str += "\n";
+			}
+			str += "\n";
+		}
+
+		return str;
+	}
+
+
+
+	private void RegistrarEstadoDoTabuleiro()
+	{
+		HistoricoDoTabuleiro.Add(EstadoAtual());
 	}
 
 

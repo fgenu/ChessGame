@@ -9,6 +9,7 @@ public class Peca
 	public int PosX { get { return CasaAtual.PosX; } }
 	public int PosY { get { return CasaAtual.PosY; } }
 	public char Cor { get; private set; }
+	public int UltimoTurnoMovido = 0;
 	public Jogador jDono;
     public UIPiece uiP;
 	public bool primeiraJogada;
@@ -25,7 +26,7 @@ public class Peca
     
 
 	// TODO: retirar "tabuleiro" do parâmetro, já que a casa tem uma referência a ele
-    public virtual List<Movimento> ListaMovimentos(Tabuleiro tabuleiro, Casa origem,bool verificaXeque = true, bool verificaCaptura = false)
+    public virtual List<Movimento> ListaMovimentos(bool verificaXeque = true, bool verificaCaptura = false)
 	{
 		return null;
 	}
@@ -33,11 +34,14 @@ public class Peca
 	// realiza a movimentação baseado em um único movimento
 	public void RealizaMovimento(Movimento m)
 	{
+		Partida partida = CasaAtual.Tabuleiro.partida;
+
 		//verifica se tem captura de peça
-		if (m.destino.PecaAtual != null)
+		if (m.destino.PecaAtual != null) // TODO: extrair isto como método e generalizar para funcionar com o en passant
 		{
 			Jogador jCapturado = m.destino.PecaAtual.jDono;
 			int posPeca = 0;
+			partida.TurnoDaUltimaCaptura = partida.Turno;
 
 			//verifico todas as peças até achar a que eu quero
 			foreach (Peca p in jCapturado.conjuntoPecas)
@@ -49,12 +53,12 @@ public class Peca
 				posPeca++;
 			}
 			jCapturado.conjuntoPecas.RemoveAt(posPeca);
-
 		}
 		//realiza o movimento
 		m.destino.ColocarPeca(m.origem.PopPeca());
 
 		primeiraJogada = false;
+		UltimoTurnoMovido = partida.Turno;
 
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
 		if ((this is Peao) && (this as Peao).PodePromover())// (m.destino.PosX == tamTabuleiro - 1))
@@ -107,6 +111,8 @@ public class Peca
 		novaPeca.jDono.conjuntoPecas[indicePeao] = novaPeca;
 		m.destino.ColocarPeca(novaPeca);
         novaPeca.CasaAtual = m.destino;
+
+		novaPeca.UltimoTurnoMovido = this.UltimoTurnoMovido;
 
         return novaPeca;
 	}
@@ -171,7 +177,7 @@ public class Peca
 		if (CasaAtual != movimento.origem)
 			return false;
 
-		List<Movimento> possibilidades = ListaMovimentos(tabuleiro, CasaAtual);
+		List<Movimento> possibilidades = ListaMovimentos();
 
 		foreach (var possibilidade in possibilidades)
 			if (possibilidade.destino == movimento.destino)
@@ -251,5 +257,15 @@ public class Peca
 	public virtual void Roque(Tabuleiro tabuleiro, Torre torre = null)
 	{
 		
+	}
+
+	public string ListaMovimentosToString()
+	{
+		string str = "";
+
+		foreach (var movimento in ListaMovimentos())
+			str += "[" + movimento.destino.PosX + "," + movimento.destino.PosY + "]";
+
+		return str;
 	}
 }

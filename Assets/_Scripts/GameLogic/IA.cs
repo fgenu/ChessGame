@@ -220,7 +220,7 @@ public class IA
             for(int j=0; j<8; j++){
                 atual = tab.GetCasa(i,j);
                 if(atual.PecaAtual!=null && atual.PecaAtual.Cor == this.Cor){
-                    List<Movimento> possibilidades = atual.PecaAtual.ListaMovimentos(tab, atual);
+                    List<Movimento> possibilidades = atual.PecaAtual.ListaMovimentos();
                     foreach (var possibilidade in possibilidades){
                         if (atual.PecaAtual.PodePercorrer(possibilidade, tab)){
                            jogadaAtual = getPieceValue(atual.PecaAtual, possibilidade.destino);
@@ -242,13 +242,13 @@ public class IA
     public Peca RealizaMovimentoIA(Movimento m)
     {
         Peca pCapt = null;
-        //verifica se tem captura de peça
+        //verifica se tem captura de peï¿½a
         if (m.destino.PecaAtual != null)
         {
             Jogador jCapturado = m.destino.PecaAtual.jDono;
             int posPeca = 0;
 
-            //verifico todas as peças até achar a que eu quero
+            //verifico todas as peï¿½as atï¿½ achar a que eu quero
             foreach (Peca p in jCapturado.conjuntoPecas)
             {
                 if (p == m.destino.PecaAtual)
@@ -264,7 +264,7 @@ public class IA
         m.destino.ColocarPeca(m.origem.PopPeca());
 
 
-        //verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
+        //verifica se ï¿½ peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peï¿½a
         /*if ((m.destino.PecaAtual is Peao) && (m.destino.PecaAtual as Peao).PodePromover())// (m.destino.PosX == tamTabuleiro - 1))
         {
             //CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
@@ -283,7 +283,7 @@ public class IA
         }
 
 
-        //verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
+        //verifica se ï¿½ peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peï¿½a
         /*if ((m.destino.PecaAtual is Peao) && (m.destino.PecaAtual as Peao).PodePromover())// (m.destino.PosX == tamTabuleiro - 1))
         {
             //CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
@@ -358,11 +358,11 @@ public class IA
         }
     }
 
-    //lista todos os movimentos possíveis de um jogador
+    //lista todos os movimentos possï¿½veis de um jogador
     private List<Movimento> listaMovimentosTotal(Jogador j,Tabuleiro tab) {
         List<Movimento> listaMovs = new List<Movimento>();
         foreach (Peca p in j.conjuntoPecas){
-            listaMovs.AddRange(p.ListaMovimentos(tab,p.CasaAtual));
+            listaMovs.AddRange(p.ListaMovimentos());
         }
         return listaMovs;
 
