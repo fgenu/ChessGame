@@ -188,59 +188,86 @@ public class Peca
 
 
 
-	protected bool PodeRoque(Torre torre, Rei rei,Tabuleiro tabuleiro,Movimento movrei)
+	protected bool PodeRoque(Torre torre, Rei rei,Tabuleiro tabuleiro,Movimento movrei,Movimento movtorre)
 	{
 		// lembrando que as condições de roque são:
 		
-		
+	
+
+
 		// rei não pode ter se movimentado nenhuma vez
 		// torre não pode ter se movimentado nenhuma vez
 		if(!torre.primeiraJogada || !rei.primeiraJogada)
 		{
+			Debug.Log("NÃO É A PRIMEIRA JOGADA!");
 			return false;
 
 		}
 
 
 		// nao pode haver peças entre o rei e a torre
-		int linha = rei.CasaAtual.PosX;
-		int torrepos = torre.PosY;
-		int reipos = rei.PosY;
+		int linha = rei.CasaAtual.PosY;
+//		Debug.Log("linha rei:");
+//		Debug.Log(linha);
+		int torrepos = torre.PosX;
+		int reipos = rei.PosX;
+//		Debug.Log("Coluna torre:");
+//		Debug.Log(torrepos);
+//		Debug.Log("Coluna rei:");
+//		Debug.Log(reipos);
 		int i,f;
 		if(torrepos < reipos)
 		{
+			Debug.Log("a posição entre torre e rei caracteriza um roque maior(ou era para caracterizar)");
 			i = torrepos;
 			f = reipos;
 			
 		}
 		else
 		{
+			Debug.Log("a posição entre torre e rei caracteriza um roque menor(ou era para caracterizar)");
 			i = reipos;
 			f = torrepos;
 		}
 		for(int p=i+1; p < f ;p++)
 		{
-			if(tabuleiro.tabuleiro[linha,p].EstaOcupada())
+			if(tabuleiro.tabuleiro[p,linha].EstaOcupada())
 			{
-				
+				//Debug.Log(p);
+				Debug.Log("TEM CASAS OCUPADAS NO CAMINHO!");
 				return false;
 			}
 		}
 		
-		// rei não pode passar nem terminar em uma casa que está sendo atacada por peça adversaria(rei entraria em xeque)
-		//if(!this.podeMoverXeque(tabuleiro,movrei.origem,movrei.destino))
-		if(movrei.CausaAutoXeque())
-		{
-			
-			return false;
-		}
-
-
 		// rei nao pode estar em xeque
 		if(rei.jDono.EmXeque())
 		{
+			Debug.Log("Rei está em xeque!");
 			return false;
 		}
+		
+		// rei não pode passar nem terminar em uma casa que está sendo atacada por peça adversaria(rei entraria em xeque)
+		//dependendo de quem se mova primeiro (torre ou rei ) antes de chamar a função CausaAutoXeque() sempre teremos um rei em xeque
+		// mesmo se a torre o proteger(bloquear o ataque)
+		// então o movimento da torre será "simulado"
+		Peca movida;
+		movida = movtorre.origem.PopPeca();
+		// lembrando que se chegamos até aqui não há ninguem ocupando essa casa! (eu acho...), podemos colocar a peça sem receio
+		movtorre.destino.ColocarPeca(movida);
+		if(movrei.CausaAutoXeque())
+		{
+			
+			Debug.Log("rei esta indo para casa sob ataque!(entraria em xeque)");
+			// voltar para a torre para a poisção original 
+			movtorre.destino.PopPeca();
+			movtorre.origem.ColocarPeca(movida);
+			return false;
+		}
+		// voltar para a torre para a poisção original
+		movtorre.destino.PopPeca();
+		movtorre.origem.ColocarPeca(movida);
+
+
 		
 
 
@@ -251,6 +278,9 @@ public class Peca
 
 
 	}
+
+
+
 
 
 	

@@ -52,37 +52,48 @@ public class Torre : Peca
 		//int linha = rei.CasaAtual.PosX;
 		//int colunaTgrande = this.PosY+3, colunaTpequeno = this.PosY-2;
 		//int colunaRgrande = rei.PosY-2, colunaRpequeno = rei.PosY+2;
-		int linha = rei.CasaAtual.PosY;
-		int colunaTgrande = this.PosX+3, colunaTpequeno = this.PosX-2;
+		int linha = rei.CasaAtual.PosY; // linha em que o rei está alinhado com a torre(que é na vdd a coluna da matriz)
+		int colunaTgrande = this.PosX+3, colunaTpequeno = this.PosX-2; // coluna que o rei e torre devem se mover (que na vdd é a linha da matriz)
 		int colunaRgrande = rei.PosX-2, colunaRpequeno = rei.PosX+2;
-	//	Console.WriteLine("select your roque");
-		
+		Debug.Log("select your roque");
+/*
+		Debug.Log("linha rei:");
+		Debug.Log(linha);
+		Debug.Log("Coluna rei:");
+		Debug.Log(rei.CasaAtual.PosX);
+		Debug.Log("Coluna torre:");
+		Debug.Log(this.CasaAtual.PosX);
+*/
 		if(this.CasaAtual.PosX < rei.CasaAtual.PosX) // roque grande 
 		{
-	//			Console.WriteLine("coluna Roque grande torre: ");
-		//		Console.WriteLine(colunaTgrande);
-	//			Console.WriteLine("coluna Roque grande rei: ");
-	//			Console.WriteLine(colunaRgrande);
-
-				destinorei = tabuleiro.tabuleiro[linha, colunaRgrande];
-				destinotorre = tabuleiro.tabuleiro[linha, colunaTgrande];
+				Debug.Log("Roque grande");
+			/*	
+				Debug.Log("coluna Roque grande torre: ");
+				Debug.Log(colunaTgrande);
+				Debug.Log("coluna Roque grande rei: ");
+				Debug.Log(colunaRgrande);
+			*/
+				destinorei = tabuleiro.tabuleiro[colunaRgrande,linha];
+				destinotorre = tabuleiro.tabuleiro[colunaTgrande,linha];
 		}
 		else // roque pequeno
 		{
-	//			Console.WriteLine("coluna Roque pequeno torre: ");
-	//			Console.WriteLine(colunaTpequeno);
-	//			Console.WriteLine("coluna Roque pequeno rei: ");
-	//			Console.WriteLine(colunaRpequeno);
-
-				destinorei = tabuleiro.tabuleiro[linha, colunaRpequeno];
-				destinotorre = tabuleiro.tabuleiro[linha, colunaTpequeno];
+				Debug.Log("Roque pequeno");
+			/*	
+				Debug.Log("coluna Roque pequeno torre: ");
+				Debug.Log(colunaTpequeno);
+				Debug.Log("coluna Roque pequeno rei: ");
+				Debug.Log(colunaRpequeno);
+			*/
+				destinorei = tabuleiro.tabuleiro[colunaRpequeno,linha];
+				destinotorre = tabuleiro.tabuleiro[colunaTpequeno,linha];
 		}
 		Movimento m = new Movimento(origem: rei.CasaAtual, destino: destinorei );
 		Movimento mt = new Movimento(origem: this.CasaAtual, destino: destinotorre); 
-	//	Console.WriteLine(this.PodeRoque(this,rei,tabuleiro,m));
-		if(this.PodeRoque(this,rei,tabuleiro,m))
+		//Debug.Log(this.PodeRoque(this,rei,tabuleiro,m));
+		if(this.PodeRoque(this,rei,tabuleiro,m,mt))
 		{
-	//		Console.WriteLine("realizando roque...");
+			Debug.Log("realizando roque...");
 			this.RealizaMovimento(m);
 			this.RealizaMovimento(mt);
 

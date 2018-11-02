@@ -4,9 +4,9 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 
-public class TorreTeste {
-
-     public static void removeIntervalo(Partida p,int jogador,int i, int f)
+class TorreTeste
+{
+        public static void removeIntervalo(Partida p,int jogador,int i, int f)
         {
             
             Tabuleiro t = p.Tabuleiro;
@@ -18,9 +18,9 @@ public class TorreTeste {
                  linha = 0;
             }
             for(int e=i; e < f ;e++)
-		    {
-			  
-               t.tabuleiro[linha,e].PopPeca();
+            {
+              
+               t.tabuleiro[e,linha].PopPeca();
               // Console.WriteLine("removendo peca: ");
               // Console.WriteLine(e);
               // if(t.tabuleiro[linha,e].PecaAtual == null)
@@ -28,7 +28,28 @@ public class TorreTeste {
               //     Console.WriteLine("yes");
               // }
              //  Console.WriteLine(typeof(t.tabuleiro[linha,e]));
-		    }
+            }
+        }
+
+        public static void criasituacao(Partida p, int x, int y,int linhajogador)
+        {
+            Tabuleiro t = p.Tabuleiro;
+            int poslinha = Math.Abs(linhajogador -7); // vai ser 7 ou 0 (serve para pegar a peça inimiga)
+            Debug.Log("posição:");
+            Debug.Log(poslinha);
+            if(t.tabuleiro[y,x].EstaOcupada())
+            {
+                t.tabuleiro[y,x].PopPeca();
+            }
+            //Peca escolhida =  t.tabuleiro[4,linhajogador].PecaAtual.jDono.inimigo.conjuntoPecas[3];   // por default vou escolher a rainha (ela se move para qualquer direção facilitando os testes)
+            Casa pescolhida = t.tabuleiro[3,poslinha];
+            Peca escolhida = pescolhida.PopPeca();
+            if(escolhida is Rainha )
+            {
+                Debug.Log("ok");
+            }
+            t.tabuleiro[y,x].ColocarPeca(escolhida);
+            
         }
         /* 
         public static Partida p1= new Partida(); // tabuleiro cheio (sem espaço entre as peças)
@@ -39,38 +60,89 @@ public class TorreTeste {
         public static Partida p4= new  Partida();  // peça ameaçada
         public static Partida p5= new  Partida(); // peça ja se moveu
         */
-        [TestCase(0,0,false,0,0)] // tabuleiro cheio e todos nas poisções iniciais jogador 0 (cima), torre escolhida 0 
-        [TestCase(0,0,false,1,0)] // tabuleiro cheio e todos nas poisções iniciais jogador 1 (baixo), torre escolhida 0
-        [TestCase(0,0,true,1,0)]  // tabuleiro cheio e teve movimentação e todos nas poisções iniciais jogador 0 (cima), torre escolhida 8
-        [TestCase(0,0,true,1,8)] // tabuleiro cheio e teve movimentação e todos nas poisções iniciais jogador 1 (baixo), torre escolhida 8
+
+        [TestCase(0,0,false,0,0,false,0,0)] // tabuleiro cheio e todos nas poisções iniciais jogador 0 (cima), torre escolhida 0 
+        [TestCase(0,0,false,1,0,false,0,0)] // tabuleiro cheio e todos nas poisções iniciais jogador 1 (baixo), torre escolhida 0
+        [TestCase(0,0,true,0,8,false,0,0)]  // tabuleiro cheio e teve movimentação e todos nas poisções iniciais jogador 0 (cima), torre escolhida 8
+        [TestCase(0,0,true,1,8,false,0,0)] // tabuleiro cheio e teve movimentação e todos nas poisções iniciais jogador 1 (baixo), torre escolhida 8
         
-        [TestCase(1,4,false,0,0)] // torre 0 e rei com espaço entre eles(roque maior) jogador de cima
-        [TestCase(1,4,false,1,0)] // torre 0 e rei com espaço entre eles(roque maior) jogador de baixo
-        [TestCase(1,3,false,1,0)] // torre 0 e rei sem espaço entre eles jogador de cima
-        [TestCase(1,2,false,0,0)] // torre 0 e rei sem espaço entre eles jogador de baixo
-        [TestCase(1,4,true,0,0)] // tem espaço mas houve movimentação
-        [TestCase(1,4,true,1,0)] // tem espaço mas houve movimentação
+        [TestCase(1,4,false,0,0,false,0,0)] // torre 0 e rei com espaço entre eles(roque maior) jogador de cima
+        [TestCase(1,4,false,1,0,false,0,0)] // torre 0 e rei com espaço entre eles(roque maior) jogador de baixo
+        [TestCase(1,3,false,1,0,false,0,0)] // torre 0 e rei sem espaço entre eles jogador de baixo
+        [TestCase(1,2,false,0,0,false,0,0)] // torre 0 e rei sem espaço entre eles jogador de cima
+        [TestCase(5,7,false,0,0,false,0,0)] // torre 0 e rei com espçao entre ele e a OUTRA TORRE jogador de cima
+        [TestCase(5,7,false,1,0,false,0,0)] // torre 0 e rei com espçao entre ele e a OUTRA TORRE jogador de baixo
+        [TestCase(1,4,true,0,0,false,0,0)] // tem espaço mas houve movimentação
+        [TestCase(1,4,true,1,0,false,0,0)] // tem espaço mas houve movimentação
+ 
+        [TestCase(5,7,false,0,8,false,0,0)] // torre 8 e rei com espaço entre eles(roque menor) jogador de cima
+        [TestCase(5,7,false,1,8,false,0,0)] // torre 8 e rei com espaço entre eles(roque menor) jogador de baixo
+////        [TestCase(1,3,false,1,8,false,0,0)] // torre 8 e rei sem espaço entre eles jogador de baixo (esse teste não faz exatamente muito sentido... fazendo ele acreditar que esta errado)(o roque não é feito porque nao faz sentido, oque prova que o roque funciona...)
+        [TestCase(1,2,false,0,8,false,0,0)] // torre 8 e rei sem espaço entre eles jogador de cima 
+        [TestCase(1,4,false,1,8,false,0,0)] // torre 8 e rei com espaço entre ele e a OUTRA TORRE jogador de baixo
+        [TestCase(5,6,false,0,8,false,0,0)] // torre 8 e rei com espaço entre ele e a OUTRA TORRE jogador de cima
+        [TestCase(5,7,true,0,8,false,0,0)] // tem espaço mas houve movimentação
+        [TestCase(5,7,true,1,8,false,0,0)] // tem espaço mas houve movimentação
 
-        [TestCase(6,7,false,0,8)] // torre 8 e rei com espaço entre eles(roque menor) jogador de cima
-        [TestCase(6,7,false,1,8)] // torre 8 e rei com espaço entre eles(roque menor) jogador de baixo
-        [TestCase(1,4,false,1,8)] // torre 8 e rei sem espaço entre eles jogador de cima
-        [TestCase(1,4,false,0,8)] // torre 8 e rei sem espaço entre eles jogador de baixo
-        [TestCase(6,7,true,0,8)] // tem espaço mas houve movimentação
-        [TestCase(6,7,true,1,8)] // tem espaço mas houve movimentação
+        //TESTES RELACIONADOS AO XEQUE, true: se deve verificar situações de xeque, x(linha) , y(coluna) posição no tabuleiro a inserir a peça para a situação simulada
+        
+        [TestCase(1,4,false,0,0,true,7,6)]  // roque não feito pois há xeque
+        [TestCase(1,4,false,1,0,true,0,6)]
+
+        [TestCase(5,7,false,0,8,true,7,6)] // roque não feito porque tem casas ocupadas no caminho e rei está em xeque
+        [TestCase(5,7,false,1,8,true,0,6)] // roque não feito porque tem casas ocupadas no caminho e rei está em xeque
+        
+        // roque não feito porque o rei vai ficar em xeque ao terminar o movimento
+        [TestCase(1,4,false,0,0,true,6,2)]  
+        [TestCase(1,4,false,1,0,true,1,2)] 
+
+        [TestCase(1,4,false,0,0,true,6,1)]
+        [TestCase(1,4,false,1,0,true,1,1)]
+
+        [TestCase(5,7,false,0,8,true,6,6)]  
+        [TestCase(5,7,false,1,8,true,1,6)]
+
+        [TestCase(5,7,false,0,8,true,6,7)]  
+        [TestCase(5,7,false,1,8,true,1,7)]
 
 
-        public void TesteRoque(int i, int f, bool moveu,int jogador,int codtorre)
+        public void TesteRoque(int i, int f, bool moveu,int jogador,int codtorre,bool xeq,int x, int y)
         {
             Partida p= new Partida();
             Tabuleiro t = p.Tabuleiro;
             int linha = t.Tamanho-1; 
             if(jogador == 1)
             {
+                Debug.Log("Jogador de baixo!");
                 linha = 0;
             }
             Torre torre;
             Rei rtemp;
-            if(i - f == Math.Abs(3) || i - f == Math.Abs(2) )
+            if(xeq)
+            {
+                    removeIntervalo(p,jogador,1,4); // deixa somente o rei e as torres nas peças especiais do aliado
+                    removeIntervalo(p,jogador,5,7);
+                    criasituacao(p,x,y,linha);
+                    // após isso realizar o roque para esse caso de testes já que o esperado é que as peças se mantenham no mesmo lugar!
+                    // NOTE QUE ESSES CASOS ASSIM COMO OS OUTROS NÃO CONSIDERAM QUE AS TORRES FORAM CAPTURADAS(ATÉ PORQUE O METODO NÃO PODERIA SER EXECUTADO POIS ELAS ESTARIAM FORA DO JOGO)
+                    if(codtorre !=0)
+                    {
+                        codtorre = codtorre -1;
+                    }
+                    torre = (Torre) t.tabuleiro[codtorre,linha].PecaAtual;
+                    torre.Roque(p.Tabuleiro); 
+
+                    Assert.IsNotNull(t.tabuleiro[0,linha].PecaAtual);
+                    Assert.IsNotNull(t.tabuleiro[7,linha].PecaAtual);
+                    Assert.IsNotNull(t.tabuleiro[4,linha].PecaAtual);
+
+                    Assert.IsInstanceOf<Torre>(t.tabuleiro[0,linha].PecaAtual);
+                    Assert.IsInstanceOf<Torre>(t.tabuleiro[7,linha].PecaAtual);
+                    Assert.IsInstanceOf<Rei>(t.tabuleiro[4,linha].PecaAtual);
+
+                    return;
+            }
+            if((Math.Abs(i - f) == 3 && codtorre == 0) || (Math.Abs(i - f) == 2 && codtorre !=0) ) // note que tabuleiros que podem ocorrer roque tem que ter esse espaçamento pelo menos entre torre e rei
             {
                 removeIntervalo(p,jogador,i,f); // cria o tabuleiro "ideal" para o teste
                 // criar tabuleiro resposta
@@ -83,15 +155,15 @@ public class TorreTeste {
                 
                 if(codtorre == 0 && !moveu )
                 {
-                    
-                   torre = (Torre) t.tabuleiro[linha,codtorre].PecaAtual;
+                   Debug.Log("talvez possa fazer roque");
+                   torre = (Torre) t.tabuleiro[codtorre,linha].PecaAtual;
                    torre.Roque(p.Tabuleiro);                 
 
-                    Assert.IsNull(t.tabuleiro[linha,codtorre].PecaAtual);
-                    Assert.IsNull(t.tabuleiro[linha,4].PecaAtual);
+                   Assert.IsNull(t.tabuleiro[codtorre,linha].PecaAtual);
+                   Assert.IsNull(t.tabuleiro[4,linha].PecaAtual);
 
-                    Assert.IsInstanceOf<Torre>(t.tabuleiro[linha,codtorre+3].PecaAtual);
-                    Assert.IsInstanceOf<Rei>(t.tabuleiro[linha,4-2].PecaAtual);
+                   Assert.IsInstanceOf<Torre>(t.tabuleiro[codtorre+3,linha].PecaAtual);
+                   Assert.IsInstanceOf<Rei>(t.tabuleiro[4-2,linha].PecaAtual);
 
              
                     
@@ -100,57 +172,74 @@ public class TorreTeste {
                 }
                 else if(codtorre != 0 && !moveu)
                 {
-                    torre = (Torre) t.tabuleiro[linha,codtorre-1].PecaAtual;
+                    codtorre = codtorre -1;
+                    Debug.Log("talvez possa fazer roque");
+                    torre = (Torre) t.tabuleiro[codtorre,linha].PecaAtual;
                     torre.Roque(p.Tabuleiro);            
 
-                    Assert.IsNull(t.tabuleiro[linha,codtorre].PecaAtual);
-                    Assert.IsNull(t.tabuleiro[linha,4].PecaAtual);
+                    Assert.IsNull(t.tabuleiro[codtorre,linha].PecaAtual);
+                    Assert.IsNull(t.tabuleiro[4,linha].PecaAtual);
 
-                    Assert.IsInstanceOf<Torre>(t.tabuleiro[linha,codtorre-2].PecaAtual);
-                    Assert.IsInstanceOf<Rei>(t.tabuleiro[linha,4+2].PecaAtual);
+                    Assert.IsInstanceOf<Torre>(t.tabuleiro[codtorre-2,linha].PecaAtual);
+                    Assert.IsInstanceOf<Rei>(t.tabuleiro[4+2,linha].PecaAtual);
                 }
                 else if(moveu)
                 {
-                    torre = (Torre) t.tabuleiro[linha,0].PecaAtual;
+                    Debug.Log("Não pode fazer roque");
+                    if(codtorre !=0)
+                    {
+                        codtorre = codtorre -1;
+                    }
 
-                    p.Tabuleiro.tabuleiro[linha,0].PecaAtual.primeiraJogada = false;
-                    p.Tabuleiro.tabuleiro[linha,7].PecaAtual.primeiraJogada = false;
-                    p.Tabuleiro.tabuleiro[linha,4].PecaAtual.primeiraJogada = false;
+                    torre = (Torre) t.tabuleiro[codtorre,linha].PecaAtual;
+
+                    p.Tabuleiro.tabuleiro[0,linha].PecaAtual.primeiraJogada = false;
+                    p.Tabuleiro.tabuleiro[7,linha].PecaAtual.primeiraJogada = false;
+                    p.Tabuleiro.tabuleiro[4,linha].PecaAtual.primeiraJogada = false;
 
                     torre.Roque(p.Tabuleiro);
 
-                    Assert.IsNotNull(t.tabuleiro[linha,0].PecaAtual);
-                    Assert.IsNotNull(t.tabuleiro[linha,7].PecaAtual);
-                    Assert.IsNotNull(t.tabuleiro[linha,4].PecaAtual);
+                    Assert.IsNotNull(t.tabuleiro[0,linha].PecaAtual);
+                    Assert.IsNotNull(t.tabuleiro[7,linha].PecaAtual);
+                    Assert.IsNotNull(t.tabuleiro[4,linha].PecaAtual);
 
-                    Assert.IsInstanceOf<Torre>(t.tabuleiro[linha,0].PecaAtual);
-                    Assert.IsInstanceOf<Torre>(t.tabuleiro[linha,7].PecaAtual);
-                    Assert.IsInstanceOf<Rei>(t.tabuleiro[linha,4].PecaAtual);
+                    Assert.IsInstanceOf<Torre>(t.tabuleiro[0,linha].PecaAtual);
+                    Assert.IsInstanceOf<Torre>(t.tabuleiro[7,linha].PecaAtual);
+                    Assert.IsInstanceOf<Rei>(t.tabuleiro[4,linha].PecaAtual);
 
                     
                 }
                 
             }
-            else
+            else // caso em que não pode fazer roque.
             {
-                torre = (Torre) t.tabuleiro[linha,0].PecaAtual;
+                Debug.Log("nao pode fazer roque");
+                torre = (Torre) t.tabuleiro[0,linha].PecaAtual;
                 if(codtorre != 0)
                 {
-                    torre = (Torre) t.tabuleiro[linha,7].PecaAtual;
+                    torre = (Torre) t.tabuleiro[7,linha].PecaAtual;
+                }
+                if(moveu)
+                {
+                    p.Tabuleiro.tabuleiro[0,linha].PecaAtual.primeiraJogada = false;
+                    p.Tabuleiro.tabuleiro[7,linha].PecaAtual.primeiraJogada = false;
+                    p.Tabuleiro.tabuleiro[4,linha].PecaAtual.primeiraJogada = false;
                 }
                 torre.Roque(p.Tabuleiro);
-                Assert.IsNotNull(t.tabuleiro[linha,0].PecaAtual);
-                Assert.IsNotNull(t.tabuleiro[linha,7].PecaAtual);
-                Assert.IsNotNull(t.tabuleiro[linha,4].PecaAtual);
+                // casas ainda estão ocupadas
+                Assert.IsNotNull(t.tabuleiro[0,linha].PecaAtual);
+                Assert.IsNotNull(t.tabuleiro[7,linha].PecaAtual);
+                Assert.IsNotNull(t.tabuleiro[4,linha].PecaAtual);
 
-                
-                    Assert.IsInstanceOf<Torre>(t.tabuleiro[linha,0].PecaAtual);
-                    Assert.IsInstanceOf<Torre>(t.tabuleiro[linha,7].PecaAtual);
-                    Assert.IsInstanceOf<Rei>(t.tabuleiro[linha,4].PecaAtual);
+                // e são estão ocupadas por torre e rei 
+                Assert.IsInstanceOf<Torre>(t.tabuleiro[0,linha].PecaAtual); // torre
+                Assert.IsInstanceOf<Torre>(t.tabuleiro[7,linha].PecaAtual); // torre
+                Assert.IsInstanceOf<Rei>(t.tabuleiro[4,linha].PecaAtual);   // rei
 
             }
            
             
 
         }
+        
 }
