@@ -15,6 +15,7 @@ public class Partida
 	public int Turno { get; private set; }
 	public int TurnoDaUltimaCaptura { get; /*private*/ set; }
 	public List<String> HistoricoDoTabuleiro { get; private set; }
+	public bool fim { get; private set; }
 
 
 	public Partida()
@@ -26,6 +27,7 @@ public class Partida
 		jIA = new IA(Jogador2);
 		HistoricoDoTabuleiro = new List<String>();
 		IniciarPartida(Jogador1, Jogador2);
+		this.fim = false;
 	}
 
 	public void RefazReferencias()
@@ -43,17 +45,26 @@ public class Partida
 	}
 	public void PassarAVez()
 	{
-		if (VerificaEmpateObrigatorio())
+		if (VerificaEmpateObrigatorio())   
+		{
 			Debug.Log("Empate!");
-
+			this.fim = true;
+		}
+			
 		if (VerificaVitoria())
+		{
 			Debug.Log("Vitória!");
-
+			this.fim = true;
+		}
+			
 		if (VerificaEmpateOpcional())
 			Debug.Log("Um empate pode ser pedido!");
 
 		Turno++;
-
+		Debug.Log("Passando turno...");
+		//this.fim = true; usado nos testes
+ // removendo temporariamente para teste de verificar vitoria
+		/*
 		if (JogadorDaVez() == Jogador2) // TODO: if (jogador da vez é IA)
 		{
 			//Tabuleiro.PrintaTabuleiro();
@@ -63,7 +74,7 @@ public class Partida
 			RefazReferencias();
 			//Tabuleiro.PrintaTabuleiro();
 		}
-
+*/
 		// Debug.Log(Turno);
 
 		RegistrarEstadoDoTabuleiro();
@@ -107,7 +118,7 @@ public class Partida
 		RegistrarEstadoDoTabuleiro();
 	}
 	
-	private bool VerificaVitoria()
+	public bool VerificaVitoria()
 	{
 		// para ocorrer a vitoria é preciso que o rei adversario esteja em uma posição em que seja impossivel escapar 
 		// ou seja xeque mate:
