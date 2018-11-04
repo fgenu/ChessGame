@@ -46,7 +46,7 @@ public class Partida
         {
             Turno = 2;
             Tabuleiro.PrintaTabuleiro();
-            Movimento m = jIA.minmax(3, -222222222,2222222222,true,Tabuleiro).movimento;
+            Movimento m = jIA.minmax(3, -222222222,2222222222,true,Tabuleiro, null).movimento;
             Debug.Log(m.origem.PosX+"   "+m.origem.PosY);
             UItab.TryMove(m.origem.uiC, m.destino.uiC);
             refazReferencias();

@@ -19,6 +19,10 @@ public class Movimento
 		this.tipo = tipo;
 	}
 
+	public Peca recuperarPeca(Casa destino){
+		return destino.PecaAtual;
+	}
+
 	// Propaga um movimento na direção dada.
 	public static List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true, bool verificaXeque=true)
 	{
