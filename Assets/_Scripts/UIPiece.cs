@@ -41,7 +41,7 @@ public class UIPiece : MonoBehaviour
 	private void OnMouseDown() {
 		UITabuleiro uiTabuleiro = FindObjectOfType<UITabuleiro>();
 		UICasa casa;
-		List<Movimento> possibilidades = Piece.ListaMovimentos(uiTabuleiro.Tabuleiro, Piece.CasaAtual);
+		List<Movimento> possibilidades = Piece.ListaMovimentos();
 		foreach (var possibilidade in possibilidades){
 				casa = uiTabuleiro.GetUICasa(possibilidade.destino);
 				casa.StartHighlight();
@@ -52,7 +52,7 @@ public class UIPiece : MonoBehaviour
 	private void OnMouseUp() {
 		UITabuleiro uiTabuleiro = FindObjectOfType<UITabuleiro>();
 		UICasa casa;
-		List<Movimento> possibilidades = Piece.ListaMovimentos(uiTabuleiro.Tabuleiro, Piece.CasaAtual);
+		List<Movimento> possibilidades = Piece.ListaMovimentos();
 		foreach (var possibilidade in possibilidades){
 				casa = uiTabuleiro.GetUICasa(possibilidade.destino);
 				casa.StopHighlight();
@@ -68,7 +68,7 @@ public class UIPiece : MonoBehaviour
 
         if (Piece.PodePercorrer(movimento, tabuleiro))
         {
-            if ((tabuleiro.Turno == 1 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador1) || (tabuleiro.Turno == 2 && origem.casa.PecaAtual.jDono == tabuleiro.partida.Jogador2))
+            if ((origem.casa.PecaAtual.jDono == tabuleiro.partida.JogadorDaVez()))
             {
                 if (destino.casa.PecaAtual != null)
                 {

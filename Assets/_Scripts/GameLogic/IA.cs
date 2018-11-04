@@ -14,7 +14,7 @@ public class Jogada{
 
 public class IA
 {
-    public double[,] peaoPreto = new double[8,8] {
+    public double[,] peaoBranco = new double[8,8] {
         {0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0},
         {5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0},
         {1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0},
@@ -24,7 +24,7 @@ public class IA
         {0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5},
         {0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0}};
 
-    public double[,] peaoBranco = new double[8, 8] {
+    public double[,] peaoPreto = new double[8, 8] {
         {0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0},
         {0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5},
         {0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5},
@@ -124,62 +124,119 @@ public class IA
         Cor = j.Cor;
     }
 
-    public double valorCasa(Casa atual, Peca peca, char cor){
-        if(peca.Cor == cor){
+    public double getPieceValue(Peca peca, Casa destino){
+        if(destino.PecaAtual == null){
             if(peca is Peao){
                 if(peca.Cor == 'b'){
-                    return 10 + peaoBranco[atual.PosX, atual.PosY];
+                    return peaoBranco[destino.PosX, destino.PosY];
                 }
                 else{
-                    return 10 + peaoPreto[atual.PosX, atual.PosY];
+                    return peaoPreto[destino.PosX, destino.PosY];
                 }
             }
             else if(peca is Rainha){
-                return 90 + rainha[atual.PosX, atual.PosY];
+                return rainha[destino.PosX, destino.PosY];
             }
             else if(peca is Torre){
                 if(peca.Cor == 'b'){
-                    return 50 + torreBranco[atual.PosX, atual.PosY];
+                    return torreBranco[destino.PosX, destino.PosY];
                 }
                 else{
-                    return 50 + torrePreto[atual.PosX, atual.PosY];
+                    return torrePreto[destino.PosX, destino.PosY];
                 }
             }
             else if(peca is Bispo){
                 if(peca.Cor == 'b'){
-                    return 30 + bispoBranco[atual.PosX, atual.PosY];
+                    return bispoBranco[destino.PosX, destino.PosY];
                 }
                 else{
-                    return 30 + bispoPreto[atual.PosX, atual.PosY];
+                    return bispoPreto[destino.PosX, destino.PosY];
                 }
             }
             else if(peca is Rei){
                 if(peca.Cor == 'b'){
-                    return 9000 + reiBranco[atual.PosX, atual.PosY];
+                    return reiBranco[destino.PosX, destino.PosY];
                 }
                 else{
-                    return 9000 + reiPreto[atual.PosX, atual.PosY];
+                    return reiPreto[destino.PosX, destino.PosY];
                 }
             }
-            else if(peca is Cavalo){
-                return 30 + cavalo[atual.PosX, atual.PosY];
+            if(peca is Cavalo){
+                return cavalo[destino.PosX, destino.PosY];
             }
+            return 0;
         }
-        return 0;
+        else {
+            if(destino.PecaAtual is Peao){
+               if(peca.Cor == 'b'){
+                    return 10 + peaoBranco[destino.PosX, destino.PosY];
+                }
+                else{
+                    return 10 + peaoPreto[destino.PosX, destino.PosY];
+                } 
+            }
+            else if(destino.PecaAtual is Torre){
+               if(peca.Cor == 'b'){
+                    return 50 + torreBranco[destino.PosX, destino.PosY];
+                }
+                else{
+                    return 50 + torrePreto[destino.PosX, destino.PosY];
+                } 
+            }
+            else if(destino.PecaAtual is Bispo){
+               if(peca.Cor == 'b'){
+                    return 30 + bispoBranco[destino.PosX, destino.PosY];
+                }
+                else{
+                    return 30 + bispoPreto[destino.PosX, destino.PosY];
+                } 
+            }
+            else if(destino.PecaAtual is Rei){
+               if(peca.Cor == 'b'){
+                    return 900 + reiBranco[destino.PosX, destino.PosY];
+                }
+                else{
+                    return 900 + reiPreto[destino.PosX, destino.PosY];
+                } 
+            }
+            else if(destino.PecaAtual is Cavalo){
+                return 30 + cavalo[destino.PosX, destino.PosY];
+            }
+            else if(destino.PecaAtual is Rainha){
+                return 90 + rainha[destino.PosX, destino.PosY];
+            }
+            return 0;
+        }
     }
 
-    public double pontuacao(Tabuleiro tab, char cor){
-        double pont=0;
+    public Jogada melhorJogada(Tabuleiro tab){
         Casa atual;
+        double melhor = Double.MinValue;
+        int melhorX;
+        int melhorY;
+        double jogadaAtual;
+        Movimento melhorMov=null;
         for(int i=0; i<8; i++){
             for(int j=0; j<8; j++){
                 atual = tab.GetCasa(i,j);
-                if(atual.PecaAtual!=null){
-                    pont += valorCasa(atual, atual.PecaAtual, cor);
+                if(atual.PecaAtual!=null && atual.PecaAtual.Cor == this.Cor){
+                    List<Movimento> possibilidades = atual.PecaAtual.ListaMovimentos();
+                    foreach (var possibilidade in possibilidades){
+                        if (atual.PecaAtual.PodePercorrer(possibilidade, tab)){
+                           jogadaAtual = getPieceValue(atual.PecaAtual, possibilidade.destino);
+                           if (jogadaAtual > melhor){
+                               melhor = jogadaAtual;
+                               melhorMov = possibilidade;
+                               melhorX = i;
+                               melhorY = j;
+                           }
+                        }
+                    }
                 }
             }
         }
-        return pont;
+        return new Jogada(melhor, melhorMov);
+        //return tab.GetCasa(i,j);
     }
 
     public Peca RealizaMovimentoIA(Movimento m)
@@ -235,6 +292,7 @@ public class IA
     }
 
 
+
     public double evaluate(Tabuleiro tab){
         double pontuacaoTotal = pontuacao(tab, this.Cor);
         if(this.Cor == 'p')  pontuacaoTotal -= pontuacao(tab, 'b');
@@ -242,7 +300,7 @@ public class IA
         return pontuacaoTotal;
     }
 
-    public Jogada minmax(int profundidade,int maxProfundidade,double alfa, double beta, bool max,Tabuleiro tab, Movimento atual)
+  public Jogada minmax(int profundidade,int maxProfundidade,double alfa, double beta, bool max,Tabuleiro tab, Movimento atual)
     {
 
         if (profundidade == 1)
