@@ -242,7 +242,7 @@ public class IA
         return pontuacaoTotal;
     }
 
-    public Jogada minmax(int profundidade,double alfa, double beta, bool max,Tabuleiro tab, Movimento atual)
+    public Jogada minmax(int profundidade,int maxProfundidade,double alfa, double beta, bool max,Tabuleiro tab, Movimento atual)
     {
 
         if (profundidade == 1)
@@ -259,7 +259,7 @@ public class IA
             {
 
                 capt = RealizaMovimentoIA(m);
-                pontuacaoTemp = minmax(profundidade - 1,alfa,beta, !max,tab, m);
+                pontuacaoTemp = minmax(profundidade - 1,maxProfundidade, alfa,beta, !max,tab, m);
                 if (pontuacaoTemp.valor >= pontuacaoAt.valor)
                 {
                     pontuacaoAt.valor = pontuacaoTemp.valor;
@@ -286,7 +286,7 @@ public class IA
             foreach (Movimento m in movimentosPossiveis)
             {
                 capt = RealizaMovimentoIA(m);
-                pontuacaoTemp = minmax(profundidade - 1,alfa,beta, !max, tab, m);
+                pontuacaoTemp = minmax(profundidade - 1, maxProfundidade, alfa,beta, !max, tab, m);
                 if (pontuacaoTemp.valor <= pontuacaoAt.valor)
                 {
                     pontuacaoAt.valor = pontuacaoTemp.valor;
@@ -305,7 +305,9 @@ public class IA
                 }
 
             }
-            
+            if (profundidade == maxProfundidade && pontuacaoAt.movimento==null) {
+                pontuacaoAt.movimento = movimentosPossiveis[0];
+            }
             return pontuacaoAt;
         }
     }

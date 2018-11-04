@@ -42,25 +42,30 @@ public class Partida
 	public void PassarAVez()
     {
         VerificaVitoria();
-		if (Turno == 1)
+        Debug.Log("Passando a vez");
+        if (!UItab.promovendoPeao)
         {
-            Turno = 2;
-            Tabuleiro.PrintaTabuleiro();
-            Movimento m = jIA.minmax(3, -222222222,2222222222,true,Tabuleiro, null).movimento;
-            Debug.Log(m.origem.PosX+"   "+m.origem.PosY);
-            UItab.TryMove(m.origem.uiC, m.destino.uiC);
-            refazReferencias();
-            Tabuleiro.PrintaTabuleiro();
+            Debug.Log("Passou a vez");
+            if (Turno == 1)
+            {
+                Turno = 2;
+                Tabuleiro.PrintaTabuleiro();
+                Movimento m = jIA.minmax(3,3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
+                Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
+                UItab.TryMove(m.origem.uiC, m.destino.uiC);
+                refazReferencias();
+                Tabuleiro.PrintaTabuleiro();
+            }
+            else
+            {
+                Turno = 1;
+            }
         }
-        else
-        {
-            Turno = 1;
-        }
-        Debug.Log(Turno);
+     
 
     }
 
-	private Jogador JogadorDaVez()
+    private Jogador JogadorDaVez()
 	{
 		if (Turno == 1) return Jogador1;
 		else return Jogador2;
