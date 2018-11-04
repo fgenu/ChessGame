@@ -30,55 +30,51 @@ public class Partida
 		this.fim = false;
 	}
 
-	public void RefazReferencias()
-	{
-		foreach (Peca p in Jogador1.conjuntoPecas)
-		{
-			p.CasaAtual.PecaAtual = p;
-		}
+
+	// TODO: avaliar necessidade desta função
+    public int retornaTurno()
+    {
+        return Turno;
+    }
+    public void refazReferencias() {
+        foreach (Peca p in Jogador1.conjuntoPecas)
+        {
+            p.CasaAtual.PecaAtual = p;
+        }
 
 
-		foreach (Peca p in Jogador2.conjuntoPecas)
-		{
-			p.CasaAtual.PecaAtual = p;
-		}
-	}
+        foreach (Peca p in Jogador2.conjuntoPecas)
+        {
+            p.CasaAtual.PecaAtual = p;
+        }
+    }
 	public void PassarAVez()
-	{
-		if (VerificaEmpateObrigatorio())   
-		{
-			Debug.Log("Empate!");
-			this.fim = true;
-		}
-			
-		if (VerificaVitoria())
-		{
-			Debug.Log("Vitória!");
-			this.fim = true;
-		}
-			
-		if (VerificaEmpateOpcional())
-			Debug.Log("Um empate pode ser pedido!");
+    {
+        VerificaVitoria();
+        Debug.Log("Passando a vez");
+        if (!UItab.promovendoPeao)
+        {
+            Debug.Log("Passou a vez");
+            if (Turno == 1)
+            {
+                Turno = 2;
+                Tabuleiro.PrintaTabuleiro();
+                Movimento m = jIA.minmax(3,3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
+                Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
+                UItab.TryMove(m.origem.uiC, m.destino.uiC);
+                refazReferencias();
+                Tabuleiro.PrintaTabuleiro();
+            }
+            else
+            {
+                Turno = 1;
+            }
+        }
+     
 
-		Turno++;
-		Debug.Log("Passando turno...");
-		//this.fim = true; usado nos testes
- // removendo temporariamente para teste de verificar vitoria
-		/*
-		if (JogadorDaVez() == Jogador2) // TODO: if (jogador da vez é IA)
-		{
-			//Tabuleiro.PrintaTabuleiro();
-			Movimento m = jIA.minmax(3, -222222222, 2222222222, true, Tabuleiro).movimento;
-			//Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
-			UItab.TryMove(m.origem.uiC, m.destino.uiC);
-			RefazReferencias();
-			//Tabuleiro.PrintaTabuleiro();
-		}
-*/
-		// Debug.Log(Turno);
+    }
 
-		RegistrarEstadoDoTabuleiro();
-	}
+  
 
 	public Jogador JogadorDaVez()
 	{

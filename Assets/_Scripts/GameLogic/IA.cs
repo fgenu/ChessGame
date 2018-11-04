@@ -290,12 +290,22 @@ public class IA
             m.destino.PecaAtual.PromoverPeao(m, 1);
         }*/
     }
-    public Jogada minmax(int profundidade,double alfa, double beta, bool max,Tabuleiro tab)
+
+
+
+    public double evaluate(Tabuleiro tab){
+        double pontuacaoTotal = pontuacao(tab, this.Cor);
+        if(this.Cor == 'p')  pontuacaoTotal -= pontuacao(tab, 'b');
+        else                 pontuacaoTotal -= pontuacao(tab, 'p');
+        return pontuacaoTotal;
+    }
+
+  public Jogada minmax(int profundidade,int maxProfundidade,double alfa, double beta, bool max,Tabuleiro tab, Movimento atual)
     {
 
         if (profundidade == 1)
         {
-            return melhorJogada(tab);
+            return new Jogada(evaluate(tab), atual);
         }
         if (max)
         {
@@ -307,7 +317,7 @@ public class IA
             {
 
                 capt = RealizaMovimentoIA(m);
-                pontuacaoTemp = minmax(profundidade - 1,alfa,beta, !max,tab);
+                pontuacaoTemp = minmax(profundidade - 1,maxProfundidade, alfa,beta, !max,tab, m);
                 if (pontuacaoTemp.valor >= pontuacaoAt.valor)
                 {
                     pontuacaoAt.valor = pontuacaoTemp.valor;
@@ -334,7 +344,7 @@ public class IA
             foreach (Movimento m in movimentosPossiveis)
             {
                 capt = RealizaMovimentoIA(m);
-                pontuacaoTemp = minmax(profundidade - 1,alfa,beta, !max, tab);
+                pontuacaoTemp = minmax(profundidade - 1, maxProfundidade, alfa,beta, !max, tab, m);
                 if (pontuacaoTemp.valor <= pontuacaoAt.valor)
                 {
                     pontuacaoAt.valor = pontuacaoTemp.valor;
@@ -353,7 +363,9 @@ public class IA
                 }
 
             }
-            
+            if (profundidade == maxProfundidade && pontuacaoAt.movimento==null) {
+                pontuacaoAt.movimento = movimentosPossiveis[0];
+            }
             return pontuacaoAt;
         }
     }
@@ -362,7 +374,7 @@ public class IA
     private List<Movimento> listaMovimentosTotal(Jogador j,Tabuleiro tab) {
         List<Movimento> listaMovs = new List<Movimento>();
         foreach (Peca p in j.conjuntoPecas){
-            listaMovs.AddRange(p.ListaMovimentos());
+            listaMovs.AddRange(p.ListaMovimentos(tab,p.CasaAtual));
         }
         return listaMovs;
 

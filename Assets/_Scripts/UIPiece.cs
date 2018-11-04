@@ -62,6 +62,8 @@ public class UIPiece : MonoBehaviour
 
 	public void TryMovePiece(UICasa origem, UICasa destino, Tabuleiro tabuleiro)
 	{
+        Debug.Log(origem);
+        Debug.Log(destino);
 		var movimento = new Movimento(origem: origem.casa, destino: destino.casa);
 
         if (Piece.PodePercorrer(movimento, tabuleiro))
