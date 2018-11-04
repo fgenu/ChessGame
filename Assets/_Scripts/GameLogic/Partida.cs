@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
 
 public class Partida
 {
@@ -21,29 +23,26 @@ public class Partida
 		Tabuleiro = new Tabuleiro();
 		Jogador1 = new Jogador('b', false);
 		Jogador2 = new Jogador('p', true);
-        Tabuleiro.partida = this;
-        jIA = new IA(Jogador2);
+		Tabuleiro.partida = this;
+		jIA = new IA(Jogador2);
+		HistoricoDoTabuleiro = new List<String>();
 		IniciarPartida(Jogador1, Jogador2);
 		this.fim = false;
 	}
 
-	// TODO: avaliar necessidade desta função
-    public int retornaTurno()
-    {
-        return Turno;
-    }
-    public void refazReferencias() {
-        foreach (Peca p in Jogador1.conjuntoPecas)
-        {
-            p.CasaAtual.PecaAtual = p;
-        }
+	public void RefazReferencias()
+	{
+		foreach (Peca p in Jogador1.conjuntoPecas)
+		{
+			p.CasaAtual.PecaAtual = p;
+		}
 
 
-        foreach (Peca p in Jogador2.conjuntoPecas)
-        {
-            p.CasaAtual.PecaAtual = p;
-        }
-    }
+		foreach (Peca p in Jogador2.conjuntoPecas)
+		{
+			p.CasaAtual.PecaAtual = p;
+		}
+	}
 	public void PassarAVez()
 	{
 		if (VerificaEmpateObrigatorio())   
@@ -81,48 +80,42 @@ public class Partida
 		RegistrarEstadoDoTabuleiro();
 	}
 
-
-	private Jogador JogadorDaVez()
+	public Jogador JogadorDaVez()
 	{
-		if (Turno == 1) return Jogador1;
-		else return Jogador2;
-	}
-
-	private void VerificaVitoria()
-	{
-		// Há movimentos possíveis?
-		foreach (Peca peca in JogadorDaVez().inimigo.conjuntoPecas)
+		if (Turno % 2 == 1) // turno ímpar
 		{
-			if (peca.ListaMovimentos(Tabuleiro, peca.CasaAtual).Count > 0)
-			{
-				// Sim
-				return;
-			}
+			if (Jogador1.Cor == 'b')
+				return Jogador1;
+			else
+				return Jogador2;
 		}
-
-		// O rei está em xeque?
-		if (JogadorDaVez().inimigo.EmXeque())
+		else // turno par
 		{
-			Debug.Log("Xeque-mate!");
+			if (Jogador1.Cor == 'p')
+				return Jogador1;
+			else
+				return Jogador2;
 		}
-
-		Debug.Log("Fim");
 	}
 
 	void IniciarPartida(Jogador j1, Jogador j2)
 	{
 		j1.inimigo = j2;
 		j2.inimigo = j1;
-        if (j1.Cor == 'b')
-        {
-            Turno = 1;
-        }
-        else
-        {
-            Turno = 2;
-        }
+		Turno = 1;
+		if (j1.Cor == 'b')
+		{
+			Turno = 1;
+		}
+		else
+		{
+			Turno = 2;
+		}
 		Tabuleiro.InserePecasNaPosicaoInicial(this);
 		Tabuleiro.PrintaTabuleiro();
+
+		HistoricoDoTabuleiro.Clear();
+		RegistrarEstadoDoTabuleiro();
 	}
 	
 	public bool VerificaVitoria()
@@ -336,6 +329,71 @@ public class Partida
 			return Jogador1;
 		else
 			return null;
+	}
+
+	public String EstadoAtual()
+	{
+		String str = "A jogar: " + JogadorDaVez().Cor + "\n";
+
+		for (int i = 0; i < Tabuleiro.Tamanho; i++)
+		{
+			for (int j = 0; j < Tabuleiro.Tamanho; j++)
+			{
+				str += "Casa (" + i + "," + j + ") ";
+				Peca peca = Tabuleiro.GetCasa(i, j).PecaAtual;
+
+				if (peca == null)
+				{
+					str += "__";
+				}
+				else
+				{
+					if (peca is Torre)
+					{
+						str += "T";
+					}
+					else if (peca is Cavalo)
+					{
+						str += "C";
+					}
+					else if (peca is Bispo)
+					{
+						str += "B";
+					}
+					else if (peca is Rei)
+					{
+						str += "E";
+					}
+					else if (peca is Rainha)
+					{
+						str += "A";
+					}
+					else if (peca is Peao)
+					{
+						str += "P";
+					}
+					else
+					{
+						str += "?";
+						Debug.LogWarning("Tipo de peça desconhecido ao registrar no histórico.");
+					}
+
+					str += peca.Cor;
+					str += peca.ListaMovimentosToString();
+				}
+				str += "\n";
+			}
+			str += "\n";
+		}
+
+		return str;
+	}
+
+
+
+	private void RegistrarEstadoDoTabuleiro()
+	{
+		HistoricoDoTabuleiro.Add(EstadoAtual());
 	}
 
 
