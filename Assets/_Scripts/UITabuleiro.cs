@@ -66,7 +66,6 @@ public class UITabuleiro : MonoBehaviour
                             mudaPeca(pAtual);
                             DestroyMenuPromo();
                             promovendoPeao = false;
-                            partida.PassarAVez();
                         }
                     }
                     else
