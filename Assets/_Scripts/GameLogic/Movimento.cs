@@ -19,12 +19,15 @@ public class Movimento
 		this.tipo = tipo;
 	}
 
-	// Propaga um movimento na direção dada. 
-	public static List<Movimento> SeguindoDirecao(Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true, bool verificaXeque=true)
+	public Peca recuperarPeca(Casa destino){
+		return destino.PecaAtual;
+	}
+
+	// Propaga um movimento na direção dada.
+	public static List<Movimento> SeguindoDirecao(Tabuleiro tabuleiro, Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true, bool verificaXeque=true)
 	{
 		var possibilidades = new List<Movimento>();
         //Debug.Log(origem.PosX + x);
-		Tabuleiro tabuleiro = origem.Tabuleiro;
 		Casa seguinte = tabuleiro.GetCasa(origem.PosX + x, origem.PosY + y);
 
 		while (seguinte != null && passos > 0)
@@ -79,8 +82,7 @@ public class Movimento
 	}
 
 	// verifica todos os movimentos das peças inimigas para verificar se pode mover sem ter xeque
-	// tive que mudar para public porque essa função precisa ser utilizada em outro local alem da propria classe.
-	public bool CausaAutoXeque ()
+	private bool CausaAutoXeque ()
 	{
 		if (origem == null || destino == null)
 			return false;

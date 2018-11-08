@@ -84,27 +84,6 @@ public class Tabuleiro
 		//coloca as peças dos jogadores no tabuleiro
 		for (int i = 0; i < Tamanho; i++)
 		{
-			/*
-			// CORREÇÃO : OS PARAMETROS DA MATRIZ ESTAVAM INVERTIDOS
-			// APENAS COMENTEI o codigo antigo por enquanto para caso essa mudança afete outro metodo
-			//coloca as pecas especiais do jogador de cima
-			//tabuleiro[i, Tamanho - 1].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
-			tabuleiro[Tamanho-1,i].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
-			
-			//coloca os peoes do jogador de cima
-			//tabuleiro[i, Tamanho - 2].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i + 8]);
-			tabuleiro[Tamanho - 2,i].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i+8]);
-			
-			//coloca as pecas especiais jogador de baixo
-			//tabuleiro[i, 0].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i]);
-			tabuleiro[0,i].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i]);
-			
-			//coloca os peoes do jogador de baixo
-			//tabuleiro[i, 1].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i + 8]);
-			tabuleiro[1,i].ColocarPeca(partida.JogadorDeBaixo().conjuntoPecas[i + 8]);
-			*/
-
-			//Voltando com os parametros originais!
 			//coloca as pecas especiais do jogador de cima
 			tabuleiro[i, Tamanho - 1].ColocarPeca(partida.JogadorDeCima().conjuntoPecas[i]);
 

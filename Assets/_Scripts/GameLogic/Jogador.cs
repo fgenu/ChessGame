@@ -34,23 +34,20 @@ public class Jogador
 		}
 	}
 
-	// função que define se um jogador está em xeque
-	// e também aparentemente também verifica se algum movimento inimigo envolve captura em direção ao rei (posso estar errado =x)
-													 
 	public bool EmXeque()
 	{
-		List<Movimento> movimentos;             // verifica todos os movimentos do seu inimigo
+		List<Movimento> movimentos;
 		foreach (Peca i in inimigo.conjuntoPecas)
 		{
-			if (i.CasaAtual != null)   // se o inimigo tiver alguma peça em alguma casa (se ele tem alguma peça que não foi capturada)
+			if (i.CasaAtual != null)
 			{		
-				movimentos = i.ListaMovimentos(false); 
+				movimentos = i.ListaMovimentos(i.CasaAtual.Tabuleiro, i.CasaAtual, false);
 			
 				if (movimentos.Count > 0)
 				{
-					foreach (Movimento mov in movimentos)  
+					foreach (Movimento mov in movimentos)
 					{
-						if (mov.destino.PecaAtual is Rei && mov.tipo != Movimento.Tipo.SemCaptura) // se alguma das possibilidades de movimento envolve captura em direção ao rei
+						if (mov.destino.PecaAtual is Rei && mov.tipo != Movimento.Tipo.SemCaptura)
 						{							
 							return true;
 						}
