@@ -48,6 +48,7 @@ public class Jogador
 			
 				if (movimentos.Count > 0)
 				{
+					
 					foreach (Movimento mov in movimentos)  
 					{
 						if (mov.destino.PecaAtual is Rei && mov.tipo != Movimento.Tipo.SemCaptura) // se alguma das possibilidades de movimento envolve captura em direção ao rei

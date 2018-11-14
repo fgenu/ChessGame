@@ -137,7 +137,7 @@ public class PartidaTestes {
     }
     // note que passar false e algum atributo garante uma assertion incorreta.
     // note que passar true e não passar pelo menos 2 posições para xeque mate torna a assertion incorreta.
-    [TestCase(false,0,0,0,0,0,0,0)]  
+    [TestCase(false,0,0,0,0,0,0,0)] // esse caso teste é o caso "passe direto" logo vai falhar   
     [TestCase(true,0,0,0,3,7,0,6)] 
     public void TesteVitoria(bool acaba, int linhajogador, int x1, int y1, int x2, int y2, int x3, int y3)
     {
@@ -148,25 +148,27 @@ public class PartidaTestes {
        }
        
        Tabuleiro t = p.Tabuleiro;
-       p.PassarAVez();
        
-
        // testando se o problema é a simulação...
-     //  Debug.Log(t.tabuleiro[7,3].PecaAtual is Bispo);  
-     //  Debug.Log(t.tabuleiro[6,0].PecaAtual is Torre);
+  //   Debug.Log(t.tabuleiro[7,3].PecaAtual is Bispo);  
+  //    Debug.Log(t.tabuleiro[6,0].PecaAtual is Torre);
 
- //     Debug.Log(t.tabuleiro[5,0].EstaOcupada());  
-  //  Debug.Log(t.tabuleiro[4,0].PecaAtual is Rei);
+  //    Debug.Log(t.tabuleiro[4,1].EstaOcupada());  
+  //  Debug.Log(t.tabuleiro[4,0].PecaAtual.jDono.Cor);
 
-   //     Debug.Log(t.tabuleiro[5,1].EstaOcupada());
-   //     Debug.Log(t.tabuleiro[6,2].EstaOcupada());
+  //      Debug.Log(t.tabuleiro[5,1].EstaOcupada());
+  //      Debug.Log(t.tabuleiro[6,2].EstaOcupada());
 
   //    Debug.Log(t.tabuleiro[4,0].PecaAtual.jDono.Cor);
   //    Debug.Log(t.tabuleiro[7,3].PecaAtual.jDono.Cor);
   //    Debug.Log(t.tabuleiro[6,0].PecaAtual.jDono.Cor);
+       p.Turno = 2; // usado para testes temporariamente (para uma situação de "inicio de jogo" (acabei de dar new partida)) seria obrigado passar o turno 2 vezes para ele verificar 
+       p.PassarAVez();
+       
 
 
-     //testando se o problema é a função de vitoria mesmo... (SIM O PROBLEMA É NA FUNÇÃO DE VITORIA)
+
+     //testando se o problema é a função de vitoria mesmo... (SIM O PROBLEMA É NA FUNÇÃO DE VITORIA)?
 
        if(acaba)
        {

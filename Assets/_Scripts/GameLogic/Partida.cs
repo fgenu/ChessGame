@@ -12,7 +12,7 @@ public class Partida
 	public Jogador Jogador2 { get; private set; }
 	public IA jIA;
 	public UITabuleiro UItab;
-	public int Turno { get; private set; }
+	public int Turno;// { get; private set; }   // depois de consertar o problema do nullpointer pode por isso como private denovo.
 	public int TurnoDaUltimaCaptura { get; /*private*/ set; }
 	public List<String> HistoricoDoTabuleiro { get; private set; }
 	public bool fim { get; private set; }
@@ -45,22 +45,36 @@ public class Partida
 	}
 	public void PassarAVez()
 	{
+		
+		Debug.Log("Passando turno...");
+
+		/*
 		if (VerificaEmpateObrigatorio())   
 		{
 			Debug.Log("Empate!");
 			this.fim = true;
 		}
+		   // comentei temporariamente porque estava dando nullpointer!	
+		*/
 			
+		/*	
+		if (VerificaEmpateOpcional())
+			Debug.Log("Um empate pode ser pedido!");
+        // comentei temporariamente porque estava dando nullpointer!
+	    */
+		
+
 		if (VerificaVitoria())
 		{
 			Debug.Log("Vitória!");
 			this.fim = true;
+			//RegistrarEstadoDoTabuleiro(); // AQUI OCORRE NULL POINTER
+			return; // coloquei esse return temporariamente aqui por causa do nullpointer
 		}
-			
-		if (VerificaEmpateOpcional())
-			Debug.Log("Um empate pode ser pedido!");
-        
-		Debug.Log("Passando turno...");
+
+
+		
+		
         if (!UItab.promovendoPeao)
         {
             Debug.Log("Passou a vez");
@@ -121,14 +135,16 @@ public class Partida
 		if (j1.Cor == 'b')
 		{
 			Turno = 1;
+			
 		}
 		else
 		{
 			Turno = 2;
+			
 		}
 		Tabuleiro.InserePecasNaPosicaoInicial(this);
 		Tabuleiro.PrintaTabuleiro();
-
+		
 		HistoricoDoTabuleiro.Clear();
 		RegistrarEstadoDoTabuleiro();
 	}
@@ -146,6 +162,7 @@ public class Partida
 		// O rei está em xeque?	
 		if (JogadorDaVez().inimigo.EmXeque())
 		{
+			
 			foreach (Peca peca in JogadorDaVez().inimigo.conjuntoPecas) // loop para achar o rei no conjunto de pecas inimigas
 			{
 
@@ -173,6 +190,7 @@ public class Partida
 
 										if ((peca.PosY == pa.PosY && Math.Abs(peca.PosX - pa.PosX) == 1) || (peca.PosX == pa.PosX && Math.Abs(peca.PosY - pa.PosY) == 1) || ((Math.Abs(peca.PosX - pa.PosX) == 1) && (Math.Abs(peca.PosY - pa.PosY) == 1)))
 										{
+											
 											return false;
 										}
 										numameacas++;
@@ -203,6 +221,7 @@ public class Partida
 					}
 					if (numprote == numameacas)
 					{
+						
 						return false;
 					}
 
@@ -222,7 +241,7 @@ public class Partida
 
 		}
 
-
+	
 		return false;
 	}
 
@@ -237,7 +256,7 @@ public class Partida
 
 		foreach (Peca peca in pecasInimigas)
 		{
-			if (peca.ListaMovimentos().Count > 0)
+			if (peca.ListaMovimentos().Count > 0)  // AQUI OCORRE NULL POINTER
 			{
 				semMovimentos = false;
 				break;
@@ -310,7 +329,7 @@ public class Partida
 
 		// Repetição do mesmo estado do tabuleiro três vezes. Empate pode ser pedido apenas logo que a repetição acontece.
 
-		String estado = EstadoAtual();
+		String estado = EstadoAtual(); // AQUI OCORRE NULL POINTER
 
 		int contagem = HistoricoDoTabuleiro.Where(x => x.Equals(estado)).Count();
 
