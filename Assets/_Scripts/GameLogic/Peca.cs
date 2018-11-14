@@ -9,7 +9,9 @@ public class Peca
 	public int PosX { get { return CasaAtual.PosX; } }
 	public int PosY { get { return CasaAtual.PosY; } }
 	public char Cor { get; private set; }
-	public int UltimoTurnoMovido = 0;
+	public int PrimeiroTurnoMovido { get; private set; }
+	public int UltimoTurnoMovido { get; private set; }
+	public Movimento UltimoMovimento { get; private set; }
 	public Jogador jDono;
     public UIPiece uiP;
 	public bool primeiraJogada;
@@ -19,6 +21,9 @@ public class Peca
 		CasaAtual = null;
 		Cor = j.Cor;
 		primeiraJogada = true;
+		PrimeiroTurnoMovido = 0;
+		UltimoTurnoMovido = 0;
+		UltimoMovimento = null;
 		jDono = j;
 	}
 
@@ -199,7 +204,7 @@ public class Peca
 		// torre não pode ter se movimentado nenhuma vez
 		if(!torre.primeiraJogada || !rei.primeiraJogada)
 		{
-			Debug.Log("NÃO É A PRIMEIRA JOGADA!");
+		//	Debug.Log("NÃO É A PRIMEIRA JOGADA!");
 			return false;
 
 		}
@@ -218,14 +223,14 @@ public class Peca
 		int i,f;
 		if(torrepos < reipos)
 		{
-			Debug.Log("a posição entre torre e rei caracteriza um roque maior(ou era para caracterizar)");
+		//	Debug.Log("a posição entre torre e rei caracteriza um roque maior(ou era para caracterizar)");
 			i = torrepos;
 			f = reipos;
 			
 		}
 		else
 		{
-			Debug.Log("a posição entre torre e rei caracteriza um roque menor(ou era para caracterizar)");
+		//	Debug.Log("a posição entre torre e rei caracteriza um roque menor(ou era para caracterizar)");
 			i = reipos;
 			f = torrepos;
 		}
@@ -234,7 +239,7 @@ public class Peca
 			if(tabuleiro.tabuleiro[p,linha].EstaOcupada())
 			{
 				//Debug.Log(p);
-				Debug.Log("TEM CASAS OCUPADAS NO CAMINHO!");
+		//		Debug.Log("TEM CASAS OCUPADAS NO CAMINHO!");
 				return false;
 			}
 		}
@@ -242,7 +247,7 @@ public class Peca
 		// rei nao pode estar em xeque
 		if(rei.jDono.EmXeque())
 		{
-			Debug.Log("Rei está em xeque!");
+		//	Debug.Log("Rei está em xeque!");
 			return false;
 		}
 		
@@ -257,7 +262,7 @@ public class Peca
 		if(movrei.CausaAutoXeque())
 		{
 			
-			Debug.Log("rei esta indo para casa sob ataque!(entraria em xeque)");
+		//	Debug.Log("rei esta indo para casa sob ataque!(entraria em xeque)");
 			// voltar para a torre para a poisção original 
 			movtorre.destino.PopPeca();
 			movtorre.origem.ColocarPeca(movida);
@@ -284,9 +289,9 @@ public class Peca
 
 
 	
-	public virtual void Roque(Tabuleiro tabuleiro, Torre torre = null)
+	public virtual Movimento Roque(Tabuleiro tabuleiro, Torre torre = null)
 	{
-		
+		return null;
 	}
 
 	public string ListaMovimentosToString()

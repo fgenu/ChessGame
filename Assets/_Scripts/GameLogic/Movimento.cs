@@ -7,6 +7,8 @@ public class Movimento
 	public Casa origem, destino;
 	public enum Tipo { Normal, SomenteCaptura, SemCaptura };
 	public Tipo tipo { get; private set; }
+	public Movimento movimentoExtra;
+	public Peca pecaCapturada;
 	public int valor; // Genú: O que significa?
 
 
@@ -17,6 +19,8 @@ public class Movimento
 		this.destino = destino;
 		this.origem = origem;
 		this.tipo = tipo;
+		//this.pecaCapturada = destino.PecaAtual; // comentado por enquanto 
+
 	}
 
     public Peca recuperarPeca(Casa destino)
@@ -45,11 +49,13 @@ public class Movimento
                         {
                             if (novo.CausaAutoXeque() == false)
                             {
+                                novo.pecaCapturada = seguinte.PecaAtual;
                                 possibilidades.Add(novo);
                             }
                         }
                         else
                         {
+                            novo.pecaCapturada = seguinte.PecaAtual;
                             possibilidades.Add(novo);
                         }
                     }

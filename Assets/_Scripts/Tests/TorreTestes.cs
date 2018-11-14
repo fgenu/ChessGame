@@ -111,6 +111,10 @@ class TorreTeste
             Partida p= new Partida();
             Tabuleiro t = p.Tabuleiro;
             int linha = t.Tamanho-1; 
+            Movimento mteste;
+            // OBS :assert's comentados são os de quando os testes verficavam movimentações no tabuleiro!
+            // agora os testes verficam movimentos possiveis retornados pela função
+            // eu não apaguei esses casos para caso seja necessário utilizar como referencia depois.
             if(jogador == 1)
             {
                 Debug.Log("Jogador de baixo!");
@@ -130,8 +134,9 @@ class TorreTeste
                         codtorre = codtorre -1;
                     }
                     torre = (Torre) t.tabuleiro[codtorre,linha].PecaAtual;
-                    torre.Roque(p.Tabuleiro); 
+                    mteste = torre.Roque(p.Tabuleiro); 
 
+                    /*  
                     Assert.IsNotNull(t.tabuleiro[0,linha].PecaAtual);
                     Assert.IsNotNull(t.tabuleiro[7,linha].PecaAtual);
                     Assert.IsNotNull(t.tabuleiro[4,linha].PecaAtual);
@@ -139,7 +144,8 @@ class TorreTeste
                     Assert.IsInstanceOf<Torre>(t.tabuleiro[0,linha].PecaAtual);
                     Assert.IsInstanceOf<Torre>(t.tabuleiro[7,linha].PecaAtual);
                     Assert.IsInstanceOf<Rei>(t.tabuleiro[4,linha].PecaAtual);
-
+                    */
+                    Assert.IsNull(mteste);
                     return;
             }
             if((Math.Abs(i - f) == 3 && codtorre == 0) || (Math.Abs(i - f) == 2 && codtorre !=0) ) // note que tabuleiros que podem ocorrer roque tem que ter esse espaçamento pelo menos entre torre e rei
@@ -157,15 +163,26 @@ class TorreTeste
                 {
                    Debug.Log("talvez possa fazer roque");
                    torre = (Torre) t.tabuleiro[codtorre,linha].PecaAtual;
-                   torre.Roque(p.Tabuleiro);                 
+                   mteste = torre.Roque(p.Tabuleiro);                 
 
+                   /*
                    Assert.IsNull(t.tabuleiro[codtorre,linha].PecaAtual);
                    Assert.IsNull(t.tabuleiro[4,linha].PecaAtual);
 
                    Assert.IsInstanceOf<Torre>(t.tabuleiro[codtorre+3,linha].PecaAtual);
                    Assert.IsInstanceOf<Rei>(t.tabuleiro[4-2,linha].PecaAtual);
-
-             
+                    */
+                   Assert.IsNotNull(mteste);
+                   // movimento do rei
+                   Assert.AreEqual(mteste.origem.PosX,4);
+                   Assert.AreEqual(mteste.origem.PosY,linha);
+                   Assert.AreEqual(mteste.destino.PosX,4-2);
+                   Assert.AreEqual(mteste.destino.PosY,linha);
+                   // movimento da torre
+                   Assert.AreEqual(mteste.movimentoExtra.origem.PosX,codtorre);
+                   Assert.AreEqual(mteste.movimentoExtra.origem.PosY,linha);
+                   Assert.AreEqual(mteste.movimentoExtra.destino.PosX,codtorre+3);
+                   Assert.AreEqual(mteste.movimentoExtra.destino.PosY,linha);
                     
                      
                     
@@ -175,13 +192,27 @@ class TorreTeste
                     codtorre = codtorre -1;
                     Debug.Log("talvez possa fazer roque");
                     torre = (Torre) t.tabuleiro[codtorre,linha].PecaAtual;
-                    torre.Roque(p.Tabuleiro);            
-
+                    mteste = torre.Roque(p.Tabuleiro); 
+                    //torre.RealizaMovimento(m);           
+                    /*
                     Assert.IsNull(t.tabuleiro[codtorre,linha].PecaAtual);
                     Assert.IsNull(t.tabuleiro[4,linha].PecaAtual);
 
                     Assert.IsInstanceOf<Torre>(t.tabuleiro[codtorre-2,linha].PecaAtual);
                     Assert.IsInstanceOf<Rei>(t.tabuleiro[4+2,linha].PecaAtual);
+                    */
+
+                   Assert.IsNotNull(mteste);
+                   // movimento do rei
+                   Assert.AreEqual(mteste.origem.PosX,4);
+                   Assert.AreEqual(mteste.origem.PosY,linha);
+                   Assert.AreEqual(mteste.destino.PosX,4+2);
+                   Assert.AreEqual(mteste.destino.PosY,linha);
+                   // movimento da torre
+                   Assert.AreEqual(mteste.movimentoExtra.origem.PosX,codtorre);
+                   Assert.AreEqual(mteste.movimentoExtra.origem.PosY,linha);
+                   Assert.AreEqual(mteste.movimentoExtra.destino.PosX,codtorre-2);
+                   Assert.AreEqual(mteste.movimentoExtra.destino.PosY,linha);
                 }
                 else if(moveu)
                 {
@@ -197,8 +228,8 @@ class TorreTeste
                     p.Tabuleiro.tabuleiro[7,linha].PecaAtual.primeiraJogada = false;
                     p.Tabuleiro.tabuleiro[4,linha].PecaAtual.primeiraJogada = false;
 
-                    torre.Roque(p.Tabuleiro);
-
+                    mteste = torre.Roque(p.Tabuleiro);
+                    /*
                     Assert.IsNotNull(t.tabuleiro[0,linha].PecaAtual);
                     Assert.IsNotNull(t.tabuleiro[7,linha].PecaAtual);
                     Assert.IsNotNull(t.tabuleiro[4,linha].PecaAtual);
@@ -206,7 +237,8 @@ class TorreTeste
                     Assert.IsInstanceOf<Torre>(t.tabuleiro[0,linha].PecaAtual);
                     Assert.IsInstanceOf<Torre>(t.tabuleiro[7,linha].PecaAtual);
                     Assert.IsInstanceOf<Rei>(t.tabuleiro[4,linha].PecaAtual);
-
+                    */
+                    Assert.IsNull(mteste);
                     
                 }
                 
@@ -225,7 +257,9 @@ class TorreTeste
                     p.Tabuleiro.tabuleiro[7,linha].PecaAtual.primeiraJogada = false;
                     p.Tabuleiro.tabuleiro[4,linha].PecaAtual.primeiraJogada = false;
                 }
-                torre.Roque(p.Tabuleiro);
+                mteste = torre.Roque(p.Tabuleiro);
+                Assert.IsNull(mteste);
+                /*
                 // casas ainda estão ocupadas
                 Assert.IsNotNull(t.tabuleiro[0,linha].PecaAtual);
                 Assert.IsNotNull(t.tabuleiro[7,linha].PecaAtual);
@@ -236,6 +270,7 @@ class TorreTeste
                 Assert.IsInstanceOf<Torre>(t.tabuleiro[7,linha].PecaAtual); // torre
                 Assert.IsInstanceOf<Rei>(t.tabuleiro[4,linha].PecaAtual);   // rei
 
+                */
             }
            
             

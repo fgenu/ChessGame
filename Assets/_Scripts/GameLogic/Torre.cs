@@ -21,7 +21,7 @@ public class Torre : Peca
 		return movimentos;
 	}
 
-	public override void Roque(Tabuleiro tabuleiro,Torre torre = null)
+	public override Movimento Roque(Tabuleiro tabuleiro,Torre torre = null)
 	{
 		
 		//Rei rei = (Rei)this.jDono.conjuntoPecas[4];
@@ -55,7 +55,7 @@ public class Torre : Peca
 		int linha = rei.CasaAtual.PosY; // linha em que o rei está alinhado com a torre(que é na vdd a coluna da matriz)
 		int colunaTgrande = this.PosX+3, colunaTpequeno = this.PosX-2; // coluna que o rei e torre devem se mover (que na vdd é a linha da matriz)
 		int colunaRgrande = rei.PosX-2, colunaRpequeno = rei.PosX+2;
-		Debug.Log("select your roque");
+		//Debug.Log("select your roque");
 /*
 		Debug.Log("linha rei:");
 		Debug.Log(linha);
@@ -66,7 +66,7 @@ public class Torre : Peca
 */
 		if(this.CasaAtual.PosX < rei.CasaAtual.PosX) // roque grande 
 		{
-				Debug.Log("Roque grande");
+			//	Debug.Log("Roque grande");
 			/*	
 				Debug.Log("coluna Roque grande torre: ");
 				Debug.Log(colunaTgrande);
@@ -78,7 +78,7 @@ public class Torre : Peca
 		}
 		else // roque pequeno
 		{
-				Debug.Log("Roque pequeno");
+			//	Debug.Log("Roque pequeno");
 			/*	
 				Debug.Log("coluna Roque pequeno torre: ");
 				Debug.Log(colunaTpequeno);
@@ -94,10 +94,13 @@ public class Torre : Peca
 		if(this.PodeRoque(this,rei,tabuleiro,m,mt))
 		{
 			Debug.Log("realizando roque...");
-			this.RealizaMovimento(m);
-			this.RealizaMovimento(mt);
+			m.movimentoExtra = mt;
+			//this.RealizaMovimento(m);
+			//this.RealizaMovimento(mt);
+			return m;
 
-		}	
+		}
+		return null;	
 		
 
 
