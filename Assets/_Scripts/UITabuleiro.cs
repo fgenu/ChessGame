@@ -78,7 +78,9 @@ public class UITabuleiro : MonoBehaviour
 			if (Input.GetMouseButtonUp(0) && startDrag)
 			{
 				UICasa endDrag = GetSpaceUnderMouse();
-				TryMove(startDrag, endDrag);
+                if (endDrag != null) {
+                    TryMove(startDrag, endDrag);
+                }
 
 				startDrag = null;
 			}
