@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2018-11-11" view-index="0" gantt-divider-location="383" resource-divider-location="300" version="2.8.9" locale="pt_BR">
+    <description/>
+    <view zooming-state="default:4" id="gantt-chart">
+        <field id="tpd3" name="Nome" width="235" order="0"/>
+        <field id="tpd4" name="Data inicial" width="77" order="1"/>
+        <field id="tpd5" name="Data final" width="67" order="2"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nome" width="210" order="0"/>
+        <field id="1" name="Função" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Movimento De Cada Peça" color="#8cb6ce" meeting="false" start="2018-09-06" duration="11" complete="100" thirdDate="2018-09-13" thirdDate-constraint="0" priority="4" expand="true">
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+            <depend id="10" type="2" difference="0" hardness="Strong"/>
+            <depend id="36" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="3" name="Tabuleiro" color="#8cb6ce" meeting="false" start="2018-09-21" duration="5" complete="100" thirdDate="2018-09-13" thirdDate-constraint="0" priority="4" expand="true">
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+            <depend id="10" type="2" difference="0" hardness="Strong"/>
+            <depend id="36" type="2" difference="0" hardness="Strong"/>
+            <depend id="41" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="66" name="Sprites" color="#8cb6ce" meeting="false" start="2018-08-30" duration="6" complete="100" thirdDate="2018-08-30" thirdDate-constraint="0" expand="true">
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+            <depend id="10" type="2" difference="0" hardness="Strong"/>
+            <depend id="36" type="2" difference="0" hardness="Strong"/>
+            <depend id="41" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="5" name="Implementação das Regras do Jogo" color="#8cb6ce" meeting="false" start="2018-09-28" duration="11" complete="100" thirdDate="2018-09-13" thirdDate-constraint="0" priority="4" expand="true">
+            <notes><![CDATA[Bispo, Rainha e Torre]]></notes>
+            <depend id="15" type="2" difference="0" hardness="Strong"/>
+            <depend id="36" type="2" difference="0" hardness="Strong"/>
+            <depend id="57" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="15" name="Regras De Captura" color="#8cb6ce" meeting="false" start="2018-10-15" duration="6" complete="100" thirdDate="2018-09-13" thirdDate-constraint="0" expand="true">
+            <depend id="36" type="2" difference="0" hardness="Strong"/>
+            <depend id="57" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="10" name="Regras Mais Complexas" color="#8cb6ce" meeting="false" start="2018-09-28" duration="8" complete="90" thirdDate="2018-09-13" thirdDate-constraint="0" expand="true">
+            <depend id="36" type="2" difference="0" hardness="Strong"/>
+            <depend id="57" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="43" name="Algoritimo da IA" color="#8cb6ce" meeting="false" start="2018-10-11" duration="13" complete="100" thirdDate="2018-08-30" thirdDate-constraint="0" priority="4" expand="true">
+            <depend id="51" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="47" name="Algoritimo de Poda" color="#8cb6ce" meeting="false" start="2018-10-17" duration="9" complete="100" thirdDate="2018-08-30" thirdDate-constraint="0" priority="4" expand="true">
+            <depend id="51" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="73" name="Integrações" meeting="false" start="2018-09-28" duration="38" complete="100" expand="true">
+            <depend id="60" type="2" difference="0" hardness="Strong"/>
+            <depend id="63" type="2" difference="0" hardness="Strong"/>
+            <task id="41" name="Conexão do Jogador com a Interface" color="#8cb6ce" meeting="false" start="2018-09-28" duration="6" complete="100" thirdDate="2018-08-30" thirdDate-constraint="0" priority="4" expand="true"/>
+            <task id="36" name="Conexão de Maquinas de Regras e Sprites/Assets" color="#8cb6ce" meeting="false" start="2018-10-23" duration="6" complete="100" thirdDate="2018-08-30" thirdDate-constraint="0" priority="4" expand="true">
+                <depend id="57" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="51" name="Conexão da CPU e IA" color="#8cb6ce" meeting="false" start="2018-10-30" duration="16" complete="100" thirdDate="2018-08-30" thirdDate-constraint="0" priority="4" expand="true"/>
+            <task id="57" name="Conexão do Jogador e CPU com Maquina de Regras" color="#8cb6ce" meeting="false" start="2018-10-31" duration="6" complete="100" thirdDate="2018-08-30" thirdDate-constraint="0" priority="4" expand="true"/>
+        </task>
+        <task id="60" name="Testes de Integração (TOTAL)" color="#8cb6ce" meeting="false" start="2018-11-21" duration="9" complete="0" thirdDate="2018-08-30" thirdDate-constraint="0" priority="2" expand="true"/>
+        <task id="75" name="Turnos" color="#8cb6ce" meeting="false" start="2018-10-10" duration="6" complete="100" thirdDate="2018-11-21" thirdDate-constraint="0" priority="2" expand="true"/>
+        <task id="63" name="Testes de Sistema" color="#8cb6ce" meeting="false" start="2018-11-21" duration="9" complete="0" thirdDate="2018-08-30" thirdDate-constraint="0" priority="2" expand="true"/>
+        <task id="17" name="Slides" color="#8cb6ce" meeting="false" start="2018-09-13" duration="58" complete="67" thirdDate="2018-09-13" thirdDate-constraint="0" expand="true"/>
+        <task id="21" name="Testes Unitarios 1" color="#8cb6ce" meeting="false" start="2018-09-13" duration="58" complete="50" thirdDate="2018-09-13" thirdDate-constraint="0" priority="2" expand="true"/>
+        <task id="23" name="Monitoramento e Controle, Analise de Riscos" color="#8cb6ce" meeting="false" start="2018-09-13" duration="58" complete="58" thirdDate="2018-09-13" thirdDate-constraint="0" expand="true"/>
+        <task id="24" name="EAP" color="#8cb6ce" meeting="false" start="2018-08-30" duration="64" complete="100" thirdDate="2018-08-24" thirdDate-constraint="0" priority="0" expand="true"/>
+        <task id="32" name="Documentação De Código" color="#8cb6ce" meeting="false" start="2018-09-06" duration="59" complete="100" thirdDate="2018-08-24" thirdDate-constraint="0" priority="0" expand="true"/>
+        <task id="28" name="Cronograma" color="#8cb6ce" meeting="false" start="2018-09-06" duration="63" complete="70" thirdDate="2018-09-12" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
