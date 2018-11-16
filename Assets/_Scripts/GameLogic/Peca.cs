@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Peca
 {
-	public Casa CasaAtual { get; private set; }
+    public Casa CasaAtual;
 
 	public int PosX { get { return CasaAtual.PosX; } }
 	public int PosY { get { return CasaAtual.PosY; } }
-	public char Cor { get; private set; }
+    public char Cor;
 	public int PrimeiroTurnoMovido { get; private set; }
 	public int UltimoTurnoMovido { get; private set; }
 	public Movimento UltimoMovimento { get; private set; }
@@ -66,12 +66,19 @@ public class Peca
 		UltimoTurnoMovido = partida.Turno;
 
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
-		if ((this is Peao) && (this as Peao).PodePromover())// (m.destino.PosX == tamTabuleiro - 1))
+		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono==partida.Jogador1)// (m.destino.PosX == tamTabuleiro - 1))
 		{
             CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
 			//PromoverPeao(m);
 		}
-	}
+
+        //verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
+        if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador2)// (m.destino.PosX == tamTabuleiro - 1))
+        {
+            CasaAtual.Tabuleiro.partida.UItab.ativaPromocaoIA(m);
+            
+        }
+    }
 
 	public Peca PromoverPeao(Movimento m,int tipoNovaPeca)
 	{
@@ -118,6 +125,7 @@ public class Peca
         novaPeca.CasaAtual = m.destino;
 
 		novaPeca.UltimoTurnoMovido = this.UltimoTurnoMovido;
+        
 
         return novaPeca;
 	}
@@ -245,7 +253,7 @@ public class Peca
 		}
 		
 		// rei nao pode estar em xeque
-		if(rei.jDono.EmXeque())
+		if(rei.jDono.EmXeque(false))
 		{
 		//	Debug.Log("Rei está em xeque!");
 			return false;
@@ -269,7 +277,7 @@ public class Peca
 			return false;
 		}
 		// voltar para a torre para a poisção original
-		movtorre.destino.PopPeca();
+		movida = movtorre.destino.PopPeca();
 		movtorre.origem.ColocarPeca(movida);
 
 

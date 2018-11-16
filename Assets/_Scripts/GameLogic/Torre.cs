@@ -39,7 +39,10 @@ public class Torre : Peca
 			}
 			
 		}
-		
+        if (rei.CasaAtual == null || this.CasaAtual==null)
+        {
+            return null;
+        }
 		// criar "movimento" rei deve ser aproximar da torre andando 2 casas (tanto no roque pequeno quanto no grande)
 		// a torre anda 3 casas em casos de roque grande (torre do lado esquerdo)
 		// a torre anda 2 casas em casos de roque pequeno(torre do lado direito)

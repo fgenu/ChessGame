@@ -52,21 +52,27 @@ public class Rei : Peca
 		Movimento possibilidade;
 		if(torre1 != null)
 		{
-			possibilidade = this.Roque(this.CasaAtual.Tabuleiro,torre1);
-			if(possibilidade != null)
-			{
-				movimentos.Add(possibilidade);
-			}
+            if (this.CasaAtual != null && verificaXeque)
+            {
+                possibilidade = this.Roque(this.CasaAtual.Tabuleiro, torre1);
+                if (possibilidade != null)
+                {
+                    movimentos.Add(possibilidade);
+                }
+            }
 			
 			
 		}
 		if(torre2 != null)
 		{
-			possibilidade = this.Roque(this.CasaAtual.Tabuleiro,torre2);
-			if(possibilidade != null)
-			{
-				movimentos.Add(possibilidade);
-			}
+            if (this.CasaAtual != null && verificaXeque)
+            {
+                possibilidade = this.Roque(this.CasaAtual.Tabuleiro, torre2);
+                if (possibilidade != null) { 
+                    movimentos.Add(possibilidade);
+                }
+            }
+			
 			
 		}
 		

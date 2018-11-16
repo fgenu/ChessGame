@@ -17,7 +17,7 @@ public class UITabuleiro : MonoBehaviour
 
 	private bool clicked = false; //determina se já houve o clique no menu
 
-    public bool promovendoPeao = false; //determina se está promovendo peao
+    public bool promovendoPeao = false,promovendoPeaoIA=false; //determina se está promovendo peao
 
     private UIPiece selectedUIPiece;
 
@@ -54,6 +54,25 @@ public class UITabuleiro : MonoBehaviour
 				}
 				else
 				{
+                    if (promovendoPeaoIA)
+                    {
+                        pAtual = movimentoPromocao.destino.PecaAtual;
+                        valorPeca = 1;
+                        if (valorPeca != 0)
+                        {
+                            pUIAtual = pAtual.uiP;
+                            pAtual = pAtual.PromoverPeao(movimentoPromocao, valorPeca);
+                            pAtual.uiP = pUIAtual;
+                            mudaPeca(pAtual);
+                            promovendoPeaoIA = false;
+                            if (movimentoPromocao.destino.Tabuleiro.partida.Jogador2.Cor == 'b')
+                            {
+                                movimentoPromocao.destino.PecaAtual.Cor = 'p';
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                            }
+                        }
+                    }
                     if (promovendoPeao)
                     {
                         pAtual = movimentoPromocao.destino.PecaAtual;
@@ -137,18 +156,27 @@ public class UITabuleiro : MonoBehaviour
 		{
 			if (hit.transform.name == "White")//se o GameObject que recebeu o clique tem o nome White
 			{
-				GenerateBoard();
+                GenerateBoard();
 				color = 1; //cor bege
-				clicked = true; //indica que já escolheu a cor
+                clicked = true; //indica que já escolheu a cor
 				DestroyMenu(); //destrói tudo que faz parte do menu
 			}
 			else if (hit.transform.name == "Black")
-			{//se o GameObject que recebeu o clique tem o nome Black
-				GenerateBoard();
+            {//se o GameObject que recebeu o clique tem o nome Black
+                partida.Jogador1.AlteraCor('p');
+                partida.Jogador2.AlteraCor('b');
+                partida.Turno = 2;
+                GenerateBoard();
 				color = 0; //cor preta
 				clicked = true;
 				DestroyMenu();
-			}
+                partida.Jogador1.AlteraCor('b');
+                partida.Jogador1.Cor = 'p';
+                partida.Jogador2.AlteraCor('p');
+                partida.Jogador2.Cor = 'b';
+                partida.PassarAVez();
+                partida.PassarAVez();
+            }
 		}
 	}
 
@@ -186,7 +214,13 @@ public class UITabuleiro : MonoBehaviour
         movimentoPromocao = m;
         Instantiate(menuPromoPrefab);
     }
-    private void mudaPeca(Peca p)
+    public void ativaPromocaoIA(Movimento m)
+    {
+        promovendoPeaoIA = true;
+        movimentoPromocao = m;
+        //Instantiate(menuPromoPrefab);
+    }
+    public void mudaPeca(Peca p)
     {
         UIPiece pAtual = p.uiP;
         Destroy(pAtual.gameObject);
