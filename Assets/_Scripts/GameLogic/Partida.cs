@@ -48,25 +48,34 @@ public class Partida
 		
 		Debug.Log("Passando turno...");
 
-		/*
+        /*
 		if (VerificaEmpateObrigatorio())   
 		{
+            UItab.ativaFim("               Empate!");
 			Debug.Log("Empate!");
 			this.fim = true;
 		}
 		   // comentei temporariamente porque estava dando nullpointer!	
 		*/
-			
-		/*	
+
+        /*	
 		if (VerificaEmpateOpcional())
 			Debug.Log("Um empate pode ser pedido!");
         // comentei temporariamente porque estava dando nullpointer!
 	    */
-		
 
-		if (VerificaVitoria())
+
+        if (VerificaVitoria())
 		{
-			Debug.Log("Vitória!");
+            if (Turno==1)
+            {
+                UItab.ativaFim("               Você Perdeu!");
+            }
+            else
+            {
+                UItab.ativaFim("               Você Ganhou!");
+            }
+            Debug.Log("Vitória!");
 			this.fim = true;
 			//RegistrarEstadoDoTabuleiro(); // AQUI OCORRE NULL POINTER
 			return; // coloquei esse return temporariamente aqui por causa do nullpointer

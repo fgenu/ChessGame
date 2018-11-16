@@ -13,6 +13,8 @@ public class UITabuleiro : MonoBehaviour
 
     public GameObject menuPromoPrefab;
 
+    public GameObject FimPrefab;
+
     private int color = 0; //0 = preto e 1 = branco // TODO: tentar reescrever para trabalhar com Jogador.Cor
 
 	private bool clicked = false; //determina se já houve o clique no menu
@@ -48,6 +50,7 @@ public class UITabuleiro : MonoBehaviour
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
+
 				if (!clicked)
 				{ //verifica se o menu está ativo
 					SelectColor(); //selecionou a cor
@@ -219,6 +222,14 @@ public class UITabuleiro : MonoBehaviour
         promovendoPeaoIA = true;
         movimentoPromocao = m;
         //Instantiate(menuPromoPrefab);
+    }
+    public void ativaFim(String t)
+    {
+        GameObject fim = (GameObject) Instantiate(FimPrefab);
+        
+        fim.GetComponent<TextMesh>().text = t;
+        
+        fim.transform.position = new Vector3(-3.2f,1e-06f,2.762001f);
     }
     public void mudaPeca(Peca p)
     {
