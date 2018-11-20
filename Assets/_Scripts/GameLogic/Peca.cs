@@ -46,7 +46,7 @@ public class Peca
 		{
 			Jogador jCapturado = m.destino.PecaAtual.jDono;
 			int posPeca = 0;
-			partida.TurnoDaUltimaCaptura = partida.Turno;
+			partida.TurnoDaUltimaCaptura = partida.TurnoAtual;
 
 			//verifico todas as peças até achar a que eu quero
 			foreach (Peca p in jCapturado.conjuntoPecas)
@@ -63,7 +63,7 @@ public class Peca
 		m.destino.ColocarPeca(m.origem.PopPeca());
 
 		primeiraJogada = false;
-		UltimoTurnoMovido = partida.Turno;
+		UltimoTurnoMovido = partida.TurnoAtual;
 
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
 		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono==partida.Jogador1)// (m.destino.PosX == tamTabuleiro - 1))

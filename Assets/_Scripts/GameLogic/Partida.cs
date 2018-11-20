@@ -12,7 +12,7 @@ public class Partida
 	public Jogador Jogador2 { get; private set; }
 	public IA jIA;
 	public UITabuleiro UItab;
-	public int Turno;// { get; private set; }   // depois de consertar o problema do nullpointer pode por isso como private denovo.
+	public int TurnoAtual { get; private set; }   // depois de consertar o problema do nullpointer pode por isso como private denovo.
 	public int TurnoDaUltimaCaptura { get; /*private*/ set; }
 	public List<String> HistoricoDoTabuleiro { get; private set; }
 	public bool fim { get; private set; }
@@ -67,13 +67,13 @@ public class Partida
 
         if (VerificaVitoria())
 		{
-            if (Turno==1)
+            if (JogadorDaVez() == Jogador1)
             {
-                UItab.ativaFim("               Você Perdeu!");
+                UItab.ativaFim("               Você Ganhou!");
             }
             else
             {
-                UItab.ativaFim("               Você Ganhou!");
+                UItab.ativaFim("               Você Perdeu!");
             }
             Debug.Log("Vitória!");
 			this.fim = true;
@@ -87,9 +87,9 @@ public class Partida
         if (!UItab.promovendoPeao)
         {
             Debug.Log("Passou a vez");
-            if (Turno == 1)
+            if (JogadorDaVez() == Jogador1)
             {
-                Turno = 2;
+				TurnoAtual++;
                 Tabuleiro.PrintaTabuleiro();
                 Movimento m = jIA.minmax(3, 3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
                 Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
@@ -99,7 +99,7 @@ public class Partida
             }
             else
             {
-                Turno = 1;
+				TurnoAtual++;
                 Tabuleiro.PrintaTabuleiro();
                 Movimento m = jIA.minmax(3, 3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
                 Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
@@ -126,7 +126,7 @@ public class Partida
     }
     public Jogador JogadorDaVez()
 	{
-		if (Turno % 2 == 1) // turno ímpar
+		if (TurnoAtual % 2 == 1) // turno ímpar
 		{
 			if (Jogador1.Cor == 'b')
 				return Jogador1;
@@ -146,17 +146,8 @@ public class Partida
 	{
 		j1.inimigo = j2;
 		j2.inimigo = j1;
-		Turno = 1;
-		if (j1.Cor == 'b')
-		{
-			Turno = 1;
-			
-		}
-		else
-		{
-			Turno = 2;
-			
-		}
+		TurnoAtual = 1;
+
 		Tabuleiro.InserePecasNaPosicaoInicial(this);
 		Tabuleiro.PrintaTabuleiro();
 		
@@ -329,14 +320,14 @@ public class Partida
 	{
 		// 50 ou mais turnos desde a última captura ou movimento de peão
 
-		if (Turno >= 50)
+		if (TurnoAtual >= 50)
 		{
-			if (TurnoDaUltimaCaptura + 50 <= Turno)
+			if (TurnoDaUltimaCaptura + 50 <= TurnoAtual)
 				return true;
 			
 			foreach (Peao peao in Jogador1.conjuntoPecas.Union(Jogador2.conjuntoPecas))
 			{
-				if (peao.UltimoTurnoMovido + 50 <= Turno)
+				if (peao.UltimoTurnoMovido + 50 <= TurnoAtual)
 					return true;
 			}
 		}

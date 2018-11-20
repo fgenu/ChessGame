@@ -8,7 +8,7 @@ public class Tabuleiro
 
 	// TODO: Fazer isto voltar a ser privado ao finalizar os ListaMovimentos
 	public /*private*/ Casa[,] tabuleiro = new Casa[8, 8];
-    public int Turno { get { return partida.Turno; } }
+    public int TurnoAtual { get { return partida.TurnoAtual; } }
     public Partida partida;
 	public Tabuleiro()
 	{

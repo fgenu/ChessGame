@@ -168,7 +168,6 @@ public class UITabuleiro : MonoBehaviour
             {//se o GameObject que recebeu o clique tem o nome Black
                 partida.Jogador1.AlteraCor('p');
                 partida.Jogador2.AlteraCor('b');
-                partida.Turno = 2;
                 GenerateBoard();
 				color = 0; //cor preta
 				clicked = true;
