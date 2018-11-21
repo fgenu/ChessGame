@@ -100,8 +100,14 @@ public class UIPiece : MonoBehaviour
 	private void VisuallyMove(Movimento movimento)
 	{
 		// TODO: Fazer movimento mais smooth baseado na posição de origem
+		var uiTabuleiro = FindObjectOfType<UITabuleiro>();
+		UpdatePositionOnBoard(uiTabuleiro); // temporário
 
-		UpdatePositionOnBoard(FindObjectOfType<UITabuleiro>()); // temporário
+		if (movimento.movimentoExtra != null)
+		{
+			UIPiece extraPiece = uiTabuleiro.GetUICasa(movimento.movimentoExtra.destino).CurrentUIPiece();
+			extraPiece.VisuallyMove(movimento.movimentoExtra);
+		}
 	}
 
 	public void UpdatePositionOnBoard(UITabuleiro uiTabuleiro)

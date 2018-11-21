@@ -71,6 +71,9 @@ public class Peca
 			CasaAtual.Tabuleiro.partida.UItab.ativaPromocaoIA(m);
 
 		}
+
+		if (m.movimentoExtra != null)
+			RealizaMovimento(m.movimentoExtra);
 	}
 
 	public static Movimento ValidarMovimento(Movimento m)
@@ -231,6 +234,8 @@ public class Peca
 
 	protected bool PodeRoque(Torre torre, Rei rei,Tabuleiro tabuleiro,Movimento movrei,Movimento movtorre)
 	{
+		if (torre == null || rei == null || movrei == null || movtorre == null)
+			return false;
 		// lembrando que as condições de roque são:
 		
 	
@@ -272,7 +277,7 @@ public class Peca
 		}
 		for(int p=i+1; p < f ;p++)
 		{
-			if(tabuleiro.tabuleiro[p,linha].EstaOcupada())
+			if(tabuleiro.GetCasa(p,linha).EstaOcupada())
 			{
 				//Debug.Log(p);
 		//		Debug.Log("TEM CASAS OCUPADAS NO CAMINHO!");

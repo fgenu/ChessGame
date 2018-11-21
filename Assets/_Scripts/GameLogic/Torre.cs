@@ -76,8 +76,8 @@ public class Torre : Peca
 				Debug.Log("coluna Roque grande rei: ");
 				Debug.Log(colunaRgrande);
 			*/
-				destinorei = tabuleiro.tabuleiro[colunaRgrande,linha];
-				destinotorre = tabuleiro.tabuleiro[colunaTgrande,linha];
+				destinorei = tabuleiro.GetCasa(colunaRgrande,linha);
+				destinotorre = tabuleiro.GetCasa(colunaTgrande,linha);
 		}
 		else // roque pequeno
 		{
@@ -88,15 +88,15 @@ public class Torre : Peca
 				Debug.Log("coluna Roque pequeno rei: ");
 				Debug.Log(colunaRpequeno);
 			*/
-				destinorei = tabuleiro.tabuleiro[colunaRpequeno,linha];
-				destinotorre = tabuleiro.tabuleiro[colunaTpequeno,linha];
+				destinorei = tabuleiro.GetCasa(colunaRpequeno,linha);
+				destinotorre = tabuleiro.GetCasa(colunaTpequeno,linha);
 		}
 		Movimento m = new Movimento(origem: rei.CasaAtual, destino: destinorei );
 		Movimento mt = new Movimento(origem: this.CasaAtual, destino: destinotorre); 
 		//Debug.Log(this.PodeRoque(this,rei,tabuleiro,m));
 		if(this.PodeRoque(this,rei,tabuleiro,m,mt))
 		{
-			Debug.Log("realizando roque...");
+			//Debug.Log("realizando roque...");
 			m.movimentoExtra = mt;
 			//this.RealizaMovimento(m);
 			//this.RealizaMovimento(mt);
