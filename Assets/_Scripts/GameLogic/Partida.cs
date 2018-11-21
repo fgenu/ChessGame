@@ -30,23 +30,8 @@ public class Partida
 		this.fim = false;
 	}
 
-	public void RefazReferencias()
-	{
-		foreach (Peca p in Jogador1.conjuntoPecas)
-		{
-			p.CasaAtual.PecaAtual = p;
-		}
-
-
-		foreach (Peca p in Jogador2.conjuntoPecas)
-		{
-			p.CasaAtual.PecaAtual = p;
-		}
-	}
 	public void PassarAVez()
 	{
-		
-		Debug.Log("Passando turno...");
 
         /*
 		if (VerificaEmpateObrigatorio())   
@@ -86,7 +71,6 @@ public class Partida
 		
         if (!UItab.promovendoPeao)
         {
-            Debug.Log("Passou a vez");
             if (JogadorDaVez() == Jogador1)
             {
 				TurnoAtual++;
@@ -94,7 +78,6 @@ public class Partida
                 Movimento m = jIA.minmax(3, 3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
                 Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
                 UItab.TryMove(m.origem.uiC, m.destino.uiC);
-                refazReferencias();
                 Tabuleiro.PrintaTabuleiro();
             }
             else
@@ -104,26 +87,13 @@ public class Partida
                 Movimento m = jIA.minmax(3, 3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
                 Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
                 UItab.TryMove(m.origem.uiC, m.destino.uiC);
-                refazReferencias();
                 Tabuleiro.PrintaTabuleiro();
             }
         }
 
         RegistrarEstadoDoTabuleiro();
 	}
-    public void refazReferencias()
-    {
-        foreach (Peca p in Jogador1.conjuntoPecas)
-        {
-            p.CasaAtual.PecaAtual = p;
-        }
 
-
-        foreach (Peca p in Jogador2.conjuntoPecas)
-        {
-            p.CasaAtual.PecaAtual = p;
-        }
-    }
     public Jogador JogadorDaVez()
 	{
 		if (TurnoAtual % 2 == 1) // turno ímpar

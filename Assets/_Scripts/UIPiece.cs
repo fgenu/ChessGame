@@ -68,31 +68,36 @@ public class UIPiece : MonoBehaviour
         {
             if ((origem.casa.PecaAtual.jDono == tabuleiro.partida.JogadorDaVez()))
             {
-                if (destino.casa.PecaAtual != null)
-                {
-                    UIPiece pecaDestroi = destino.CurrentUIPiece();
-                    MovePiece(origem, destino);
-                    tabuleiro.partida.PassarAVez();
-                    Destroy(pecaDestroi.gameObject);
-                }
-                else
-                {
-                    MovePiece(origem, destino);
-                    tabuleiro.partida.PassarAVez();
-
-                }
-                
+				MovePiece(origem, destino);
+				tabuleiro.partida.PassarAVez();
             }
         }
 	}
 
 	private void MovePiece(UICasa origem, UICasa destino)
 	{
-		Piece.RealizaMovimento(new Movimento(origem: origem.casa, destino: destino.casa));
-		VisuallyMove(origem, destino);
+		var movimento = Peca.ValidarMovimento(new Movimento(origem: origem.casa, destino: destino.casa));
+		
+		UIPiece captured = null;
+		if (destino.casa.PecaAtual != null)
+		{
+			captured = destino.CurrentUIPiece();
+		}
+		else if (movimento.pecaCapturada != null)
+		{
+			var uiTabuleiro = FindObjectOfType<UITabuleiro>();
+			captured = uiTabuleiro.GetUICasa(movimento.pecaCapturada.CasaAtual).CurrentUIPiece();
+		}
+
+		if (captured != null)
+			Destroy(captured.gameObject);
+
+		Piece.RealizaMovimento(movimento);
+
+		VisuallyMove(movimento);
 	}
 
-	private void VisuallyMove(UICasa origem, UICasa destino)
+	private void VisuallyMove(Movimento movimento)
 	{
 		// TODO: Fazer movimento mais smooth baseado na posição de origem
 

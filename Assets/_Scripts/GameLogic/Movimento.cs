@@ -9,24 +9,15 @@ public class Movimento
 	public Tipo tipo { get; private set; }
 	public Movimento movimentoExtra;
 	public Peca pecaCapturada;
-	public int valor; // Genú: O que significa?
-
 
 
 	public Movimento(Casa destino, Casa origem, Tipo tipo = Tipo.Normal)
 	{
-		valor = 0;
 		this.destino = destino;
 		this.origem = origem;
 		this.tipo = tipo;
-		//this.pecaCapturada = destino.PecaAtual; // comentado por enquanto 
-
+		//this.pecaCapturada = destino.PecaAtual; // comentado por enquanto, pode dar ruim
 	}
-
-    public Peca recuperarPeca(Casa destino)
-    {
-        return destino.PecaAtual;
-    }
 
     // Propaga um movimento na direção dada. 
     public static List<Movimento> SeguindoDirecao(Casa origem, int x, int y, int passos = int.MaxValue, Tipo tipo = Tipo.Normal, bool bloqueavel = true, bool verificaXeque=true)

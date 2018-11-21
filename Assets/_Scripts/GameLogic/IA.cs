@@ -244,7 +244,6 @@ public class IA
         if (pCapt != null)
         {
             m.destino.ColocarPeca(pCapt);
-            pCapt.CasaAtual = m.destino;
             pCapt.jDono.conjuntoPecas.Add(pCapt);
 
         }

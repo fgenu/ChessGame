@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Peca
 {
-    public Casa CasaAtual;
+    public Casa CasaAtual { get; private set; }
 
 	public int PosX { get { return CasaAtual.PosX; } }
 	public int PosY { get { return CasaAtual.PosY; } }
@@ -41,44 +41,72 @@ public class Peca
 	{
 		Partida partida = CasaAtual.Tabuleiro.partida;
 
-		//verifica se tem captura de peça
-		if (m.destino.PecaAtual != null) // TODO: extrair isto como método e generalizar para funcionar com o en passant
-		{
-			Jogador jCapturado = m.destino.PecaAtual.jDono;
-			int posPeca = 0;
-			partida.TurnoDaUltimaCaptura = partida.TurnoAtual;
+		m = ValidarMovimento(m);
 
-			//verifico todas as peças até achar a que eu quero
-			foreach (Peca p in jCapturado.conjuntoPecas)
-			{
-				if (p == m.destino.PecaAtual)
-				{
-					break;
-				}
-				posPeca++;
-			}
-			jCapturado.conjuntoPecas.RemoveAt(posPeca);
-		}
-		//realiza o movimento
+		if (m.pecaCapturada != null)
+			CapturaPeca(m.pecaCapturada, partida);
+		if (m.destino.PecaAtual != null)
+			CapturaPeca(m.destino.PecaAtual, partida);
+
 		m.destino.ColocarPeca(m.origem.PopPeca());
 
-		primeiraJogada = false;
+		if (primeiraJogada)
+		{
+			primeiraJogada = false;
+			PrimeiroTurnoMovido = partida.TurnoAtual;
+		}
 		UltimoTurnoMovido = partida.TurnoAtual;
+		UltimoMovimento = m;
 
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
-		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono==partida.Jogador1)// (m.destino.PosX == tamTabuleiro - 1))
+		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador1)// (m.destino.PosX == tamTabuleiro - 1))
 		{
-            CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
+			CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
 			//PromoverPeao(m);
 		}
 
-        //verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
-        if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador2)// (m.destino.PosX == tamTabuleiro - 1))
-        {
-            CasaAtual.Tabuleiro.partida.UItab.ativaPromocaoIA(m);
-            
-        }
-    }
+		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
+		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador2)// (m.destino.PosX == tamTabuleiro - 1))
+		{
+			CasaAtual.Tabuleiro.partida.UItab.ativaPromocaoIA(m);
+
+		}
+	}
+
+	public static Movimento ValidarMovimento(Movimento m)
+	{
+		// Assegura que um movimento legal terá todas as suas propriedades corretas.
+		foreach (Movimento daLista in m.origem.PecaAtual.ListaMovimentos())
+		{
+			if (daLista.origem == m.origem && daLista.destino == m.destino)
+			{
+				m = daLista;
+				break;
+			}
+		}
+
+		return m;
+	}
+
+	private static void CapturaPeca(Peca capturada, Partida partida)
+	{
+		Jogador jCapturado = capturada.jDono;
+		int posPeca = 0;
+		partida.TurnoDaUltimaCaptura = partida.TurnoAtual;
+
+		//verifico todas as peças até achar a que eu quero
+		foreach (Peca p in jCapturado.conjuntoPecas)
+		{
+			if (p == capturada)
+			{
+				break;
+			}
+			posPeca++;
+		}
+		jCapturado.conjuntoPecas.RemoveAt(posPeca);
+
+		capturada.TirarDaCasaAtual();
+	}
 
 	public Peca PromoverPeao(Movimento m,int tipoNovaPeca)
 	{
