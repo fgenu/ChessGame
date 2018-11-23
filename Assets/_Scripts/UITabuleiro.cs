@@ -88,6 +88,13 @@ public class UITabuleiro : MonoBehaviour
                             mudaPeca(pAtual);
                             DestroyMenuPromo();
                             promovendoPeao = false;
+                            if (movimentoPromocao.destino.Tabuleiro.partida.Jogador1.Cor == 'p')
+                            {
+                                movimentoPromocao.destino.PecaAtual.Cor = 'b';
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                            }
+                            Tabuleiro.partida.PassarAVez();
                         }
                     }
                     else
