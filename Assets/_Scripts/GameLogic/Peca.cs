@@ -9,6 +9,7 @@ public class Peca
 	public int PosX { get { return CasaAtual.PosX; } }
 	public int PosY { get { return CasaAtual.PosY; } }
     public char Cor;
+    public bool promoveu { get; private set; }
 	public int PrimeiroTurnoMovido { get; private set; }
 	public int UltimoTurnoMovido { get; private set; }
 	public Movimento UltimoMovimento { get; private set; }
@@ -37,7 +38,7 @@ public class Peca
 	}
 
 	// realiza a movimentação baseado em um único movimento
-	public void RealizaMovimento(Movimento m)
+	public void RealizaMovimento(Movimento m, bool stubteste = false)
 	{
 		Partida partida = CasaAtual.Tabuleiro.partida;
 
@@ -68,7 +69,16 @@ public class Peca
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
 		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador2)// (m.destino.PosX == tamTabuleiro - 1))
 		{
-			CasaAtual.Tabuleiro.partida.UItab.ativaPromocaoIA(m);
+			
+			if(stubteste)
+			{
+				promoveu = true;
+			}
+			else
+			{
+				CasaAtual.Tabuleiro.partida.UItab.ativaPromocaoIA(m);
+			}
+			
 
 		}
 
