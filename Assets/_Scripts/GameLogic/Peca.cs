@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Peca
 {
-	public Casa CasaAtual { get; private set; }
+    public Casa CasaAtual { get; private set; }
 
 	public int PosX { get { return CasaAtual.PosX; } }
 	public int PosY { get { return CasaAtual.PosY; } }
-	public char Cor { get; private set; }
+    public char Cor;
+    public bool promoveu { get; private set; }
 	public int PrimeiroTurnoMovido { get; private set; }
 	public int UltimoTurnoMovido { get; private set; }
 	public Movimento UltimoMovimento { get; private set; }
@@ -37,40 +38,87 @@ public class Peca
 	}
 
 	// realiza a movimentação baseado em um único movimento
-	public void RealizaMovimento(Movimento m)
+	public void RealizaMovimento(Movimento m, bool stubteste = false)
 	{
 		Partida partida = CasaAtual.Tabuleiro.partida;
 
-		//verifica se tem captura de peça
-		if (m.destino.PecaAtual != null) // TODO: extrair isto como método e generalizar para funcionar com o en passant
-		{
-			Jogador jCapturado = m.destino.PecaAtual.jDono;
-			int posPeca = 0;
-			partida.TurnoDaUltimaCaptura = partida.Turno;
+		m = ValidarMovimento(m);
 
-			//verifico todas as peças até achar a que eu quero
-			foreach (Peca p in jCapturado.conjuntoPecas)
-			{
-				if (p == m.destino.PecaAtual)
-				{
-					break;
-				}
-				posPeca++;
-			}
-			jCapturado.conjuntoPecas.RemoveAt(posPeca);
-		}
-		//realiza o movimento
+		if (m.pecaCapturada != null)
+			CapturaPeca(m.pecaCapturada, partida);
+		if (m.destino.PecaAtual != null)
+			CapturaPeca(m.destino.PecaAtual, partida);
+
 		m.destino.ColocarPeca(m.origem.PopPeca());
 
-		primeiraJogada = false;
-		UltimoTurnoMovido = partida.Turno;
+		if (primeiraJogada)
+		{
+			primeiraJogada = false;
+			PrimeiroTurnoMovido = partida.TurnoAtual;
+		}
+		UltimoTurnoMovido = partida.TurnoAtual;
+		UltimoMovimento = m;
 
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
-		if ((this is Peao) && (this as Peao).PodePromover())// (m.destino.PosX == tamTabuleiro - 1))
+		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador1)// (m.destino.PosX == tamTabuleiro - 1))
 		{
-            CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
+			CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
 			//PromoverPeao(m);
 		}
+
+		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
+		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador2)// (m.destino.PosX == tamTabuleiro - 1))
+		{
+			
+			if(stubteste)
+			{
+				promoveu = true;
+			}
+			else
+			{
+				CasaAtual.Tabuleiro.partida.UItab.ativaPromocaoIA(m);
+			}
+			
+
+		}
+
+		if (m.movimentoExtra != null)
+			RealizaMovimento(m.movimentoExtra);
+	}
+
+	public static Movimento ValidarMovimento(Movimento m)
+	{
+		// Assegura que um movimento legal terá todas as suas propriedades corretas.
+		foreach (Movimento daLista in m.origem.PecaAtual.ListaMovimentos())
+		{
+			if (daLista.origem == m.origem && daLista.destino == m.destino)
+			{
+				m = daLista;
+				break;
+			}
+		}
+
+		return m;
+	}
+
+	private static void CapturaPeca(Peca capturada, Partida partida)
+	{
+		Jogador jCapturado = capturada.jDono;
+		int posPeca = 0;
+		partida.TurnoDaUltimaCaptura = partida.TurnoAtual;
+
+		//verifico todas as peças até achar a que eu quero
+		foreach (Peca p in jCapturado.conjuntoPecas)
+		{
+			if (p == capturada)
+			{
+				break;
+			}
+			posPeca++;
+		}
+		jCapturado.conjuntoPecas.RemoveAt(posPeca);
+
+		capturada.TirarDaCasaAtual();
 	}
 
 	public Peca PromoverPeao(Movimento m,int tipoNovaPeca)
@@ -118,6 +166,7 @@ public class Peca
         novaPeca.CasaAtual = m.destino;
 
 		novaPeca.UltimoTurnoMovido = this.UltimoTurnoMovido;
+        
 
         return novaPeca;
 	}
@@ -195,6 +244,8 @@ public class Peca
 
 	protected bool PodeRoque(Torre torre, Rei rei,Tabuleiro tabuleiro,Movimento movrei,Movimento movtorre)
 	{
+		if (torre == null || rei == null || movrei == null || movtorre == null)
+			return false;
 		// lembrando que as condições de roque são:
 		
 	
@@ -236,7 +287,7 @@ public class Peca
 		}
 		for(int p=i+1; p < f ;p++)
 		{
-			if(tabuleiro.tabuleiro[p,linha].EstaOcupada())
+			if(tabuleiro.GetCasa(p,linha).EstaOcupada())
 			{
 				//Debug.Log(p);
 		//		Debug.Log("TEM CASAS OCUPADAS NO CAMINHO!");
@@ -245,7 +296,7 @@ public class Peca
 		}
 		
 		// rei nao pode estar em xeque
-		if(rei.jDono.EmXeque())
+		if(rei.jDono.EmXeque(false))
 		{
 		//	Debug.Log("Rei está em xeque!");
 			return false;
@@ -269,7 +320,7 @@ public class Peca
 			return false;
 		}
 		// voltar para a torre para a poisção original
-		movtorre.destino.PopPeca();
+		movida = movtorre.destino.PopPeca();
 		movtorre.origem.ColocarPeca(movida);
 
 

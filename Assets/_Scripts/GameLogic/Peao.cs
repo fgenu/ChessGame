@@ -43,8 +43,29 @@ public class Peao : Peca
         movimentos.AddRange(Movimento.SeguindoDirecao(CasaAtual, 1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura, verificaXeque: verificaXeque));
 		movimentos.AddRange(Movimento.SeguindoDirecao(CasaAtual, -1, 1 * mod, passos: 1, tipo: Movimento.Tipo.SomenteCaptura, verificaXeque: verificaXeque));
 
-		// TODO: en passant. Ideia: poder verificar o tabuleiro do turno anterior, ou usar um "peão fantasma" como peça.
+		// En Passant
+		var tabuleiro = CasaAtual.Tabuleiro;
+		Casa casaEsquerda = tabuleiro.GetCasa(PosX - 1, PosY);
+		Casa casaDireita = tabuleiro.GetCasa(PosX + 1, PosY);
 
+		foreach (var casa in new List<Casa> { casaEsquerda, casaDireita })
+		{
+			if (casa != null)
+			{
+				Peca alvo = casa.PecaAtual;
+				if ((alvo != null) && (PodeCapturar(alvo)) && (alvo is Peao) && (alvo.PrimeiroTurnoMovido == tabuleiro.TurnoAtual - 1))
+				{
+					// Se o alvo andou mais de uma casa...
+					if (alvo.PosY + 1 * mod != alvo.UltimoMovimento.origem.PosY)
+					{
+						Casa destino = tabuleiro.GetCasa(alvo.PosX, alvo.PosY + 1 * mod);
+						Movimento enPassant = new Movimento(origem: CasaAtual, destino: destino, tipo: Movimento.Tipo.Normal);
+						enPassant.pecaCapturada = alvo;
+						movimentos.Add(enPassant);
+					}
+				}
+			}
+		}
 
 		return movimentos;
 	}

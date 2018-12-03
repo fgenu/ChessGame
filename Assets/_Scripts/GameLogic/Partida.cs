@@ -12,7 +12,7 @@ public class Partida
 	public Jogador Jogador2 { get; private set; }
 	public IA jIA;
 	public UITabuleiro UItab;
-	public int Turno;// { get; private set; }   // depois de consertar o problema do nullpointer pode por isso como private denovo.
+	public int TurnoAtual { get; private set; }   // depois de consertar o problema do nullpointer pode por isso como private denovo.
 	public int TurnoDaUltimaCaptura { get; /*private*/ set; }
 	public List<String> HistoricoDoTabuleiro { get; private set; }
 	public bool fim { get; private set; }
@@ -30,88 +30,72 @@ public class Partida
 		this.fim = false;
 	}
 
-	public void RefazReferencias()
-	{
-		foreach (Peca p in Jogador1.conjuntoPecas)
-		{
-			p.CasaAtual.PecaAtual = p;
-		}
-
-
-		foreach (Peca p in Jogador2.conjuntoPecas)
-		{
-			p.CasaAtual.PecaAtual = p;
-		}
-	}
 	public void PassarAVez()
 	{
-		
-		Debug.Log("Passando turno...");
 
-		/*
 		if (VerificaEmpateObrigatorio())   
 		{
+            UItab.ativaFim("               Empate!");
 			Debug.Log("Empate!");
 			this.fim = true;
 		}
-		   // comentei temporariamente porque estava dando nullpointer!	
-		*/
-			
-		/*	
-		if (VerificaEmpateOpcional())
-			Debug.Log("Um empate pode ser pedido!");
-        // comentei temporariamente porque estava dando nullpointer!
-	    */
-		
 
-		if (VerificaVitoria())
+        
+        if (VerificaVitoria())
 		{
-			Debug.Log("Vitória!");
-			this.fim = true;
-			//RegistrarEstadoDoTabuleiro(); // AQUI OCORRE NULL POINTER
-			return; // coloquei esse return temporariamente aqui por causa do nullpointer
-		}
-
-
-		
-		
-        if (!UItab.promovendoPeao)
-        {
-            Debug.Log("Passou a vez");
-            if (Turno == 1)
+            if (JogadorDaVez() == Jogador1)
             {
-                Turno = 2;
-                Tabuleiro.PrintaTabuleiro();
-                Movimento m = jIA.minmax(3, 3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
-                Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
-                UItab.TryMove(m.origem.uiC, m.destino.uiC);
-                refazReferencias();
-                Tabuleiro.PrintaTabuleiro();
+                UItab.ativaFim("               Você Ganhou!");
             }
             else
             {
-                Turno = 1;
+                UItab.ativaFim("               Você Perdeu!");
+            }
+            Debug.Log("Vitória!");
+			this.fim = true;
+			RegistrarEstadoDoTabuleiro();
+			return; // coloquei esse return temporariamente aqui por causa do nullpointer
+		}
+
+        if (!UItab.promovendoPeao)
+        {
+            if (JogadorDaVez() == Jogador1)
+            {
+				TurnoAtual++;
+                //Tabuleiro.PrintaTabuleiro();
+                Movimento m = jIA.minmax(3, 3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
+                if (m != null)
+				{
+					//Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
+					//UItab.TryMove(m.origem.uiC, m.destino.uiC);
+				}
+				//Tabuleiro.PrintaTabuleiro();
+            }
+            else
+            {
+				TurnoAtual++;
+                //Tabuleiro.PrintaTabuleiro();
+                Movimento m = jIA.minmax(3, 3, -222222222, 2222222222, true, Tabuleiro, null).movimento;
+				if (m != null)
+				{
+					//Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
+					UItab.TryMove(m.origem.uiC, m.destino.uiC);
+				}
+                //Tabuleiro.PrintaTabuleiro();
             }
         }
 
+        if (VerificaEmpateOpcional())
+		{
+			Debug.Log("Um empate pode ser pedido!");
+		}
+
         RegistrarEstadoDoTabuleiro();
 	}
-    public void refazReferencias()
-    {
-        foreach (Peca p in Jogador1.conjuntoPecas)
-        {
-            p.CasaAtual.PecaAtual = p;
-        }
 
-
-        foreach (Peca p in Jogador2.conjuntoPecas)
-        {
-            p.CasaAtual.PecaAtual = p;
-        }
-    }
     public Jogador JogadorDaVez()
 	{
-		if (Turno % 2 == 1) // turno ímpar
+		if (TurnoAtual % 2 == 1) // turno ímpar
 		{
 			if (Jogador1.Cor == 'b')
 				return Jogador1;
@@ -131,17 +115,8 @@ public class Partida
 	{
 		j1.inimigo = j2;
 		j2.inimigo = j1;
-		Turno = 1;
-		if (j1.Cor == 'b')
-		{
-			Turno = 1;
-			
-		}
-		else
-		{
-			Turno = 2;
-			
-		}
+		TurnoAtual = 1;
+
 		Tabuleiro.InserePecasNaPosicaoInicial(this);
 		Tabuleiro.PrintaTabuleiro();
 		
@@ -151,99 +126,26 @@ public class Partida
 	
 	public bool VerificaVitoria()
 	{
-		// para ocorrer a vitoria é preciso que o rei adversario esteja em uma posição em que seja impossivel escapar 
-		// ou seja xeque mate:
-		// ocorre quando: 
-		// o rei não pode se movimentar para nenhuma casa sem que sofra um ataque(não há movimentos validos)
-		// a peça(s) que esta(m) atacando não podem ser capturadas pelo rei
-		//nenhuma peça pode proteger o rei (entrar na frente do atacante)
-		int numameacas = 0;
-		int numprote = 0;
-		// O rei está em xeque?	
 		if (JogadorDaVez().inimigo.EmXeque())
 		{
-			
-			foreach (Peca peca in JogadorDaVez().inimigo.conjuntoPecas) // loop para achar o rei no conjunto de pecas inimigas
+			foreach (Peca peca in JogadorDaVez().inimigo.conjuntoPecas)
 			{
-
-
-				if (peca is Rei)
+				if (peca != null)
 				{
-					// agora deve-se verificar se o rei inimigo possui algum movimento valido (ou seja nenhum movimento o deixa em xeque ainda)
 					if (peca.ListaMovimentos().Count > 0)
 					{
-
 						return false;
 					}
-					//agora deve-se verificar se as peças que ameaçam o rei estão a mais de uma casa de distancia dele(nao podem ser capturadas pelo rei)
-					foreach (Peca pa in JogadorDaVez().conjuntoPecas)
-					{
-						if (pa.CasaAtual != null)
-						{
-							List<Movimento> movimentos = pa.ListaMovimentos(false);
-							if (movimentos.Count > 0)
-							{
-								foreach (Movimento mov in movimentos)
-								{
-									if (mov.destino.PecaAtual is Rei && mov.tipo != Movimento.Tipo.SemCaptura) // se alguma das possibilidades de movimento envolve captura em direção ao rei
-									{
-
-										if ((peca.PosY == pa.PosY && Math.Abs(peca.PosX - pa.PosX) == 1) || (peca.PosX == pa.PosX && Math.Abs(peca.PosY - pa.PosY) == 1) || ((Math.Abs(peca.PosX - pa.PosX) == 1) && (Math.Abs(peca.PosY - pa.PosY) == 1)))
-										{
-											
-											return false;
-										}
-										numameacas++;
-									}
-								}
-							}
-						}
-					}
-					// agora deve-se verificar se existe alguma peça para proteger o rei(pode ser movida para ao lado do rei)
-					// (acho que deve ter alguma forma de deixar esse código melhor sem ter que chamar outro foreach aqui, mas depois eu faço isso) 
-					//TODO*
-					foreach (Peca prot in JogadorDaVez().inimigo.conjuntoPecas)
-					{
-						if (!(prot is Rei))
-						{
-							if (prot.CasaAtual != null)
-							{
-								List<Movimento> movimentosprot = prot.ListaMovimentos(false);
-								foreach (Movimento mov in movimentosprot)
-								{
-									if ((peca.PosY == mov.destino.PosY && Math.Abs(peca.PosX - mov.destino.PosX) == 1) || (peca.PosX == mov.destino.PosX && Math.Abs(peca.PosY - mov.destino.PosY) == 1) || ((Math.Abs(peca.PosX - mov.destino.PosX) == 1) && (Math.Abs(peca.PosY - mov.destino.PosY) == 1)))
-									{
-										numprote++;
-									}
-								}
-							}
-						}
-					}
-					if (numprote == numameacas)
-					{
-						
-						return false;
-					}
-
-
-
-
-					break; // evitar percorrer o resto do conjunto de pecas atoa
-
 				}
-
-
 			}
 
-
-
 			return true;
-
 		}
-
-	
+		
 		return false;
 	}
+
+
 
 	// definem o final do jogo (TODO nos sonhos: verificar mais impossibilidade de xeque (é muito complicado de calcular, acho que podemos ignorar))
 	private bool VerificaEmpateObrigatorio()
@@ -293,14 +195,17 @@ public class Partida
 		}
 		else if (pecasInimigas.Count == 2 && pecasAliadas.Count == 2)
 		{
-			foreach (Bispo bispo in pecasAliadas)
+			foreach (Peca peca in pecasAliadas)
 			{
-				foreach (Bispo bispoInimigo in pecasInimigas)
+				if (peca is Bispo)
 				{
-					if (bispo.CasaAtual.cor == bispoInimigo.CasaAtual.cor) // Apenas Rei e Bispo dos dois lados, bispos em casa de mesma cor
+					foreach (Peca inimiga in pecasInimigas)
 					{
-						Debug.Log("Empate! Xeque impossível.");
-						return true;
+						if (inimiga is Bispo && peca.CasaAtual.cor == inimiga.CasaAtual.cor) // Apenas Rei e Bispo dos dois lados, bispos em casa de mesma cor
+						{
+							Debug.Log("Empate! Xeque impossível.");
+							return true;
+						}
 					}
 				}
 			}
@@ -314,32 +219,45 @@ public class Partida
 	{
 		// 50 ou mais turnos desde a última captura ou movimento de peão
 
-		if (Turno >= 50)
+		if (TurnoAtual >= 50)
 		{
-			if (TurnoDaUltimaCaptura + 50 <= Turno)
-				return true;
+			if (TurnoDaUltimaCaptura + 50 <= TurnoAtual)
+				{ Debug.Log("Mais de 50 turnos passaram desde a última captura!"); return true;}
 			
-			foreach (Peao peao in Jogador1.conjuntoPecas.Union(Jogador2.conjuntoPecas))
+			int ultimoTurnoComMovimentoDePeao = 0;
+			foreach (Peca peca in Jogador1.conjuntoPecas.Union(Jogador2.conjuntoPecas))
 			{
-				if (peao.UltimoTurnoMovido + 50 <= Turno)
-					return true;
+				if (peca is Peao && peca.UltimoTurnoMovido > ultimoTurnoComMovimentoDePeao)
+					ultimoTurnoComMovimentoDePeao = peca.UltimoTurnoMovido; // é mais recente
+			}
+			if(ultimoTurnoComMovimentoDePeao + 50 <= TurnoAtual)
+			{
+				Debug.Log("Mais de 50 turnos passaram desde o último movimento de peão!");
+				return true;
 			}
 		}
 
 
 		// Repetição do mesmo estado do tabuleiro três vezes. Empate pode ser pedido apenas logo que a repetição acontece.
 
-		String estado = EstadoAtual(); // AQUI OCORRE NULL POINTER
+		string estado = EstadoAtual();
+		int contagem = 0;
+		foreach (string registro in HistoricoDoTabuleiro)
+		{
+			if (string.Compare(estado, registro) == 0)
+			{
+				contagem++;
 
-		int contagem = HistoricoDoTabuleiro.Where(x => x.Equals(estado)).Count();
-
-		if (contagem >= 2) // TODO: dependendo da ordem de chamada desta função, a contagem deve ser >= 2 ou 3.
-			return true;
-
+				if (contagem >= 2) // dependendo da ordem de chamada desta função, a contagem deve ser >= 2 ou 3.
+				{
+					Debug.Log("Três ou mais repetições do estado do tabuleiro!");
+					return true;
+				}
+			}
+		}
 
 		return false;
 	}
-
 
 	public Jogador JogadorDeCima()
 	{

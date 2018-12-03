@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Casa
 {
-    public Peca PecaAtual;
+    public Peca PecaAtual { get; private set; }
 	public char cor = 'i';
 	public int PosX { get; private set; }
 	public int PosY { get; private set; }
@@ -20,13 +20,6 @@ public class Casa
 		Tabuleiro = tabuleiro;
 	}
 
-    public void ColocarPecaIA(Peca peca)
-    {
-        PecaAtual = peca;
-
-        peca.ValidarNovaCasa(this);
-    }
-
     public void ColocarPeca(Peca peca)
 	{
 		if (PecaAtual != null)
@@ -37,14 +30,6 @@ public class Casa
 		peca.ValidarNovaCasa(this);
 	}
 
-    public Peca PopPecaIA()
-    {
-        Peca removida = PecaAtual;
-
-        PecaAtual = null;
-        
-        return removida;
-    }
     public Peca PopPeca()
 	{
 		Peca removida = PecaAtual;
@@ -56,6 +41,7 @@ public class Casa
 		return removida;
 	}
 
+
 	public bool EstaOcupada()
 	{
 		if (PecaAtual != null)
@@ -64,4 +50,21 @@ public class Casa
 			return false;
 	}
 
+/* Abandonadas
+    public void ColocarPecaIA(Peca peca)
+    {
+        PecaAtual = peca;
+
+        peca.ValidarNovaCasa(this);
+    }
+
+    public Peca PopPecaIA()
+    {
+        Peca removida = PecaAtual;
+
+        PecaAtual = null;
+        
+        return removida;
+    }
+*/
 }

@@ -13,11 +13,13 @@ public class UITabuleiro : MonoBehaviour
 
     public GameObject menuPromoPrefab;
 
+    public GameObject FimPrefab;
+
     private int color = 0; //0 = preto e 1 = branco // TODO: tentar reescrever para trabalhar com Jogador.Cor
 
 	private bool clicked = false; //determina se já houve o clique no menu
 
-    public bool promovendoPeao = false; //determina se está promovendo peao
+    public bool promovendoPeao = false,promovendoPeaoIA=false; //determina se está promovendo peao
 
     private UIPiece selectedUIPiece;
 
@@ -48,12 +50,32 @@ public class UITabuleiro : MonoBehaviour
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
+
 				if (!clicked)
 				{ //verifica se o menu está ativo
 					SelectColor(); //selecionou a cor
 				}
 				else
 				{
+                    if (promovendoPeaoIA)
+                    {
+                        pAtual = movimentoPromocao.destino.PecaAtual;
+                        valorPeca = 1;
+                        if (valorPeca != 0)
+                        {
+                            pUIAtual = pAtual.uiP;
+                            pAtual = pAtual.PromoverPeao(movimentoPromocao, valorPeca);
+                            pAtual.uiP = pUIAtual;
+                            mudaPeca(pAtual);
+                            promovendoPeaoIA = false;
+                            if (movimentoPromocao.destino.Tabuleiro.partida.Jogador2.Cor == 'b')
+                            {
+                                movimentoPromocao.destino.PecaAtual.Cor = 'p';
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                            }
+                        }
+                    }
                     if (promovendoPeao)
                     {
                         pAtual = movimentoPromocao.destino.PecaAtual;
@@ -66,6 +88,13 @@ public class UITabuleiro : MonoBehaviour
                             mudaPeca(pAtual);
                             DestroyMenuPromo();
                             promovendoPeao = false;
+                            if (movimentoPromocao.destino.Tabuleiro.partida.Jogador1.Cor == 'p')
+                            {
+                                movimentoPromocao.destino.PecaAtual.Cor = 'b';
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                                Debug.Log(movimentoPromocao.destino.PecaAtual.Cor);
+                            }
+                            Tabuleiro.partida.PassarAVez();
                         }
                     }
                     else
@@ -137,18 +166,26 @@ public class UITabuleiro : MonoBehaviour
 		{
 			if (hit.transform.name == "White")//se o GameObject que recebeu o clique tem o nome White
 			{
-				GenerateBoard();
+                GenerateBoard();
 				color = 1; //cor bege
-				clicked = true; //indica que já escolheu a cor
+                clicked = true; //indica que já escolheu a cor
 				DestroyMenu(); //destrói tudo que faz parte do menu
 			}
 			else if (hit.transform.name == "Black")
-			{//se o GameObject que recebeu o clique tem o nome Black
-				GenerateBoard();
+            {//se o GameObject que recebeu o clique tem o nome Black
+                partida.Jogador1.AlteraCor('p');
+                partida.Jogador2.AlteraCor('b');
+                GenerateBoard();
 				color = 0; //cor preta
 				clicked = true;
 				DestroyMenu();
-			}
+                partida.Jogador1.AlteraCor('b');
+                partida.Jogador1.Cor = 'p';
+                partida.Jogador2.AlteraCor('p');
+                partida.Jogador2.Cor = 'b';
+                partida.PassarAVez();
+                partida.PassarAVez();
+            }
 		}
 	}
 
@@ -186,7 +223,21 @@ public class UITabuleiro : MonoBehaviour
         movimentoPromocao = m;
         Instantiate(menuPromoPrefab);
     }
-    private void mudaPeca(Peca p)
+    public void ativaPromocaoIA(Movimento m)
+    {
+        promovendoPeaoIA = true;
+        movimentoPromocao = m;
+        //Instantiate(menuPromoPrefab);
+    }
+    public void ativaFim(String t)
+    {
+        GameObject fim = (GameObject) Instantiate(FimPrefab);
+        
+        fim.GetComponent<TextMesh>().text = t;
+        
+        fim.transform.position = new Vector3(-3.2f,1e-06f,2.762001f);
+    }
+    public void mudaPeca(Peca p)
     {
         UIPiece pAtual = p.uiP;
         Destroy(pAtual.gameObject);

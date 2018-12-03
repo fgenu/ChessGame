@@ -170,7 +170,7 @@ public class IA
             }
             else if (peca is Rei)
             {
-                if (peca.Cor == 'b')
+                if (peca.Cor == 'b' )
                 {
                     return 9000 + reiBranco[atual.PosX, atual.PosY];
                 }
@@ -261,7 +261,7 @@ public class IA
     public double evaluate(Tabuleiro tab)
     {
         double pontuacaoTotal = pontuacao(tab, this.Cor);
-        if (this.Cor == 'p') pontuacaoTotal -= pontuacao(tab, 'b');
+        if (this.Cor == 'p' ) pontuacaoTotal -= pontuacao(tab, 'b');
         else pontuacaoTotal -= pontuacao(tab, 'p');
         return pontuacaoTotal;
     }
@@ -277,17 +277,25 @@ public class IA
         {
             Jogada pontuacaoAt = new Jogada(-100000000, null);
             Jogada pontuacaoTemp;
-            Peca capt;
+            Peca capt,capt2=null;
             List<Movimento> movimentosPossiveis = listaMovimentosTotal(tab.partida.Jogador2, tab);
             foreach (Movimento m in movimentosPossiveis)
             {
 
                 capt = RealizaMovimentoIA(m);
+                if (m.movimentoExtra != null)
+                {
+                    capt2 = RealizaMovimentoIA(m.movimentoExtra);
+                }
                 pontuacaoTemp = minmax(profundidade - 1, maxProfundidade, alfa, beta, !max, tab, m);
                 if (pontuacaoTemp.valor >= pontuacaoAt.valor)
                 {
                     pontuacaoAt.valor = pontuacaoTemp.valor;
                     pontuacaoAt.movimento = m;
+                }
+                if (m.movimentoExtra != null)
+                {
+                    desfazMovimentoIA(m.movimentoExtra,capt2);
                 }
                 desfazMovimentoIA(m, capt);
 

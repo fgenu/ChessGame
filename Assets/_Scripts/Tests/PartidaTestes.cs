@@ -162,7 +162,7 @@ public class PartidaTestes {
   //    Debug.Log(t.tabuleiro[4,0].PecaAtual.jDono.Cor);
   //    Debug.Log(t.tabuleiro[7,3].PecaAtual.jDono.Cor);
   //    Debug.Log(t.tabuleiro[6,0].PecaAtual.jDono.Cor);
-       p.Turno = 2; // usado para testes temporariamente (para uma situação de "inicio de jogo" (acabei de dar new partida)) seria obrigado passar o turno 2 vezes para ele verificar 
+       //p.Turno = 2; // usado para testes temporariamente (para uma situação de "inicio de jogo" (acabei de dar new partida)) seria obrigado passar o turno 2 vezes para ele verificar 
        p.PassarAVez();
        
 

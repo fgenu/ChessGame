@@ -6,7 +6,7 @@ public class Jogador
 {
 	public List<Peca> conjuntoPecas = new List<Peca>();
 	public bool jogadorCima;
-	public char Cor { get; private set; }
+    public char Cor;
 	public Jogador inimigo;
 	public Jogador(char cor, bool cima)
 	{
@@ -33,18 +33,25 @@ public class Jogador
 			conjuntoPecas.Add(new Peao(this));
 		}
 	}
-
+    public void AlteraCor(char c)
+    {
+        this.Cor = c;
+        foreach(Peca p in conjuntoPecas)
+        {
+            p.Cor = c;
+        }
+    }
 	// função que define se um jogador está em xeque
 	// e também aparentemente também verifica se algum movimento inimigo envolve captura em direção ao rei (posso estar errado =x)
 													 
-	public bool EmXeque()
+	public bool EmXeque(bool verificaRoque=true)
 	{
 		List<Movimento> movimentos;             // verifica todos os movimentos do seu inimigo
 		foreach (Peca i in inimigo.conjuntoPecas)
 		{
 			if (i.CasaAtual != null)   // se o inimigo tiver alguma peça em alguma casa (se ele tem alguma peça que não foi capturada)
 			{		
-				movimentos = i.ListaMovimentos(false); 
+				movimentos = i.ListaMovimentos(verificaXeque: false); 
 			
 				if (movimentos.Count > 0)
 				{
