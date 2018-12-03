@@ -24,6 +24,7 @@ public class Movimento
 	{
 		var possibilidades = new List<Movimento>();
         //Debug.Log(origem.PosX + x);
+		
 		Tabuleiro tabuleiro = origem.Tabuleiro;
 		Casa seguinte = tabuleiro.GetCasa(origem.PosX + x, origem.PosY + y);
 
@@ -34,8 +35,10 @@ public class Movimento
 			if (seguinte.EstaOcupada())
 			{
                 if (tipo != Tipo.SemCaptura)
+                	
                     if (origem.PecaAtual.PodeCapturar(seguinte.PecaAtual))
                     {
+                        
                         if (verificaXeque)
                         {
                             if (novo.CausaAutoXeque() == false)

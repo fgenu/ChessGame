@@ -12,7 +12,7 @@ public class Partida
 	public Jogador Jogador2 { get; private set; }
 	public IA jIA;
 	public UITabuleiro UItab;
-	public int TurnoAtual { get; private set; }   // depois de consertar o problema do nullpointer pode por isso como private denovo.
+	public int TurnoAtual { get; set; }   // depois de consertar o problema do nullpointer pode por isso como private denovo.
 	public int TurnoDaUltimaCaptura { get; /*private*/ set; }
 	public List<String> HistoricoDoTabuleiro { get; private set; }
 	public bool fim { get; private set; }
@@ -33,31 +33,51 @@ public class Partida
 	public void PassarAVez()
 	{
 
-		if (VerificaEmpateObrigatorio())   
+		 if (VerificaVitoria())
 		{
-            UItab.ativaFim("               Empate!");
-			Debug.Log("Empate!");
-			this.fim = true;
-		}
-
-        
-        if (VerificaVitoria())
-		{
+            
             if (JogadorDaVez() == Jogador1)
             {
-                UItab.ativaFim("               Você Ganhou!");
+                if(UItab != null)
+                {
+                	UItab.ativaFim("               Você Ganhou!");
+                }
+                
             }
             else
             {
-                UItab.ativaFim("               Você Perdeu!");
+                if(UItab != null)
+                {
+                	UItab.ativaFim("               Você Perdeu!");
+                }
+                
             }
             Debug.Log("Vitória!");
+            TurnoAtual++;
 			this.fim = true;
 			RegistrarEstadoDoTabuleiro();
 			return; // coloquei esse return temporariamente aqui por causa do nullpointer
 		}
+	
 
-        if (!UItab.promovendoPeao)
+
+
+
+
+		if (VerificaEmpateObrigatorio())   
+		{
+            if(UItab != null)
+            {
+            	UItab.ativaFim("               Empate!");
+				Debug.Log("Empate!");
+				this.fim = true;
+            }
+            
+		}
+
+        
+       
+        if (UItab != null && !UItab.promovendoPeao)
         {
             if (JogadorDaVez() == Jogador1)
             {
@@ -84,13 +104,20 @@ public class Partida
                 //Tabuleiro.PrintaTabuleiro();
             }
         }
+        else
+        {
+        	
+        	TurnoAtual++;
+        }
 
         if (VerificaEmpateOpcional())
 		{
 			Debug.Log("Um empate pode ser pedido!");
 		}
 
+
         RegistrarEstadoDoTabuleiro();
+        Debug.Log("PASSOU A VEZ!");
 	}
 
     public Jogador JogadorDaVez()
@@ -130,10 +157,11 @@ public class Partida
 		{
 			foreach (Peca peca in JogadorDaVez().inimigo.conjuntoPecas)
 			{
-				if (peca != null)
+				if (peca != null && peca is Rei)
 				{
 					if (peca.ListaMovimentos().Count > 0)
 					{
+						
 						return false;
 					}
 				}
@@ -158,11 +186,15 @@ public class Partida
 
 		foreach (Peca peca in pecasInimigas)
 		{
-			if (peca.ListaMovimentos().Count > 0)  // AQUI OCORRE NULL POINTER
+			if(peca != null)
 			{
-				semMovimentos = false;
-				break;
+				if (peca.ListaMovimentos().Count > 0)  // AQUI OCORRE NULL POINTER
+				{
+					semMovimentos = false;
+					break;
+				}
 			}
+			
 		}
 
 		if (semMovimentos && !JogadorDaVez().inimigo.EmXeque())
