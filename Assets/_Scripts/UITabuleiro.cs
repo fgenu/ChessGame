@@ -235,7 +235,7 @@ public class UITabuleiro : MonoBehaviour
         
         fim.GetComponent<TextMesh>().text = t;
         
-        fim.transform.position = new Vector3(-3.2f,1e-06f,2.762001f);
+        fim.transform.position = new Vector3(3.7f, 18f,-31f);
     }
     public void mudaPeca(Peca p)
     {
