@@ -67,7 +67,7 @@ public class Partida
                 if (m != null)
 				{
 					//Debug.Log(m.origem.PosX + "   " + m.origem.PosY);
-					//UItab.TryMove(m.origem.uiC, m.destino.uiC);
+					UItab.TryMove(m.origem.uiC, m.destino.uiC);
 				}
 				//Tabuleiro.PrintaTabuleiro();
             }
