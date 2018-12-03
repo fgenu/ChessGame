@@ -8,7 +8,7 @@ public class CasaTestes {
 
     [TestCase(true,0,0)]
     [TestCase(false,0,0)]
-    //[TestCase(false,-1,-1)]  // remover depois
+    //[TestCase(false,-1,-1)]  // teste nao valido
     //[TestCase(false,-1,-1), ExpectedException(typeof(ArgumentOutOfRangeException))] // nao existe na versao atual do NUnit
     public void TesteOcupado(bool p,int x, int y)
     {

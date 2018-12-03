@@ -5,11 +5,7 @@ using System.Collections;
 
 public class TabuleiroTestes {
 
-  //  [Test]
-  //  public void TabuleiroTestesSimplePasses() {
-        // Use the Assert class to test conditions.
- //   }
-//
+ 
      [Test]
         public void InicializaTabuleiroTeste()
         {
@@ -33,12 +29,5 @@ public class TabuleiroTestes {
             
         }
         
-    // A UnityTest behaves like a coroutine in PlayMode
-    // and allows you to yield null to skip a frame in EditMode
-   // [UnityTest]
-   // public IEnumerator TabuleiroTestesWithEnumeratorPasses() {
-        // Use the Assert class to test conditions.
-        // yield to skip a frame
-        //yield return null;
- //   }
+   
 }

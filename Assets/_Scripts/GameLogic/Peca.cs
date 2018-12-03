@@ -44,26 +44,40 @@ public class Peca
 
 		m = ValidarMovimento(m);
 
-		if (m.pecaCapturada != null)
+		if (m.pecaCapturada != null && !stubteste)
 			CapturaPeca(m.pecaCapturada, partida);
-		if (m.destino.PecaAtual != null)
+		if (m.destino.PecaAtual != null && !stubteste)
 			CapturaPeca(m.destino.PecaAtual, partida);
 
 		m.destino.ColocarPeca(m.origem.PopPeca());
-
-		if (primeiraJogada)
+		
+		if (primeiraJogada && !stubteste)
 		{
 			primeiraJogada = false;
 			PrimeiroTurnoMovido = partida.TurnoAtual;
 		}
-		UltimoTurnoMovido = partida.TurnoAtual;
-		UltimoMovimento = m;
+		if(!stubteste)
+		{
+			UltimoTurnoMovido = partida.TurnoAtual;
+			UltimoMovimento = m;
 
+		}
+		
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
 		if ((this is Peao) && (this as Peao).PodePromover() && m.destino.PecaAtual.jDono == partida.Jogador1)// (m.destino.PosX == tamTabuleiro - 1))
 		{
-			CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
+			
 			//PromoverPeao(m);
+
+			if(stubteste)
+			{
+				promoveu = true;
+			}
+			else
+			{
+				CasaAtual.Tabuleiro.partida.UItab.ativaPromocao(m);
+			}
+			
 		}
 
 		//verifica se é peao e se chegou ao fim do tabuleiro, se sim, muda o tipo de peça
